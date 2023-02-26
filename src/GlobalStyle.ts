@@ -7,7 +7,8 @@ const GlobalStyle = createGlobalStyle`
     --color-secondary: #aaa;
     --color-white: #fff;
     --color-black: #333;
-    --color-white-background: #ddd;
+    --color-ligth-background: #ddd;
+    --color-white-background: #eee;
     --color-dark-background: #999;
     --transition: all 0.3s ease;
     --spacing: 0.1rem;
@@ -19,26 +20,53 @@ const GlobalStyle = createGlobalStyle`
       padding: 0;
       outline:0;
       box-sizing: border-box;
-      // font-family: 'Roboto', sans-serif;
+      /* font-family: 'Roboto', sans-serif; */
   }
-  body {
+  body, button, input {
     font-family: 'Roboto', sans-serif;
     background: var(--color-white);
     line-height: 1.5;
     font-size: 1rem;
+  }
+  button {
+    line-height: 0;
   }
   ul {
     list-style-type: none;
   }
   a {
     text-decoration: none;
+    border: none;
     color: var(--color-primary);
     background: var(--color-white-background);
     border-radius: var(--radius);
     transition: var(--transition);
-    &:hover{
+    text-transform: capitalize;
+    letter-spacing: var(--spacing);
+    padding: 0.5rem;
+    &:hover {
       color: var(--color-white-background);
       background: var(--color-dark-background);
+    }
+  }
+  button {
+    border: none;
+    background: none;
+    color: var(--color-dark-background);
+    cursor: pointer;
+    transition: var(--transition);
+    &:hover {
+      color: var(--color-primary);
+    }
+  }
+  input {
+    padding: 0.1rem 0.3rem;
+    border: none;
+    border-radius: var(--radius);
+    transition: var(--transition);
+    box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0);
+    &:focus, &:active {
+      box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0.4);
     }
   }
   hr {
@@ -80,6 +108,7 @@ const GlobalStyle = createGlobalStyle`
   }
   header, footer {
     padding: 0 2rem;
+    background: var(--color-white-background);
   }
 
   .container {
@@ -88,6 +117,11 @@ const GlobalStyle = createGlobalStyle`
     display: grid;
     grid-template-columns: 1fr;
     grid-row-gap: 2rem;
+  }
+  .centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .page-100 {
     min-height: calc(100vh - 10rem);

@@ -1,19 +1,34 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { links } from '../utils/constants';
+import { IoMdSearch } from 'react-icons/io';
+import { FaBars } from 'react-icons/fa';
 
 const Navbar = () => {
   return (
     <WrappedNav>
+      <div className='nav-header'>
+        <button>
+          <Link to='/'>home</Link>
+        </button>
+      </div>
+      <div className='nav-toggle'>
+        <button className='nav-toggle'>
+          <FaBars size={'1.75rem'} />
+        </button>
+      </div>
       <ul className='nav-links'>
-        {links.map((link) => {
-          const { id, text, url } = link;
-          return (
-            <li key={id}>
-              <Link to={url}>{text}</Link>
-            </li>
-          );
-        })}
+        <li>
+          <input type='text' />
+          <button>
+            <IoMdSearch size={'1.75rem'} />
+          </button>
+        </li>
+        <li>
+          <Link to='#'>login</Link>
+        </li>
+        <li>
+          <Link to='#'>signup</Link>
+        </li>
       </ul>
     </WrappedNav>
   );
@@ -26,20 +41,23 @@ const WrappedNav = styled.header`
   right: 0;
   height: 5rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  .nav-links {
+    display: none;
+  }
 
   @media (min-width: 960px) {
+    .nav-toggle {
+      display: none;
+    }
     .nav-links {
       display: flex;
       justify-content: center;
       li {
         margin: 0 0.5rem;
-      }
-      a {
-        text-transform: capitalize;
-        letter-spacing: var(--spacing);
-        padding: 0.5rem;
+        display: flex;
+        align-items: center;
       }
     }
   }
