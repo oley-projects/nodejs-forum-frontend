@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar, Sidebar, Footer } from './components';
+import { Navbar, NavlinksMobile, Sidebar, Footer } from './components';
 import {
   HomePage,
   CategoryPage,
@@ -16,6 +16,7 @@ function App() {
     <Router>
       <GlobalStyle />
       <Navbar />
+      <NavlinksMobile />
       <div className='container page-100'>
         <Routes>
           <Route path='/' element={<HomePage />} />

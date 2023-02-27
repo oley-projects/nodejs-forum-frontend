@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
+import Navlinks from './Navlinks';
 import styled from 'styled-components';
-import { IoMdSearch } from 'react-icons/io';
 import { FaBars } from 'react-icons/fa';
+import { AiOutlineClose } from 'react-icons/ai';
+import { usePostsContext } from '../context/postsContext';
 
 const Navbar = () => {
+  const { openNavbar, closeNavbar, isNavbarOpen } = usePostsContext();
   return (
     <WrappedNav>
       <div className='nav-header'>
@@ -12,24 +15,19 @@ const Navbar = () => {
         </button>
       </div>
       <div className='nav-toggle'>
-        <button className='nav-toggle'>
-          <FaBars size={'1.75rem'} />
-        </button>
-      </div>
-      <ul className='nav-links'>
-        <li>
-          <input type='text' />
-          <button>
-            <IoMdSearch size={'1.75rem'} />
+        {!isNavbarOpen ? (
+          <button className='nav-toggle' onClick={openNavbar}>
+            <FaBars size={'1.75rem'} />
           </button>
-        </li>
-        <li>
-          <Link to='#'>login</Link>
-        </li>
-        <li>
-          <Link to='#'>signup</Link>
-        </li>
-      </ul>
+        ) : (
+          <button className='nav-toggle' onClick={closeNavbar}>
+            <AiOutlineClose size={'1.75rem'} />
+          </button>
+        )}
+      </div>
+      <div className='nav-links'>
+        <Navlinks />
+      </div>
     </WrappedNav>
   );
 };
@@ -45,20 +43,14 @@ const WrappedNav = styled.header`
   align-items: center;
   .nav-links {
     display: none;
+    @media (min-width: 960px) {
+      display: block;
+    }
   }
 
   @media (min-width: 960px) {
     .nav-toggle {
       display: none;
-    }
-    .nav-links {
-      display: flex;
-      justify-content: center;
-      li {
-        margin: 0 0.5rem;
-        display: flex;
-        align-items: center;
-      }
     }
   }
 `;

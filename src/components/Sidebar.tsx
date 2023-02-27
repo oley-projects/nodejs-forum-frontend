@@ -1,4 +1,13 @@
+import styled from 'styled-components';
+
 const Sidebar = () => {
-  return <div>Sidebar</div>;
+  return (
+    <WrapSidebar>
+      <div>Sidebar</div>
+    </WrapSidebar>
+  );
 };
+
+const WrapSidebar = styled.aside``;
+
 export default Sidebar;

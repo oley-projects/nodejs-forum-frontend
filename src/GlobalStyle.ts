@@ -20,11 +20,11 @@ const GlobalStyle = createGlobalStyle`
       padding: 0;
       outline:0;
       box-sizing: border-box;
-      /* font-family: 'Roboto', sans-serif; */
   }
   body, button, input {
     font-family: 'Roboto', sans-serif;
     background: var(--color-white);
+    color: var(--color-primary);
     line-height: 1.5;
     font-size: 1rem;
   }
@@ -64,9 +64,9 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     border-radius: var(--radius);
     transition: var(--transition);
-    box-shadow: 0 0 0.1rem rgba(0, 0, 0, 0);
+    box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0);
     &:focus, &:active {
-      box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0.12rem rgba(0, 0, 0, 0.5);
     }
   }
   hr {
@@ -128,6 +128,11 @@ const GlobalStyle = createGlobalStyle`
   }
   .page {
     min-height: calc(100vh - (20vh + 10rem));
+  }
+  .show-navbar {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   @media screen and (min-width: 960px) {
