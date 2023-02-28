@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
     --color-ligth-background: #ddd;
     --color-white-background: #eee;
     --color-dark-background: #999;
+    --color-white-transparent: rgba(233, 233, 233, 0.8);
     --transition: all 0.3s ease;
     --spacing: 0.1rem;
     --radius: 0.2rem;
@@ -114,9 +115,6 @@ const GlobalStyle = createGlobalStyle`
   .container {
     margin-top: 5rem;
     padding: 3rem 2rem;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-row-gap: 2rem;
   }
   .centered {
     display: flex;
@@ -180,8 +178,6 @@ const GlobalStyle = createGlobalStyle`
     }
     .container {
       padding: 3rem 5rem;
-      grid-template-columns: 2fr 1fr;
-      gap: 3rem;
     }
   }
 

@@ -33,7 +33,7 @@ const WrapNav = styled.ul`
     padding: 0.5rem 1.5rem 1rem;
     flex-direction: column;
     gap: 1rem;
-    background: rgba(233, 233, 233, 0.8);
+    background: var(--color-white-transparent);
   }
 `;
 

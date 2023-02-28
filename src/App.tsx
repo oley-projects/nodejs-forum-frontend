@@ -1,9 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar, NavlinksMobile, Sidebar, Footer } from './components';
+import { Navbar, NavlinksMobile, Footer, Login, Signup } from './components';
 import {
   HomePage,
   CategoryPage,
   ErrorPage,
+  MemberPage,
   PrivateRoute,
   Terms,
   TopicListPage,
@@ -16,14 +17,16 @@ function App() {
     <Router>
       <GlobalStyle />
       <Navbar />
+      <Signup />
       <NavlinksMobile />
       <div className='container page-100'>
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='category' element={<CategoryPage />} />
+          <Route path='memberlist/:id' element={<MemberPage />} />
+          <Route path='viewcategoty/:id' element={<CategoryPage />} />
+          <Route path='viewforum/:id' element={<TopicListPage />} />
+          <Route path='viewtopic/:id' element={<TopicPage />} />
           <Route path='terms' element={<Terms />} />
-          <Route path='topics' element={<TopicListPage />} />
-          <Route path='topics/:id' element={<TopicPage />} />
           <Route
             path='private'
             element={
@@ -34,7 +37,6 @@ function App() {
           />
           <Route path='/error' element={<ErrorPage />} />
         </Routes>
-        <Sidebar />
       </div>
       <Footer />
     </Router>
