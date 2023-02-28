@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoMdSearch } from 'react-icons/io';
+import { usePostsContext } from '../context/postsContext';
 
 const Navlinks = () => {
+  const { openModalLogin, openModalSignup } = usePostsContext();
+
   return (
     <WrapNav>
       <li>
@@ -12,10 +15,14 @@ const Navlinks = () => {
         </button>
       </li>
       <li>
-        <Link to='#'>login</Link>
+        <Link to='#' onClick={openModalLogin}>
+          login
+        </Link>
       </li>
       <li>
-        <Link to='#'>signup</Link>
+        <Link to='#' onClick={openModalSignup}>
+          signup
+        </Link>
       </li>
     </WrapNav>
   );

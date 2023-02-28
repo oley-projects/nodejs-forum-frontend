@@ -1,12 +1,17 @@
+import { Link } from 'react-router-dom';
 import Modal from './Modal';
+import { usePostsContext } from '../context/postsContext';
 
 const Login = () => {
+  const { closeModalLogin } = usePostsContext();
   return (
-    <Modal>
-      <header>Login</header>
+    <Modal closeHandler={closeModalLogin}>
+      <header className='text-center'>
+        <h3>Login</h3>
+      </header>
       <form>
-        <div>
-          <label htmlFor='email'>Email</label>
+        <div className='input'>
+          <label htmlFor='email'>Email:</label>
           <input
             type='email'
             id='email'
@@ -15,17 +20,19 @@ const Login = () => {
             placeholder='Enter your email'
           />
         </div>
-        <div>
-          <label htmlFor='password'>Password</label>
+        <div className='input'>
+          <label htmlFor='password'>Password:</label>
           <input
             type='password'
             id='password'
             name='password'
             required
-            placeholder='Your password'
+            placeholder='Enter password'
           />
         </div>
-        <button>Login</button>
+        <button>
+          <Link to='#'>Login</Link>
+        </button>
       </form>
     </Modal>
   );

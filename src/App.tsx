@@ -11,13 +11,16 @@ import {
   TopicPage,
 } from './pages';
 import GlobalStyle from './GlobalStyle';
+import { usePostsContext } from './context/postsContext';
 
 function App() {
+  const { isModalLoginOpen, isModalSignupOpen } = usePostsContext();
   return (
     <Router>
       <GlobalStyle />
       <Navbar />
-      <Signup />
+      {isModalLoginOpen && <Login />}
+      {isModalSignupOpen && <Signup />}
       <NavlinksMobile />
       <div className='container page-100'>
         <Routes>
@@ -35,7 +38,7 @@ function App() {
               </PrivateRoute>
             }
           />
-          <Route path='/error' element={<ErrorPage />} />
+          <Route path='*' element={<ErrorPage />} />
         </Routes>
       </div>
       <Footer />

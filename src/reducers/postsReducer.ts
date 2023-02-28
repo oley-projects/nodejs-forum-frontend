@@ -1,7 +1,18 @@
-import { NAVBAR_OPEN, NAVBAR_CLOSE } from '../actions/actions';
+import {
+  NAVBAR_OPEN,
+  NAVBAR_CLOSE,
+  MODAL_LOGIN_OPEN,
+  MODAL_LOGIN_CLOSE,
+  MODAL_SIGNUP_OPEN,
+  MODAL_SIGNUP_CLOSE,
+} from '../actions/actions';
 
 const postsReducer = (
-  state: { isNavbarOpen: boolean },
+  state: {
+    isNavbarOpen: boolean;
+    isModalLoginOpen: boolean;
+    isModalSignupOpen: boolean;
+  },
   action: { [key: string]: string | number }
 ) => {
   if (action.type === NAVBAR_OPEN) {
@@ -9,6 +20,18 @@ const postsReducer = (
   }
   if (action.type === NAVBAR_CLOSE) {
     return { ...state, isNavbarOpen: false };
+  }
+  if (action.type === MODAL_LOGIN_OPEN) {
+    return { ...state, isModalLoginOpen: true };
+  }
+  if (action.type === MODAL_LOGIN_CLOSE) {
+    return { ...state, isModalLoginOpen: false };
+  }
+  if (action.type === MODAL_SIGNUP_OPEN) {
+    return { ...state, isModalSignupOpen: true };
+  }
+  if (action.type === MODAL_SIGNUP_CLOSE) {
+    return { ...state, isModalSignupOpen: false };
   }
   return { ...state };
 };

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Footer = () => {
   return (
-    <WrapFooter className='centered'>
+    <WrapFooter className='footer centered'>
       <span>
         © All Rights Reserved. <Link to='/terms'>Terms</Link>
       </span>

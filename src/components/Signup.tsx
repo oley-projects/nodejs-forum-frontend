@@ -1,42 +1,48 @@
+import { Link } from 'react-router-dom';
 import Modal from './Modal';
+import { usePostsContext } from '../context/postsContext';
 
 const Signup = () => {
+  const { closeModalSignup } = usePostsContext();
+
   return (
-    <Modal>
-      <header>Signup</header>
+    <Modal closeHandler={closeModalSignup}>
+      <header className='text-center'>
+        <h3>Signup</h3>
+      </header>
       <form>
-        <div>
-          <label htmlFor='name'>Name: </label>
+        <div className='input'>
+          <label htmlFor='name'>Name:</label>
           <input
             type='text'
             id='name'
             name='name'
             required
             placeholder='Enter your Name'
-          />{' '}
+          />
         </div>
-        <div>
-          <label htmlFor='email'>Email: </label>
+        <div className='input'>
+          <label htmlFor='email'>Email:</label>
           <input
             type='email'
             id='email'
             name='email'
             required
             placeholder='Enter your email'
-          />{' '}
+          />
         </div>
-        <div>
-          <label htmlFor='password'>Password: </label>
+        <div className='input'>
+          <label htmlFor='password'>Password:</label>
           <input
             type='password'
             id='password'
             name='password'
             required
-            placeholder='Your password'
-          />{' '}
+            placeholder='Enter password'
+          />
         </div>
-        <div>
-          <label htmlFor='password2'>Confirm password: </label>
+        <div className='input'>
+          <label htmlFor='password2'>Confirm password:</label>
           <input
             type='password'
             id='password2'
@@ -45,7 +51,9 @@ const Signup = () => {
             placeholder='Confirm password'
           />
         </div>
-        <button>Signup</button>
+        <button>
+          <Link to='#'>Signup</Link>
+        </button>
       </form>
     </Modal>
   );

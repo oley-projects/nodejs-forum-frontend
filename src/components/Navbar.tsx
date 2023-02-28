@@ -8,7 +8,7 @@ import { usePostsContext } from '../context/postsContext';
 const Navbar = () => {
   const { openNavbar, closeNavbar, isNavbarOpen } = usePostsContext();
   return (
-    <WrappedNav>
+    <WrappedNav className='header'>
       <div className='nav-header'>
         <button>
           <Link to='/'>home</Link>

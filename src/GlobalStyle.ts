@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
     --color-ligth-background: #ddd;
     --color-white-background: #eee;
     --color-dark-background: #999;
-    --color-white-transparent: rgba(233, 233, 233, 0.8);
+    --color-white-transparent: rgba(240, 240, 240, 0.93);
     --transition: all 0.3s ease;
     --spacing: 0.1rem;
     --radius: 0.2rem;
@@ -21,6 +21,9 @@ const GlobalStyle = createGlobalStyle`
       padding: 0;
       outline:0;
       box-sizing: border-box;
+  }
+  body {
+    overflow-y: scroll
   }
   body, button, input {
     font-family: 'Roboto', sans-serif;
@@ -64,7 +67,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0.1rem 0.3rem;
     border: none;
     border-radius: var(--radius);
-    transition: var(--transition);
+    transition: box-shadow 0.3s ease;
     box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0);
     &:focus, &:active {
       box-shadow: 0 0 0.12rem rgba(0, 0, 0, 0.5);
@@ -107,7 +110,7 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 1rem;
     color: var(--color-primary);
   }
-  header, footer {
+  .header, .footer {
     padding: 0 2rem;
     background: var(--color-white-background);
   }
@@ -161,7 +164,7 @@ const GlobalStyle = createGlobalStyle`
     h4 {
       line-height: 1;
     }
-    header, footer {
+    .header, .footer {
       padding: 0 5rem;
     }
 
