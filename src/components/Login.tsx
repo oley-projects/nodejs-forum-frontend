@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import { usePostsContext } from '../context/postsContext';
 
 const Login = () => {
   const { closeModalLogin } = usePostsContext();
+  const [isShowPsw, setIsShowPsw] = useState<any>(false);
+
   return (
     <Modal closeHandler={closeModalLogin}>
       <header className='text-center'>
@@ -23,12 +26,21 @@ const Login = () => {
         <div className='input'>
           <label htmlFor='password'>Password:</label>
           <input
-            type='password'
+            type={!isShowPsw ? 'password' : 'text'}
             id='password'
             name='password'
             required
             placeholder='Enter password'
           />
+        </div>
+        <div className='show-psw'>
+          <input
+            type='checkbox'
+            id='checkbox'
+            value={isShowPsw}
+            onChange={() => setIsShowPsw(!isShowPsw)}
+          />
+          <label htmlFor='checkbox'>show password</label>
         </div>
         <button>
           <Link to='#'>Login</Link>

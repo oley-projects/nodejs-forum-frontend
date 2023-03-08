@@ -1,6 +1,7 @@
 import React, { ReactNode, useContext, useReducer } from 'react';
 import postsReducer from '../reducers/postsReducer';
 import {
+  GET_POSTS,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
   MODAL_LOGIN_OPEN,
@@ -13,17 +14,34 @@ interface PostsProps {
   children: ReactNode;
 }
 
+type Context = {
+  getPosts: () => void;
+  openNavbar: () => void;
+  closeNavbar: () => void;
+  openModalLogin: () => void;
+  closeModalLogin: () => void;
+  openModalSignup: () => void;
+  closeModalSignup: () => void;
+  isModalLoginOpen: boolean;
+  isModalSignupOpen: boolean;
+  isNavbarOpen: boolean;
+};
+
 const initialState = {
+  posts: [],
   isNavbarOpen: false,
   isModalLoginOpen: false,
   isModalSignupOpen: false,
 };
 
-const PostsContext = React.createContext<any>({} as any);
+const PostsContext = React.createContext({} as Context);
 
 export const PostsProvider = ({ children }: PostsProps) => {
   const [state, dispatch] = useReducer(postsReducer, initialState);
 
+  const getPosts = () => {
+    dispatch({ type: GET_POSTS });
+  };
   const openNavbar = () => {
     dispatch({ type: NAVBAR_OPEN });
   };
@@ -46,7 +64,8 @@ export const PostsProvider = ({ children }: PostsProps) => {
   return (
     <PostsContext.Provider
       value={{
-        ...state,
+        ...(state as any),
+        getPosts,
         openNavbar,
         closeNavbar,
         openModalLogin,

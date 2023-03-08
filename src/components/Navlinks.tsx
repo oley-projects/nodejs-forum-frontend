@@ -3,8 +3,14 @@ import styled from 'styled-components';
 import { IoMdSearch } from 'react-icons/io';
 import { usePostsContext } from '../context/postsContext';
 
+interface NavlinksPropsType {
+  openModalLogin: () => void;
+  openModalSignup: () => void;
+}
+
 const Navlinks = () => {
-  const { openModalLogin, openModalSignup } = usePostsContext();
+  const { openModalLogin, openModalSignup }: NavlinksPropsType =
+    usePostsContext();
 
   return (
     <WrapNav>

@@ -5,6 +5,7 @@ import {
   CategoryPage,
   ErrorPage,
   MemberPage,
+  Layout,
   PrivateRoute,
   Terms,
   TopicListPage,
@@ -25,19 +26,21 @@ function App() {
       <div className='container page-100'>
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='memberlist/:id' element={<MemberPage />} />
-          <Route path='viewcategoty/:id' element={<CategoryPage />} />
-          <Route path='viewforum/:id' element={<TopicListPage />} />
-          <Route path='viewtopic/:id' element={<TopicPage />} />
-          <Route path='terms' element={<Terms />} />
-          <Route
-            path='private'
-            element={
-              <PrivateRoute>
-                <div>private</div>
-              </PrivateRoute>
-            }
-          />
+          <Route element={<Layout />}>
+            <Route path='memberlist/:id' element={<MemberPage />} />
+            <Route path='viewcategoty/:id' element={<CategoryPage />} />
+            <Route path='viewforum/:id' element={<TopicListPage />} />
+            <Route path='viewtopic/:id' element={<TopicPage />} />
+            <Route path='terms' element={<Terms />} />
+            <Route
+              path='private'
+              element={
+                <PrivateRoute>
+                  <div>private</div>
+                </PrivateRoute>
+              }
+            />
+          </Route>
           <Route path='*' element={<ErrorPage />} />
         </Routes>
       </div>

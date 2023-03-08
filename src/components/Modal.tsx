@@ -63,13 +63,26 @@ const ModalWrap = styled.div`
       width: 100%;
     }
     label {
-      padding-left: 0.3rem;
+      padding-left: 0.5rem;
     }
     input {
       margin-bottom: 0.5rem;
       @media (min-width: 960px) {
         width: 20rem;
       }
+    }
+  }
+  .show-psw {
+    margin: 0.6rem 0.1rem 0.3rem;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    input {
+      margin-bottom: 0.05rem;
+    }
+    label {
+      padding-left: 0.5rem;
+      font-size: 0.9em;
     }
   }
 `;

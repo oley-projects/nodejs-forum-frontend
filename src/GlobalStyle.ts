@@ -64,13 +64,17 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   input {
-    padding: 0.1rem 0.3rem;
+    padding: 0.1rem 0.5rem;
     border: none;
     border-radius: var(--radius);
     transition: box-shadow 0.3s ease;
     box-shadow: 0 0 0.15rem rgba(0, 0, 0, 0);
     &:focus, &:active {
       box-shadow: 0 0 0.12rem rgba(0, 0, 0, 0.5);
+    }
+    &::placeholder {
+      font-size: 0.9em;
+      opacity: 0.8;
     }
   }
   hr {
@@ -109,6 +113,9 @@ const GlobalStyle = createGlobalStyle`
   p {
     margin-bottom: 1rem;
     color: var(--color-primary);
+  }
+  label {
+    user-select: none;
   }
   .header, .footer {
     padding: 0 2rem;

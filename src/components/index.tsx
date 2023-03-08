@@ -4,5 +4,6 @@ import Footer from './Footer';
 import Sidebar from './Sidebar';
 import Login from './Login';
 import Signup from './Signup';
+import Breadcrumbs from './Breadcrumbs';
 
-export { Footer, Navbar, NavlinksMobile, Sidebar, Login, Signup };
+export { Breadcrumbs, Footer, Navbar, NavlinksMobile, Sidebar, Login, Signup };
