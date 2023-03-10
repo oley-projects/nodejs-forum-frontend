@@ -16,9 +16,9 @@ const Navlinks = () => {
     <WrapNav>
       <li>
         <input type='text' />
-        <button>
+        <Link to='results' className='search-btn'>
           <IoMdSearch size={'1.75rem'} />
-        </button>
+        </Link>
       </li>
       <li>
         <Link to='#' onClick={openModalLogin}>
@@ -41,6 +41,10 @@ const WrapNav = styled.ul`
     margin: 0 0.5rem;
     display: flex;
     align-items: center;
+  }
+  .search-btn {
+    padding: 0;
+    line-height: 0;
   }
   @media (max-width: 960px) {
     padding: 0.5rem 1.5rem 1rem;

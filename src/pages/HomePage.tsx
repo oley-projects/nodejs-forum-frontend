@@ -1,11 +1,19 @@
 import styled from 'styled-components';
-import { Sidebar } from '../components';
+import { Sidebar, Category, PostList } from '../components';
+import { useForumContext } from '../context/forumContext';
 
 const HomePage = () => {
+  const { categories } = useForumContext();
   return (
     <WrapHome>
-      <div>HomePage</div>
-      <Sidebar />
+      <div>
+        {categories.map((category) => (
+          <Category key={category.id} {...category} />
+        ))}
+      </div>
+      <Sidebar>
+        <PostList />
+      </Sidebar>
     </WrapHome>
   );
 };

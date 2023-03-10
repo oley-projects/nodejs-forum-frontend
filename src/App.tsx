@@ -8,7 +8,7 @@ import {
   Layout,
   PrivateRoute,
   Terms,
-  TopicListPage,
+  PostListPage,
   TopicPage,
 } from './pages';
 import GlobalStyle from './GlobalStyle';
@@ -29,8 +29,9 @@ function App() {
           <Route element={<Layout />}>
             <Route path='memberlist/:id' element={<MemberPage />} />
             <Route path='viewcategoty/:id' element={<CategoryPage />} />
-            <Route path='viewforum/:id' element={<TopicListPage />} />
+            <Route path='viewforum/:id' element={<PostListPage />} />
             <Route path='viewtopic/:id' element={<TopicPage />} />
+            <Route path='results' element={<PostListPage />} />
             <Route path='terms' element={<Terms />} />
             <Route
               path='private'

@@ -1,9 +1,15 @@
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-const Sidebar = () => {
+interface ISidebarProps {
+  children: ReactNode;
+}
+
+const Sidebar = ({ children }: ISidebarProps) => {
   return (
     <WrapSidebar>
-      <div>Sidebar</div>
+      <h5>New posts</h5>
+      {children}
     </WrapSidebar>
   );
 };
