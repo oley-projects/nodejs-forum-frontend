@@ -42,6 +42,9 @@ const ModalWrap = styled.div`
     background-color: var(--color-white-transparent);
     overscroll-behavior: contain;
     z-index: 110;
+    header {
+      margin-bottom: 0.7rem;
+    }
     @media (min-width: 640px) {
       width: 75%;
     }

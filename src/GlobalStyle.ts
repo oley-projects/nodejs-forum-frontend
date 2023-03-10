@@ -11,6 +11,7 @@ const GlobalStyle = createGlobalStyle`
     --color-white-background: #eee;
     --color-dark-background: #999;
     --color-white-transparent: rgba(240, 240, 240, 0.93);
+    --color-white-bg-transparent: rgba(220, 220, 220, 0.83);
     --transition: all 0.3s ease;
     --spacing: 0.1rem;
     --radius: 0.2rem;
@@ -90,7 +91,6 @@ const GlobalStyle = createGlobalStyle`
     letter-spacing: var(--spacing);
     text-transform: capitalize;
     line-height: 1.2;
-    margin-bottom: 0.7rem;
   }
   h1 {
     font-size: 2.5rem;
@@ -141,6 +141,15 @@ const GlobalStyle = createGlobalStyle`
     visibility: visible;
     opacity: 1;
     transform: translateY(0);
+  }
+  a.inline-link {
+    padding: 0;
+    letter-spacing: 0;
+    color: var(--color-dark-background);
+    background: transparent;
+    &:hover {
+      color: var(--color-black);
+    }
   }
 
   @media screen and (min-width: 960px) {

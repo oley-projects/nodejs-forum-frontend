@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 interface ISinglePostType {
   text: string;
 }
@@ -5,7 +7,11 @@ interface ISinglePostType {
 const SinglePost = ({ text }: ISinglePostType) => {
   return (
     <div>
-      <p>{text}</p>
+      <header>
+        <Link to='#' className='inline-link'>
+          {text}
+        </Link>
+      </header>
     </div>
   );
 };
