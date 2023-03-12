@@ -20,6 +20,7 @@ const WrapNav = styled.aside`
   opacity: 0;
   transform: translateY(-30%);
   transition: var(--transition);
+  box-shadow: var(--box-shadow-bottom);
   @media (min-width: 960px) {
     display: none;
   }

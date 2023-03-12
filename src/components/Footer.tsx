@@ -16,6 +16,7 @@ const Footer = () => {
 
 const WrapFooter = styled.footer`
   height: 5rem;
+  box-shadow: var(--box-shadow-top);
 `;
 
 export default Footer;

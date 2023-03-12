@@ -16,6 +16,8 @@ const GlobalStyle = createGlobalStyle`
     --spacing: 0.1rem;
     --radius: 0.2rem;
     --max-width: 1280px;
+    --box-shadow-top: 0 -0.2rem 0.1rem -0.1rem rgba(0, 0, 0, 0.2);
+    --box-shadow-bottom: 0 0.2rem 0.1rem -0.1rem rgba(0, 0, 0, 0.2);
   }
   * {
       margin: 0;

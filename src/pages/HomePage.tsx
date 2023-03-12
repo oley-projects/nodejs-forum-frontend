@@ -23,7 +23,7 @@ const WrapHome = styled.div`
   grid-template-columns: 1fr;
   grid-row-gap: 2rem;
   @media (min-width: 960px) {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 3fr 1fr;
     gap: 3rem;
   }
 `;

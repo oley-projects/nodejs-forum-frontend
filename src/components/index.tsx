@@ -6,6 +6,7 @@ import Login from './Login';
 import Signup from './Signup';
 import Breadcrumbs from './Breadcrumbs';
 import Category from './Category';
+import CategoryTopicElem from './CategoryTopicElem';
 import PostList from './PostList';
 import SinglePost from './SinglePost';
 
@@ -18,6 +19,7 @@ export {
   Login,
   Signup,
   Category,
+  CategoryTopicElem,
   PostList,
   SinglePost,
 };
