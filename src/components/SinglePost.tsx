@@ -1,18 +1,34 @@
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface ISinglePostType {
-  text: string;
+  id: number;
+  topic: string;
+  user: string;
+  createdAt: string;
 }
 
-const SinglePost = ({ text }: ISinglePostType) => {
+const SinglePost = ({ id, topic, user, createdAt: date }: ISinglePostType) => {
   return (
-    <div>
+    <WrapSinglePost>
       <header>
-        <Link to='#' className='inline-link'>
-          {text}
+        <Link to={`/viewtopic/${id}`} className='inline-link'>
+          {topic}
         </Link>
       </header>
-    </div>
+      <div>by {user}</div>
+      <div>{date}</div>
+    </WrapSinglePost>
   );
 };
+
+const WrapSinglePost = styled.div`
+  padding: 1rem 2rem;
+  transition: background 0.3s ease;
+  &:hover,
+  &:active {
+    background: var(--color-white);
+  }
+`;
+
 export default SinglePost;

@@ -6,9 +6,12 @@ import Login from './Login';
 import Signup from './Signup';
 import Breadcrumbs from './Breadcrumbs';
 import Category from './Category';
-import CategoryTopicElem from './CategoryTopicElem';
+import CategoryForumElem from './CategoryForumElem';
 import PostList from './PostList';
 import SinglePost from './SinglePost';
+import Paginator from './Paginator';
+import TopicItem from './TopicItem';
+import TopicPostItem from './TopicPostItem';
 
 export {
   Breadcrumbs,
@@ -19,7 +22,10 @@ export {
   Login,
   Signup,
   Category,
-  CategoryTopicElem,
+  CategoryForumElem,
   PostList,
   SinglePost,
+  Paginator,
+  TopicItem,
+  TopicPostItem,
 };

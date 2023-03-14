@@ -10,26 +10,28 @@ import {
   MODAL_SIGNUP_CLOSE,
 } from '../actions/actions';
 
+const date = new Date().toLocaleString();
+
 const posts = [
-  { id: 1, text: 'post 1', forum: 'forum 1' },
-  { id: 2, text: 'post 2', forum: 'forum 1' },
-  { id: 3, text: 'post 3', forum: 'forum 3' },
-  { id: 4, text: 'post 4', forum: 'forum 2' },
-  { id: 5, text: 'post 5', forum: 'forum 2' },
-  { id: 6, text: 'post 6', forum: 'forum 2' },
-  { id: 7, text: 'post 7', forum: 'forum 3' },
-  { id: 8, text: 'post 8', forum: 'forum 3' },
-  { id: 9, text: 'post 9', forum: 'forum 1' },
-  { id: 10, text: 'post 10', forum: 'forum 2' },
-  { id: 11, text: 'post 11', forum: 'forum 2' },
-  { id: 12, text: 'post 12', forum: 'forum 4' },
-  { id: 13, text: 'post 13', forum: 'forum 5' },
-  { id: 14, text: 'post 14', forum: 'forum 6' },
-  { id: 15, text: 'post 15', forum: 'forum 6' },
-  { id: 16, text: 'post 16', forum: 'forum 7' },
-  { id: 17, text: 'post 17', forum: 'forum 8' },
-  { id: 18, text: 'post 18', forum: 'forum 9' },
-  { id: 19, text: 'post 19', forum: 'forum 10' },
+  { id: 2, text: 'post 2', topic: 'topic 1', user: 'User', createdAt: date },
+  { id: 1, text: 'post 1', topic: 'topic 1', user: 'User', createdAt: date },
+  { id: 3, text: 'post 3', topic: 'topic 3', user: 'User', createdAt: date },
+  { id: 4, text: 'post 4', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 5, text: 'post 5', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 6, text: 'post 6', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 7, text: 'post 7', topic: 'topic 3', user: 'User', createdAt: date },
+  { id: 8, text: 'post 8', topic: 'topic 3', user: 'User', createdAt: date },
+  { id: 9, text: 'post 9', topic: 'topic 1', user: 'User', createdAt: date },
+  { id: 10, text: 'post 10', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 11, text: 'post 11', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 12, text: 'post 12', topic: 'topic 4', user: 'User', createdAt: date },
+  { id: 13, text: 'post 13', topic: 'topic 5', user: 'User', createdAt: date },
+  { id: 14, text: 'post 14', topic: 'topic 6', user: 'User', createdAt: date },
+  { id: 15, text: 'post 15', topic: 'topic 6', user: 'User', createdAt: date },
+  { id: 16, text: 'post 16', topic: 'topic 7', user: 'User', createdAt: date },
+  { id: 17, text: 'post 17', topic: 'topic 8', user: 'User', createdAt: date },
+  { id: 18, text: 'post 18', topic: 'topic 9', user: 'User', createdAt: date },
+  { id: 19, text: 'post 19', topic: 'topic 10', user: 'User', createdAt: date },
 ];
 
 interface PostsProps {
@@ -46,7 +48,9 @@ type TPostsContext = {
   isModalLoginOpen: boolean;
   isModalSignupOpen: boolean;
   isNavbarOpen: boolean;
-  posts: [{ id: number; text: string; forum: string }];
+  posts: [
+    { id: number; text: string; topic: string; user: string; createdAt: string }
+  ];
 };
 
 const initialState = {

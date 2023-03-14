@@ -10,8 +10,8 @@ const Breadcrumbs = () => {
       <Link to='/' className='link'>
         Forum
       </Link>
-      <span>
-        <BiChevronRight size={'1.2rem'} className='icon' />
+      <span className='icon'>
+        <BiChevronRight size={'1.2rem'} />
       </span>
       <span className='text'>{path}</span>
     </WrapBreadcrumbs>
@@ -20,6 +20,8 @@ const Breadcrumbs = () => {
 
 const WrapBreadcrumbs = styled.div`
   padding-bottom: 2rem;
+  display: flex;
+  align-items: center;
   .link {
     padding: 0;
     background: transparent;
@@ -30,7 +32,7 @@ const WrapBreadcrumbs = styled.div`
     }
   }
   .icon {
-    transform: translateY(0.2rem);
+    line-height: 1;
   }
   .text {
     letter-spacing: var(--spacing);

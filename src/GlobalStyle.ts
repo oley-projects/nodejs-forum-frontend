@@ -9,6 +9,7 @@ const GlobalStyle = createGlobalStyle`
     --color-black: #333;
     --color-ligth-background: #ddd;
     --color-white-background: #eee;
+    --color-white-background-dark: #e4e4e4;
     --color-dark-background: #999;
     --color-white-transparent: rgba(240, 240, 240, 0.93);
     --color-white-bg-transparent: rgba(220, 220, 220, 0.83);
@@ -16,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
     --spacing: 0.1rem;
     --radius: 0.2rem;
     --max-width: 1280px;
+    --box-shadow: 0 0 0.16rem 0.08rem rgba(0, 0, 0, 0.2);
     --box-shadow-top: 0 -0.2rem 0.1rem -0.1rem rgba(0, 0, 0, 0.2);
     --box-shadow-bottom: 0 0.2rem 0.1rem -0.1rem rgba(0, 0, 0, 0.2);
   }
@@ -38,7 +40,7 @@ const GlobalStyle = createGlobalStyle`
   button {
     line-height: 0;
   }
-  ul {
+  ul, li {
     list-style-type: none;
   }
   a {
@@ -151,6 +153,36 @@ const GlobalStyle = createGlobalStyle`
     background: transparent;
     &:hover {
       color: var(--color-black);
+    }
+  }
+  .grid-table-item {
+    padding: 0 2rem;
+    display: grid;
+    gap: 0.5rem;
+    background: var(--color-white-background);
+    transition: background 0.3s ease;
+    &:first-child {
+      padding-top: 1.5rem;
+    }
+    &:not(:last-child) {
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--color-white-bg-transparent);
+    }
+    &:not(:first-child) {
+      padding-top: 1rem;
+    }
+    &:last-child {
+      padding-bottom: 1.5rem;
+    }
+    &:nth-child(even) {
+      background: var(--color-white-background-dark);
+    }
+    &:hover,
+    &:active {
+      background: var(--color-white);
+    }
+    @media (min-width: 960px) {
+      padding: 0 3rem;
     }
   }
 

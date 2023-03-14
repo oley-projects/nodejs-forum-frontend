@@ -36,13 +36,14 @@ const Navlinks = () => {
 
 const WrapNav = styled.ul`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   li {
-    margin: 0 0.5rem;
+    margin-left: 1rem;
     display: flex;
     align-items: center;
   }
   .search-btn {
+    margin-left: 0.4rem;
     padding: 0;
     line-height: 0;
   }

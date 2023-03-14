@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import CategoryTopicElem from './CategoryTopicElem';
+import CategoryForumElem from './CategoryForumElem';
 
 const forums = [
   {
@@ -46,22 +46,23 @@ const forums = [
 ];
 
 interface ICatProps {
+  id: number;
   name: string;
 }
 
-const Category = ({ name }: ICatProps) => {
+const Category = ({ id, name }: ICatProps) => {
   return (
     <WrapCategory>
       <header>
         <h5>
-          <Link to='#' className='inline-link'>
+          <Link to={`/viewcategoty/${id}`} className='inline-link'>
             {name}
           </Link>
         </h5>
       </header>
-      <section className='category-content'>
+      <section>
         {forums.map((forum) => (
-          <CategoryTopicElem key={forum.id} {...forum} />
+          <CategoryForumElem key={forum.id} {...forum} />
         ))}
       </section>
     </WrapCategory>
@@ -71,15 +72,11 @@ const Category = ({ name }: ICatProps) => {
 const WrapCategory = styled.section`
   margin-bottom: 3rem;
   border-radius: var(--radius);
-  box-shadow: 0 0 0.16rem 0.08rem rgba(0, 0, 0, 0.2);
+  box-shadow: var(--box-shadow);
   overflow: hidden;
   header {
     padding: 0.5rem 1rem;
     background: var(--color-white-bg-transparent);
-  }
-  .category-content {
-    padding: 0.5rem 0;
-    background: var(--color-white-background);
   }
 `;
 
