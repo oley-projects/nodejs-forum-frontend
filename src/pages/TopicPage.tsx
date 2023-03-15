@@ -105,6 +105,43 @@ const WrapTopicPage = styled.div`
     justify-content: space-between;
     flex-wrap: wrap;
   }
+  .post-action {
+    margin: 2rem auto;
+    width: 100%;
+    header,
+    footer {
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      padding: 0 0.3rem;
+      line-height: 1.5rem;
+      border: 0.05rem solid rgba(0, 0, 0, 0.15);
+      border-radius: var(--radius);
+      transition: border 0.3s ease, color 0.3s ease;
+      &:hover {
+        border-color: var(--color-primary);
+      }
+    }
+    button:not(:last-child) {
+      margin-right: 0.5rem;
+    }
+    textarea {
+      margin: 0.7rem 0 0.3rem;
+      padding: 0.5rem;
+      width: 100%;
+      min-height: 7rem;
+      max-height: 35rem;
+      border: 0.05rem solid rgba(0, 0, 0, 0.15);
+      resize: none;
+    }
+    @media (min-width: 640px) {
+      width: 80%;
+    }
+    @media (min-width: 960px) {
+      width: 60%;
+    }
+  }
 `;
 
 export default TopicPage;

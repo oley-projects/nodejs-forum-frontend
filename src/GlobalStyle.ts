@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     overflow-y: scroll
   }
-  body, button, input {
+  body, button, input, textarea {
     font-family: 'Roboto', sans-serif;
     background: var(--color-white);
     color: var(--color-primary);
@@ -68,7 +68,7 @@ const GlobalStyle = createGlobalStyle`
       color: var(--color-primary);
     }
   }
-  input {
+  input, textarea {
     padding: 0.1rem 0.5rem;
     border: none;
     border-radius: var(--radius);
