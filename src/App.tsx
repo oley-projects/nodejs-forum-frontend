@@ -13,10 +13,10 @@ import {
   ForumPage,
 } from './pages';
 import GlobalStyle from './GlobalStyle';
-import { usePostsContext } from './context/postsContext';
+import { useForumContext } from './context/forumContext';
 
 function App() {
-  const { isModalLoginOpen, isModalSignupOpen } = usePostsContext();
+  const { isModalLoginOpen, isModalSignupOpen } = useForumContext();
   return (
     <Router>
       <GlobalStyle />

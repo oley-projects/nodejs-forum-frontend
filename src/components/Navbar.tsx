@@ -3,10 +3,10 @@ import Navlinks from './Navlinks';
 import styled from 'styled-components';
 import { FaBars } from 'react-icons/fa';
 import { AiOutlineClose } from 'react-icons/ai';
-import { usePostsContext } from '../context/postsContext';
+import { useForumContext } from '../context/forumContext';
 
 const Navbar = () => {
-  const { openNavbar, closeNavbar, isNavbarOpen } = usePostsContext();
+  const { openNavbar, closeNavbar, isNavbarOpen } = useForumContext();
   return (
     <WrappedNav className='header'>
       <div className='nav-header'>

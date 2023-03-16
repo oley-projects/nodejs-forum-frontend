@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoMdSearch } from 'react-icons/io';
-import { usePostsContext } from '../context/postsContext';
+import { useForumContext } from '../context/forumContext';
 
 interface NavlinksPropsType {
   openModalLogin: () => void;
@@ -10,7 +10,7 @@ interface NavlinksPropsType {
 
 const Navlinks = () => {
   const { openModalLogin, openModalSignup }: NavlinksPropsType =
-    usePostsContext();
+    useForumContext();
 
   return (
     <WrapNav>

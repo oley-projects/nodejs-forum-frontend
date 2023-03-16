@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from './Modal';
-import { usePostsContext } from '../context/postsContext';
+import { useForumContext } from '../context/forumContext';
 
 const Signup = () => {
-  const { closeModalSignup } = usePostsContext();
+  const { closeModalSignup } = useForumContext();
   const [isShowPsw, setIsShowPsw] = useState<any>(false);
 
   return (

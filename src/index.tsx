@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { PostsProvider } from './context/postsContext';
 import { ForumProvider } from './context/forumContext';
 
 const root = ReactDOM.createRoot(
@@ -12,9 +11,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ForumProvider>
-      <PostsProvider>
-        <App />
-      </PostsProvider>
+      <App />
     </ForumProvider>
   </React.StrictMode>
 );

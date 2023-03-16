@@ -1,11 +1,19 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 import forumReducer from '../reducers/forumReducer';
-import { GET_CATEGORIES, GET_FORUMS } from '../actions/actions';
+import {
+  GET_CATEGORIES,
+  GET_FORUMS,
+  GET_POSTS,
+  NAVBAR_OPEN,
+  NAVBAR_CLOSE,
+  MODAL_LOGIN_OPEN,
+  MODAL_LOGIN_CLOSE,
+  MODAL_SIGNUP_OPEN,
+  MODAL_SIGNUP_CLOSE,
+} from '../actions/actions';
+import { forumAPI } from '../api/api';
 
-const categories = [
-  { id: 1, name: 'main' },
-  { id: 2, name: 'addition' },
-];
+const date = new Date().toLocaleString();
 
 const forums = [
   { id: 1, name: 'Topic 1', categoty: 'main' },
@@ -19,6 +27,27 @@ const forums = [
   { id: 9, name: 'Topic 9', categoty: 'addition' },
   { id: 10, name: 'Topic 10', categoty: 'main' },
 ];
+const posts = [
+  { id: 2, text: 'post 2', topic: 'topic 1', user: 'User', createdAt: date },
+  { id: 1, text: 'post 1', topic: 'topic 1', user: 'User', createdAt: date },
+  { id: 3, text: 'post 3', topic: 'topic 3', user: 'User', createdAt: date },
+  { id: 4, text: 'post 4', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 5, text: 'post 5', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 6, text: 'post 6', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 7, text: 'post 7', topic: 'topic 3', user: 'User', createdAt: date },
+  { id: 8, text: 'post 8', topic: 'topic 3', user: 'User', createdAt: date },
+  { id: 9, text: 'post 9', topic: 'topic 1', user: 'User', createdAt: date },
+  { id: 10, text: 'post 10', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 11, text: 'post 11', topic: 'topic 2', user: 'User', createdAt: date },
+  { id: 12, text: 'post 12', topic: 'topic 4', user: 'User', createdAt: date },
+  { id: 13, text: 'post 13', topic: 'topic 5', user: 'User', createdAt: date },
+  { id: 14, text: 'post 14', topic: 'topic 6', user: 'User', createdAt: date },
+  { id: 15, text: 'post 15', topic: 'topic 6', user: 'User', createdAt: date },
+  { id: 16, text: 'post 16', topic: 'topic 7', user: 'User', createdAt: date },
+  { id: 17, text: 'post 17', topic: 'topic 8', user: 'User', createdAt: date },
+  { id: 18, text: 'post 18', topic: 'topic 9', user: 'User', createdAt: date },
+  { id: 19, text: 'post 19', topic: 'topic 10', user: 'User', createdAt: date },
+];
 
 interface ForumProps {
   children: ReactNode;
@@ -27,12 +56,28 @@ interface ForumProps {
 type TForumContext = {
   getCategories: () => void;
   getForums: () => void;
+  openNavbar: () => void;
+  closeNavbar: () => void;
+  openModalLogin: () => void;
+  closeModalLogin: () => void;
+  openModalSignup: () => void;
+  closeModalSignup: () => void;
+  isModalLoginOpen: boolean;
+  isModalSignupOpen: boolean;
+  isNavbarOpen: boolean;
   categories: [{ id: number; name: string }];
+  posts: [
+    { id: number; text: string; topic: string; user: string; createdAt: string }
+  ];
 };
 
 const initialState = {
   categories: [],
   forums: [],
+  posts: [],
+  isNavbarOpen: false,
+  isModalLoginOpen: false,
+  isModalSignupOpen: false,
   isLoading: false,
 };
 
@@ -40,20 +85,55 @@ const ForumContext = React.createContext({} as TForumContext);
 
 export const ForumProvider = ({ children }: ForumProps) => {
   const [state, dispatch] = useReducer(forumReducer, initialState);
-  const getCategories = () => {
-    dispatch({ type: GET_CATEGORIES, payload: categories });
+  const getCategories = async () => {
+    const res = (await forumAPI.getCategories()).data.categories;
+    dispatch({ type: GET_CATEGORIES, payload: res });
   };
   const getForums = () => {
     dispatch({ type: GET_FORUMS, payload: forums });
   };
+  const getPosts = () => {
+    dispatch({ type: GET_POSTS, payload: posts });
+  };
+  const openNavbar = () => {
+    dispatch({ type: NAVBAR_OPEN });
+  };
+  const closeNavbar = () => {
+    dispatch({ type: NAVBAR_CLOSE });
+  };
+  const openModalLogin = () => {
+    dispatch({ type: MODAL_LOGIN_OPEN });
+  };
+  const closeModalLogin = () => {
+    dispatch({ type: MODAL_LOGIN_CLOSE });
+  };
+  const openModalSignup = () => {
+    dispatch({ type: MODAL_SIGNUP_OPEN });
+  };
+  const closeModalSignup = () => {
+    dispatch({ type: MODAL_SIGNUP_CLOSE });
+  };
 
   useEffect(() => {
     getCategories();
+    getPosts();
     // eslint-disable-next-line
   }, []);
 
   return (
-    <ForumContext.Provider value={{ ...state, getCategories, getForums }}>
+    <ForumContext.Provider
+      value={{
+        ...state,
+        getCategories,
+        getForums,
+        openNavbar,
+        closeNavbar,
+        openModalLogin,
+        closeModalLogin,
+        openModalSignup,
+        closeModalSignup,
+      }}
+    >
       {children}
     </ForumContext.Provider>
   );

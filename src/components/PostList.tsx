@@ -1,8 +1,8 @@
 import SinglePost from './SinglePost';
-import { usePostsContext } from '../context/postsContext';
+import { useForumContext } from '../context/forumContext';
 
 const PostList = () => {
-  const { posts } = usePostsContext();
+  const { posts } = useForumContext();
   return (
     <>
       {posts.map((post, idx) =>
