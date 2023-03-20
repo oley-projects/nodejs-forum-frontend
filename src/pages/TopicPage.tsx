@@ -129,11 +129,8 @@ const WrapTopicPage = styled.div`
     textarea {
       margin: 0.7rem 0 0.3rem;
       padding: 0.5rem;
-      width: 100%;
       min-height: 7rem;
       max-height: 35rem;
-      border: 0.05rem solid rgba(0, 0, 0, 0.15);
-      resize: none;
     }
     @media (min-width: 640px) {
       width: 80%;

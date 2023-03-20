@@ -1,6 +1,8 @@
 import {
   GET_CATEGORIES,
   GET_FORUMS,
+  GET_TOPICS,
+  POST_TOPIC,
   GET_POSTS,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
@@ -8,6 +10,8 @@ import {
   MODAL_LOGIN_CLOSE,
   MODAL_SIGNUP_OPEN,
   MODAL_SIGNUP_CLOSE,
+  MODAL_NEWTOPIC_OPEN,
+  MODAL_NEWTOPIC_CLOSE,
 } from '../actions/actions';
 
 const forumReducer = (
@@ -26,13 +30,24 @@ const forumReducer = (
       forums: action.payload,
     };
   }
+  if (action.type === GET_TOPICS) {
+    return {
+      ...state,
+      topics: action.payload,
+    };
+  }
+  if (action.type === POST_TOPIC) {
+    return {
+      ...state,
+      topics: action.payload,
+    };
+  }
   if (action.type === GET_POSTS) {
     return {
       ...state,
       posts: action.payload,
     };
   }
-
   if (action.type === NAVBAR_OPEN) {
     return { ...state, isNavbarOpen: true };
   }
@@ -50,6 +65,12 @@ const forumReducer = (
   }
   if (action.type === MODAL_SIGNUP_CLOSE) {
     return { ...state, isModalSignupOpen: false };
+  }
+  if (action.type === MODAL_NEWTOPIC_OPEN) {
+    return { ...state, isModalNewTopic: true };
+  }
+  if (action.type === MODAL_NEWTOPIC_CLOSE) {
+    return { ...state, isModalNewTopic: false };
   }
   return { ...state };
 };

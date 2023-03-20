@@ -6,6 +6,7 @@ import { useForumContext } from '../context/forumContext';
 interface NavlinksPropsType {
   openModalLogin: () => void;
   openModalSignup: () => void;
+  openModalNewTopic: () => void;
 }
 
 const Navlinks = () => {

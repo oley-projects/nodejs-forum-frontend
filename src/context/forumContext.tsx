@@ -3,6 +3,8 @@ import forumReducer from '../reducers/forumReducer';
 import {
   GET_CATEGORIES,
   GET_FORUMS,
+  GET_TOPICS,
+  POST_TOPIC,
   GET_POSTS,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
@@ -10,6 +12,8 @@ import {
   MODAL_LOGIN_CLOSE,
   MODAL_SIGNUP_OPEN,
   MODAL_SIGNUP_CLOSE,
+  MODAL_NEWTOPIC_OPEN,
+  MODAL_NEWTOPIC_CLOSE,
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
@@ -56,16 +60,34 @@ interface ForumProps {
 type TForumContext = {
   getCategories: () => void;
   getForums: () => void;
+  getTopics: () => void;
+  postTopic: (args: {}) => void;
   openNavbar: () => void;
   closeNavbar: () => void;
   openModalLogin: () => void;
   closeModalLogin: () => void;
   openModalSignup: () => void;
   closeModalSignup: () => void;
+  openModalNewTopic: () => void;
+  closeModalNewTopic: () => void;
   isModalLoginOpen: boolean;
   isModalSignupOpen: boolean;
+  isModalNewTopic: boolean;
   isNavbarOpen: boolean;
   categories: [{ id: number; name: string }];
+  topics: [
+    {
+      id: number;
+      name: string;
+      description: string;
+      createdUser: string;
+      createdAt: string;
+      replies: string;
+      views: string;
+      lastPostUser: string;
+      lastPostCreatedAt: string;
+    }
+  ];
   posts: [
     { id: number; text: string; topic: string; user: string; createdAt: string }
   ];
@@ -74,10 +96,12 @@ type TForumContext = {
 const initialState = {
   categories: [],
   forums: [],
+  topics: [],
   posts: [],
   isNavbarOpen: false,
   isModalLoginOpen: false,
   isModalSignupOpen: false,
+  isModalNewTopic: false,
   isLoading: false,
 };
 
@@ -86,11 +110,22 @@ const ForumContext = React.createContext({} as TForumContext);
 export const ForumProvider = ({ children }: ForumProps) => {
   const [state, dispatch] = useReducer(forumReducer, initialState);
   const getCategories = async () => {
-    const res = (await forumAPI.getCategories()).data.categories;
-    dispatch({ type: GET_CATEGORIES, payload: res });
+    const data = await forumAPI.getCategories();
+    const categories = data.data.categories;
+    dispatch({ type: GET_CATEGORIES, payload: categories });
   };
   const getForums = () => {
     dispatch({ type: GET_FORUMS, payload: forums });
+  };
+  const getTopics = async () => {
+    const data = await forumAPI.getTopics();
+    const topics = data.data.topics;
+    dispatch({ type: GET_TOPICS, payload: topics });
+  };
+  const postTopic = async (topicData: {}) => {
+    const data = await forumAPI.postTopic(topicData);
+    const topics = [...state.topics, data.data.topic];
+    dispatch({ type: POST_TOPIC, payload: topics });
   };
   const getPosts = () => {
     dispatch({ type: GET_POSTS, payload: posts });
@@ -113,6 +148,12 @@ export const ForumProvider = ({ children }: ForumProps) => {
   const closeModalSignup = () => {
     dispatch({ type: MODAL_SIGNUP_CLOSE });
   };
+  const openModalNewTopic = () => {
+    dispatch({ type: MODAL_NEWTOPIC_OPEN });
+  };
+  const closeModalNewTopic = () => {
+    dispatch({ type: MODAL_NEWTOPIC_CLOSE });
+  };
 
   useEffect(() => {
     getCategories();
@@ -126,12 +167,16 @@ export const ForumProvider = ({ children }: ForumProps) => {
         ...state,
         getCategories,
         getForums,
+        getTopics,
+        postTopic,
         openNavbar,
         closeNavbar,
         openModalLogin,
         closeModalLogin,
         openModalSignup,
         closeModalSignup,
+        openModalNewTopic,
+        closeModalNewTopic,
       }}
     >
       {children}

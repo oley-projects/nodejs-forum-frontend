@@ -4,6 +4,7 @@ import styled from 'styled-components';
 interface ITopicItemProps {
   id: number;
   name: string;
+  description: string;
   createdUser: string;
   createdAt: string;
   replies: string;

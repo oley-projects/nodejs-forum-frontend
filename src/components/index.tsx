@@ -12,6 +12,7 @@ import SinglePost from './SinglePost';
 import Paginator from './Paginator';
 import TopicItem from './TopicItem';
 import TopicPostItem from './TopicPostItem';
+import NewTopic from './NewTopic';
 
 export {
   Breadcrumbs,
@@ -28,4 +29,5 @@ export {
   Paginator,
   TopicItem,
   TopicPostItem,
+  NewTopic,
 };

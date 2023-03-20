@@ -1,5 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Navbar, NavlinksMobile, Footer, Login, Signup } from './components';
+import {
+  Navbar,
+  NavlinksMobile,
+  Footer,
+  Login,
+  Signup,
+  NewTopic,
+} from './components';
 import {
   HomePage,
   CategoryPage,
@@ -16,13 +23,15 @@ import GlobalStyle from './GlobalStyle';
 import { useForumContext } from './context/forumContext';
 
 function App() {
-  const { isModalLoginOpen, isModalSignupOpen } = useForumContext();
+  const { isModalLoginOpen, isModalSignupOpen, isModalNewTopic } =
+    useForumContext();
   return (
     <Router>
       <GlobalStyle />
       <Navbar />
       {isModalLoginOpen && <Login />}
       {isModalSignupOpen && <Signup />}
+      {isModalNewTopic && <NewTopic />}
       <NavlinksMobile />
       <div className='container page-100'>
         <Routes>

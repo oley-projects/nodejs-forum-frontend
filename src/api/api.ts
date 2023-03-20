@@ -9,4 +9,10 @@ export const forumAPI = {
   getCategories() {
     return instance.get('categories');
   },
+  getTopics() {
+    return instance.get('topics');
+  },
+  postTopic(topicData: {}) {
+    return instance.post('topic', topicData);
+  },
 };

@@ -82,6 +82,11 @@ const GlobalStyle = createGlobalStyle`
       opacity: 0.8;
     }
   }
+  textarea {
+    width: 100%;
+    border: 0.05rem solid rgba(0, 0, 0, 0.15);
+    resize: none;
+  }
   hr {
     border: none;
     color: var(--color-primary);
@@ -141,6 +146,12 @@ const GlobalStyle = createGlobalStyle`
   .page {
     min-height: calc(100vh - (20vh + 10rem));
   }
+  .empty {
+    padding: 3rem 0;
+    text-align: center;
+    color: var(--color-ligth-background);
+    font-size: 2em;
+  }
   .show-navbar {
     visibility: visible;
     opacity: 1;
@@ -180,9 +191,6 @@ const GlobalStyle = createGlobalStyle`
     &:hover,
     &:active {
       background: var(--color-white);
-    }
-    @media (min-width: 960px) {
-      padding: 0 3rem;
     }
   }
 
@@ -231,6 +239,9 @@ const GlobalStyle = createGlobalStyle`
     }
     .container {
       padding: 3rem 5rem;
+    }
+    .grid-table-item {
+      padding: 0 3rem;
     }
   }
 

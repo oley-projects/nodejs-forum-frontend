@@ -11,8 +11,8 @@ const Modal = ({ children, closeHandler }: ModalProps) => {
   };
 
   return (
-    <ModalWrap onClick={closeHandler}>
-      <div className='modal' onClick={clickPropagation}>
+    <ModalWrap onMouseDown={closeHandler}>
+      <div className='modal' onMouseDown={clickPropagation}>
         <div style={{ display: 'flex', justifyContent: 'end' }}>
           <button onClick={closeHandler}>
             <AiOutlineClose size={'1.75rem'} />
