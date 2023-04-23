@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import ItemAction from './ItemAction';
 
 interface ICatForumElemProps {
   id: number;
@@ -47,6 +48,9 @@ const CategoryForumElem = ({
         <div>by {lastUser}</div>
         <div>at {lastPostDate}</div>
       </div>
+      <div className='box'>
+        <ItemAction onEdit={() => {}} onDelete={() => {}} />
+      </div>
     </WrapCatTopicEl>
   );
 };
@@ -71,7 +75,7 @@ const WrapCatTopicEl = styled.div`
   @media (min-width: 641px) {
     display: grid;
     grid-template-columns: 4fr 1fr 1fr 2fr;
-    gap: 2rem;
+    gap: 0.5rem;
     align-items: center;
     .total-stats {
       display: flex;
@@ -83,7 +87,6 @@ const WrapCatTopicEl = styled.div`
   @media (max-width: 640px) {
     display: flex;
     flex-direction: column;
-    //margin: 0 auto;
     justify-content: center;
 
     & > div:not(:last-of-type) {

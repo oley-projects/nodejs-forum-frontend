@@ -1,6 +1,6 @@
 // import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { Paginator, TopicPostItem } from '../components';
+import { ItemAction, Paginator, TopicPostItem } from '../components';
 
 const TopicPage = () => {
   // const { pathname } = useLocation();
@@ -64,10 +64,13 @@ const TopicPage = () => {
 
   return (
     <WrapTopicPage>
-      <div className='nav-post'>
+      <header className='header-post'>
         <button>Reply</button>
-        <Paginator />
-      </div>
+        <div className='nav-post'>
+          <ItemAction onEdit={() => {}} onDelete={() => {}} />
+          <Paginator />
+        </div>
+      </header>
       <ul className='content'>
         {topicPosts.map((post) => (
           <TopicPostItem key={post.id} {...post} />
@@ -100,10 +103,18 @@ const WrapTopicPage = styled.div`
     border-radius: var(--radius);
     box-shadow: var(--box-shadow);
   }
-  .nav-post {
+  .header-post {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .nav-post {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
   .post-action {
     margin: 2rem auto;

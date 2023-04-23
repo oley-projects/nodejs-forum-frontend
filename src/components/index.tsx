@@ -13,6 +13,8 @@ import Paginator from './Paginator';
 import TopicItem from './TopicItem';
 import TopicPostItem from './TopicPostItem';
 import NewTopic from './NewTopic';
+import Loader from './Loader';
+import ItemAction from './ItemAction';
 
 export {
   Breadcrumbs,
@@ -30,4 +32,6 @@ export {
   TopicItem,
   TopicPostItem,
   NewTopic,
+  Loader,
+  ItemAction,
 };

@@ -1,9 +1,11 @@
 import {
   GET_CATEGORIES,
-  GET_FORUMS,
-  GET_TOPICS,
+  GET_CATEGORY,
+  GET_FORUM,
+  GET_TOPIC,
   POST_TOPIC,
-  GET_POSTS,
+  LOADING_TRUE,
+  LOADING_FALSE,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
   MODAL_LOGIN_OPEN,
@@ -22,18 +24,20 @@ const forumReducer = (
     return {
       ...state,
       categories: action.payload,
+      isLoading: false,
     };
   }
-  if (action.type === GET_FORUMS) {
+  if (action.type === GET_CATEGORY) {
     return {
       ...state,
       forums: action.payload,
     };
   }
-  if (action.type === GET_TOPICS) {
+  if (action.type === GET_FORUM) {
     return {
       ...state,
       topics: action.payload,
+      isLoading: false,
     };
   }
   if (action.type === POST_TOPIC) {
@@ -42,11 +46,17 @@ const forumReducer = (
       topics: action.payload,
     };
   }
-  if (action.type === GET_POSTS) {
+  if (action.type === GET_TOPIC) {
     return {
       ...state,
       posts: action.payload,
     };
+  }
+  if (action.type === LOADING_TRUE) {
+    return { ...state, isLoading: true };
+  }
+  if (action.type === LOADING_FALSE) {
+    return { ...state, isLoading: true };
   }
   if (action.type === NAVBAR_OPEN) {
     return { ...state, isNavbarOpen: true };

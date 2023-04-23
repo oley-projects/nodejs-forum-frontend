@@ -2,10 +2,11 @@ import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 import forumReducer from '../reducers/forumReducer';
 import {
   GET_CATEGORIES,
-  GET_FORUMS,
-  GET_TOPICS,
+  GET_CATEGORY,
+  GET_FORUM,
+  GET_TOPIC,
   POST_TOPIC,
-  GET_POSTS,
+  LOADING_TRUE,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
   MODAL_LOGIN_OPEN,
@@ -59,8 +60,9 @@ interface ForumProps {
 
 type TForumContext = {
   getCategories: () => void;
-  getForums: () => void;
-  getTopics: () => void;
+  getCategory: () => void;
+  getForum: () => void;
+  getTopic: (args: number) => void;
   postTopic: (args: {}) => void;
   openNavbar: () => void;
   closeNavbar: () => void;
@@ -74,6 +76,7 @@ type TForumContext = {
   isModalSignupOpen: boolean;
   isModalNewTopic: boolean;
   isNavbarOpen: boolean;
+  isLoading: boolean;
   categories: [{ id: number; name: string }];
   topics: [
     {
@@ -110,25 +113,51 @@ const ForumContext = React.createContext({} as TForumContext);
 export const ForumProvider = ({ children }: ForumProps) => {
   const [state, dispatch] = useReducer(forumReducer, initialState);
   const getCategories = async () => {
-    const data = await forumAPI.getCategories();
-    const categories = data.data.categories;
-    dispatch({ type: GET_CATEGORIES, payload: categories });
+    if (!state.isLoading) {
+      dispatch({ type: LOADING_TRUE });
+    }
+    try {
+      const data = await forumAPI.getCategories();
+      const categories = data.data.categories;
+      dispatch({ type: GET_CATEGORIES, payload: categories });
+    } catch (error) {
+      console.log(error);
+    }
   };
-  const getForums = () => {
-    dispatch({ type: GET_FORUMS, payload: forums });
+  const getCategory = () => {
+    dispatch({ type: GET_CATEGORY, payload: forums });
   };
-  const getTopics = async () => {
-    const data = await forumAPI.getTopics();
-    const topics = data.data.topics;
-    dispatch({ type: GET_TOPICS, payload: topics });
+  const getForum = async () => {
+    if (!state.isLoading) {
+      dispatch({ type: LOADING_TRUE });
+    }
+    try {
+      const data = await forumAPI.getForum();
+      const topics = data.data.topics;
+      dispatch({ type: GET_FORUM, payload: topics });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getTopic = async (topicId: number) => {
+    try {
+      console.log('ok ' + topicId);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const postTopic = async (topicData: {}) => {
-    const data = await forumAPI.postTopic(topicData);
-    const topics = [...state.topics, data.data.topic];
-    dispatch({ type: POST_TOPIC, payload: topics });
+    try {
+      const data = await forumAPI.postTopic(topicData);
+      const topic = data.data.topic;
+      const topics = [...state.topics, topic];
+      dispatch({ type: POST_TOPIC, payload: topics });
+    } catch (error) {
+      console.log(error);
+    }
   };
   const getPosts = () => {
-    dispatch({ type: GET_POSTS, payload: posts });
+    dispatch({ type: GET_TOPIC, payload: posts });
   };
   const openNavbar = () => {
     dispatch({ type: NAVBAR_OPEN });
@@ -166,8 +195,9 @@ export const ForumProvider = ({ children }: ForumProps) => {
       value={{
         ...state,
         getCategories,
-        getForums,
-        getTopics,
+        getCategory,
+        getForum,
+        getTopic,
         postTopic,
         openNavbar,
         closeNavbar,

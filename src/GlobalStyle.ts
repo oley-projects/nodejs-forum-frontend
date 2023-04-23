@@ -13,6 +13,8 @@ const GlobalStyle = createGlobalStyle`
     --color-dark-background: #999;
     --color-white-transparent: rgba(240, 240, 240, 0.93);
     --color-white-bg-transparent: rgba(220, 220, 220, 0.83);
+    --color-orange: #FFAA33;
+    --color-grey-blue: #c4c1e0;
     --transition: all 0.3s ease;
     --spacing: 0.1rem;
     --radius: 0.2rem;
@@ -126,11 +128,11 @@ const GlobalStyle = createGlobalStyle`
   label {
     user-select: none;
   }
+  
   .header, .footer {
     padding: 0 2rem;
     background: var(--color-white-background);
   }
-
   .container {
     margin-top: 5rem;
     padding: 3rem 2rem;
@@ -192,6 +194,11 @@ const GlobalStyle = createGlobalStyle`
     &:active {
       background: var(--color-white);
     }
+  }
+  .box {
+    grid-column-start: 1;
+    grid-column-end: 5;
+    justify-self: end;
   }
 
   @media screen and (min-width: 960px) {

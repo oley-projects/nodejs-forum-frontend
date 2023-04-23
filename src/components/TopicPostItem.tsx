@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import ItemAction from './ItemAction';
 
 interface ITopicPostItemProps {
   user: string;
@@ -36,7 +37,10 @@ const TopicPostItem = ({
         <div>{topic}</div>
         <div>{createdAt}</div>
         <div>{content}</div>
-        <div>{signature}</div>
+        <div>{signature}</div>{' '}
+        <div className='post-detail-action' style={{ marginTop: '0.5rem' }}>
+          <ItemAction onEdit={() => {}} onDelete={() => {}} />
+        </div>
       </div>
     </WrapTopicPostItem>
   );
@@ -60,6 +64,12 @@ const WrapTopicPostItem = styled.li`
     }
     .post-details {
       padding-left: 1rem;
+    }
+    .post-detail-action {
+      @media (min-width: 640px) {
+        display: flex;
+        justify-content: end;
+      }
     }
   }
 `;

@@ -1,3 +1,5 @@
+export const LOADING_TRUE: string = 'LOADING_TRUE';
+export const LOADING_FALSE: string = 'LOADING_FALSE';
 export const NAVBAR_OPEN: string = 'NAVBAR_OPEN';
 export const NAVBAR_CLOSE: string = 'NAVBAR_CLOSE';
 export const MODAL_LOGIN_OPEN: string = 'MODAL_LOGIN_OPEN';
@@ -7,7 +9,7 @@ export const MODAL_SIGNUP_CLOSE: string = 'MODAL_SIGNUP_CLOSE';
 export const MODAL_NEWTOPIC_OPEN: string = 'MODAL_NEWTOPIC_OPEN';
 export const MODAL_NEWTOPIC_CLOSE: string = 'MODAL_NEWTOPIC_CLOSE';
 export const GET_CATEGORIES: string = 'GET_CATEGORIES';
-export const GET_FORUMS: string = 'GET_FORUMS';
-export const GET_TOPICS: string = 'GET_TOPICS';
+export const GET_CATEGORY: string = 'GET_CATEGORY';
+export const GET_FORUM: string = 'GET_FORUM';
+export const GET_TOPIC: string = 'GET_TOPIC';
 export const POST_TOPIC: string = 'POST_TOPIC';
-export const GET_POSTS: string = 'GET_POSTS';

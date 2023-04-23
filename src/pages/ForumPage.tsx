@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { Paginator, TopicItem } from '../components';
+import { Paginator, TopicItem, Loader, ItemAction } from '../components';
 import { useForumContext } from '../context/forumContext';
 
 const ForumPage = () => {
-  const { topics, getTopics, openModalNewTopic } = useForumContext();
+  const { topics, getForum, openModalNewTopic, isLoading } = useForumContext();
   useEffect(
     () => {
-      getTopics();
+      getForum();
     }, // eslint-disable-next-line
     []
   );
+
   return (
     <WrapForum>
       <div className='nav-forum'>
@@ -22,16 +23,25 @@ const ForumPage = () => {
           <Paginator />
         </div>
       </div>
-      <div className='forum-content'>
-        <header>Topics</header>
-        <ul>
-          {topics.length > 0 ? (
-            topics.map((topic) => <TopicItem key={topic.id} {...topic} />)
-          ) : (
-            <div className='empty'>Empty forum</div>
-          )}
-        </ul>
-      </div>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <div className='forum-content'>
+          <header>
+            <div>Topics</div>
+            <div>
+              <ItemAction onEdit={() => {}} onDelete={() => {}} />
+            </div>
+          </header>
+          <ul>
+            {topics.length > 0 ? (
+              topics.map((topic) => <TopicItem key={topic.id} {...topic} />)
+            ) : (
+              <div className='empty'>Empty forum</div>
+            )}
+          </ul>
+        </div>
+      )}
     </WrapForum>
   );
 };
@@ -53,6 +63,9 @@ const WrapForum = styled.div`
     box-shadow: var(--box-shadow);
     header {
       padding: 0.5rem 1rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       background: var(--color-white-bg-transparent);
     }
   }

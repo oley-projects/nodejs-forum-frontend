@@ -14,6 +14,7 @@ const NewTopic = () => {
   const createTopicHandler = (e: any) => {
     e.preventDefault();
     postTopic(topic);
+    closeModalNewTopic();
   };
   const topicOnchange = (e: React.ChangeEvent<any>) => {
     setTopic(

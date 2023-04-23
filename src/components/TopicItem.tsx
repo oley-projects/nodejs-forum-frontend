@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import ItemAction from './ItemAction';
 
 interface ITopicItemProps {
   id: number;
@@ -12,7 +13,6 @@ interface ITopicItemProps {
   lastPostUser: string;
   lastPostCreatedAt: string;
 }
-
 const TopicItem = ({
   id,
   name,
@@ -47,6 +47,10 @@ const TopicItem = ({
         <div>by {lastPostUser}</div>
         <div>{lastPostCreatedAt}</div>
       </div>
+
+      <div className='box'>
+        <ItemAction onEdit={() => {}} onDelete={() => {}} />
+      </div>
     </WrapTopicItem>
   );
 };
@@ -54,21 +58,14 @@ const TopicItem = ({
 const WrapTopicItem = styled.li`
   @media (min-width: 640px) {
     grid-template-columns: 6fr 1fr 1fr 3fr;
-    gap: 1.5rem;
-  }
-  @media (min-width: 800px) {
-    grid-template-columns: 4fr 1fr 1fr 2fr;
-    gap: 2rem;
-  }
-  .align-center {
-    @media (min-width: 640px) {
+    column-gap: 1.5rem;
+    row-gap: 0.5rem;
+    .align-center {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-  }
-  .align-right {
-    @media (min-width: 640px) {
+    .align-right {
       display: flex;
       flex-direction: column;
       align-items: end;
@@ -76,6 +73,11 @@ const WrapTopicItem = styled.li`
         text-align: right;
       }
     }
+  }
+  @media (min-width: 800px) {
+    grid-template-columns: 4fr 1fr 1fr 2fr;
+    column-gap: 2rem;
+    row-gap: 1rem;
   }
 `;
 

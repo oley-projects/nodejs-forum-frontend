@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import CategoryForumElem from './CategoryForumElem';
+import ItemAction from './ItemAction';
 
 const forums = [
   {
@@ -59,6 +60,7 @@ const Category = ({ id, name }: ICatProps) => {
             {name}
           </Link>
         </h5>
+        <ItemAction onEdit={() => {}} onDelete={() => {}} />
       </header>
       <section>
         {forums.map((forum) => (
@@ -75,6 +77,9 @@ const WrapCategory = styled.section`
   box-shadow: var(--box-shadow);
   overflow: hidden;
   header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     padding: 0.5rem 1rem;
     background: var(--color-white-bg-transparent);
   }
