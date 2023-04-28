@@ -232,7 +232,6 @@ const GlobalStyle = createGlobalStyle`
     .header, .footer {
       padding: 0 5rem;
     }
-
     .section {
       padding: 5rem 0;
     }
