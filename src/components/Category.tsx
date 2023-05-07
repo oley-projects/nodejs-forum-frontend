@@ -53,26 +53,31 @@ interface ICatProps {
 
 const Category = ({ id, name }: ICatProps) => {
   return (
-    <WrapCategory>
-      <header>
-        <h5>
-          <Link to={`/viewcategoty/${id}`} className='inline-link'>
-            {name}
-          </Link>
-        </h5>
-        <ItemAction onEdit={() => {}} onDelete={() => {}} />
-      </header>
-      <section>
-        {forums.map((forum) => (
-          <CategoryForumElem key={forum.id} {...forum} />
-        ))}
-      </section>
-    </WrapCategory>
+    <>
+      <div style={{ display: 'flex', justifyContent: 'end' }}>
+        <button>Create New Forum</button>
+      </div>
+      <WrapCategory>
+        <header>
+          <h5>
+            <Link to={`/viewcategoty/${id}`} className='inline-link'>
+              {name}
+            </Link>
+          </h5>
+          <ItemAction onEdit={() => {}} onDelete={() => {}} />
+        </header>
+        <section>
+          {forums.map((forum) => (
+            <CategoryForumElem key={forum.id} {...forum} />
+          ))}
+        </section>
+      </WrapCategory>
+    </>
   );
 };
 
 const WrapCategory = styled.section`
-  margin-bottom: 3rem;
+  margin: 1rem 0 3rem;
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
   overflow: hidden;

@@ -10,6 +10,9 @@ const HomePage = () => {
         {categories.map((category) => (
           <Category key={category.id} {...category} />
         ))}
+        <div style={{ display: 'flex', justifyContent: 'end' }}>
+          <button>Create Category</button>
+        </div>
       </div>
       <Sidebar>
         <PostList />
