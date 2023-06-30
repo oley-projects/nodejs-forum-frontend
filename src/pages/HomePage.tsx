@@ -11,7 +11,7 @@ const HomePage = () => {
           <Category key={category.id} {...category} />
         ))}
         <div style={{ display: 'flex', justifyContent: 'end' }}>
-          <button>Create Category</button>
+          <button>Add Category</button>
         </div>
       </div>
       <Sidebar>

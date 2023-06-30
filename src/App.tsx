@@ -5,7 +5,7 @@ import {
   Footer,
   Login,
   Signup,
-  NewTopic,
+  ItemForm,
 } from './components';
 import {
   HomePage,
@@ -20,18 +20,21 @@ import {
   ForumPage,
 } from './pages';
 import GlobalStyle from './GlobalStyle';
-import { useForumContext } from './context/forumContext';
+import { useFormItemContext } from './context/formItemContext';
 
 function App() {
-  const { isModalLoginOpen, isModalSignupOpen, isModalNewTopic } =
-    useForumContext();
+  const { isModalLoginOpen, isModalSignupOpen, isModalForumOpen, isEditing } =
+    useFormItemContext();
   return (
     <Router>
       <GlobalStyle />
       <Navbar />
       {isModalLoginOpen && <Login />}
       {isModalSignupOpen && <Signup />}
-      {isModalNewTopic && <NewTopic />}
+      {isModalForumOpen && (
+        <ItemForm type='Topic' action='New' name='' description='' />
+      )}
+      {isEditing && <div>editing...</div>}
       <NavlinksMobile />
       <div className='container page-100'>
         <Routes>

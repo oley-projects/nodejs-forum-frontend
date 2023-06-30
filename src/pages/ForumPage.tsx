@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Paginator, TopicItem, Loader, ItemAction } from '../components';
 import { useForumContext } from '../context/forumContext';
+import { useFormItemContext } from '../context/formItemContext';
 
 const ForumPage = () => {
-  const { topics, getForum, openModalNewTopic, isLoading } = useForumContext();
+  const { topics, getForum, isLoading } = useForumContext();
+  const { openModalForum } = useFormItemContext();
   useEffect(
     () => {
       getForum();
@@ -16,7 +18,7 @@ const ForumPage = () => {
     <WrapForum>
       <div className='nav-forum'>
         <div>
-          <button onClick={openModalNewTopic}>New Topic</button>
+          <button onClick={openModalForum}>New Topic</button>
         </div>
         <div className='nav-links'>
           <span>{26} topics</span>

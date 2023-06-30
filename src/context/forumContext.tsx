@@ -9,12 +9,6 @@ import {
   LOADING_TRUE,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
-  MODAL_LOGIN_OPEN,
-  MODAL_LOGIN_CLOSE,
-  MODAL_SIGNUP_OPEN,
-  MODAL_SIGNUP_CLOSE,
-  MODAL_NEWTOPIC_OPEN,
-  MODAL_NEWTOPIC_CLOSE,
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
@@ -54,7 +48,7 @@ const posts = [
   { id: 19, text: 'post 19', topic: 'topic 10', user: 'User', createdAt: date },
 ];
 
-interface ForumProps {
+interface IForumProps {
   children: ReactNode;
 }
 
@@ -66,15 +60,6 @@ type TForumContext = {
   postTopic: (args: {}) => void;
   openNavbar: () => void;
   closeNavbar: () => void;
-  openModalLogin: () => void;
-  closeModalLogin: () => void;
-  openModalSignup: () => void;
-  closeModalSignup: () => void;
-  openModalNewTopic: () => void;
-  closeModalNewTopic: () => void;
-  isModalLoginOpen: boolean;
-  isModalSignupOpen: boolean;
-  isModalNewTopic: boolean;
   isNavbarOpen: boolean;
   isLoading: boolean;
   categories: [{ id: number; name: string }];
@@ -101,17 +86,13 @@ const initialState = {
   forums: [],
   topics: [],
   posts: [],
-  isNavbarOpen: false,
-  isModalLoginOpen: false,
-  isModalSignupOpen: false,
-  isModalNewTopic: false,
   isLoading: false,
 };
 
 const ForumContext = React.createContext({} as TForumContext);
 
-export const ForumProvider = ({ children }: ForumProps) => {
-  const [state, dispatch] = useReducer(forumReducer, initialState);
+export const ForumProvider = ({ children }: IForumProps) => {
+  const [state, dispatch]: any = useReducer<any>(forumReducer, initialState);
   const getCategories = async () => {
     if (!state.isLoading) {
       dispatch({ type: LOADING_TRUE });
@@ -146,12 +127,17 @@ export const ForumProvider = ({ children }: ForumProps) => {
       console.log(error);
     }
   };
-  const postTopic = async (topicData: {}) => {
+  const postTopic = async (topicData: {
+    itemData: {};
+    requestType: string;
+  }) => {
     try {
-      const data = await forumAPI.postTopic(topicData);
-      const topic = data.data.topic;
-      const topics = [...state.topics, topic];
-      dispatch({ type: POST_TOPIC, payload: topics });
+      if (topicData.requestType === 'new topic') {
+        const data = await forumAPI.postTopic(topicData.itemData);
+        const topic = data.data.topic;
+        const topics = [...state.topics, topic];
+        dispatch({ type: POST_TOPIC, payload: topics });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -164,24 +150,6 @@ export const ForumProvider = ({ children }: ForumProps) => {
   };
   const closeNavbar = () => {
     dispatch({ type: NAVBAR_CLOSE });
-  };
-  const openModalLogin = () => {
-    dispatch({ type: MODAL_LOGIN_OPEN });
-  };
-  const closeModalLogin = () => {
-    dispatch({ type: MODAL_LOGIN_CLOSE });
-  };
-  const openModalSignup = () => {
-    dispatch({ type: MODAL_SIGNUP_OPEN });
-  };
-  const closeModalSignup = () => {
-    dispatch({ type: MODAL_SIGNUP_CLOSE });
-  };
-  const openModalNewTopic = () => {
-    dispatch({ type: MODAL_NEWTOPIC_OPEN });
-  };
-  const closeModalNewTopic = () => {
-    dispatch({ type: MODAL_NEWTOPIC_CLOSE });
   };
 
   useEffect(() => {
@@ -201,12 +169,6 @@ export const ForumProvider = ({ children }: ForumProps) => {
         postTopic,
         openNavbar,
         closeNavbar,
-        openModalLogin,
-        closeModalLogin,
-        openModalSignup,
-        closeModalSignup,
-        openModalNewTopic,
-        closeModalNewTopic,
       }}
     >
       {children}

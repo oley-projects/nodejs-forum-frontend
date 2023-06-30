@@ -1,17 +1,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoMdSearch } from 'react-icons/io';
-import { useForumContext } from '../context/forumContext';
+import { useFormItemContext } from '../context/formItemContext';
 
 interface NavlinksPropsType {
   openModalLogin: () => void;
   openModalSignup: () => void;
-  openModalNewTopic: () => void;
 }
 
 const Navlinks = () => {
   const { openModalLogin, openModalSignup }: NavlinksPropsType =
-    useForumContext();
+    useFormItemContext();
 
   return (
     <WrapNav>
