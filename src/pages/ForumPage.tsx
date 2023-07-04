@@ -6,7 +6,7 @@ import { useFormItemContext } from '../context/formItemContext';
 
 const ForumPage = () => {
   const { topics, getForum, isLoading } = useForumContext();
-  const { openModalForum } = useFormItemContext();
+  const { openModalForum, setFormItem } = useFormItemContext();
   useEffect(
     () => {
       getForum();
@@ -14,11 +14,16 @@ const ForumPage = () => {
     []
   );
 
+  const newTopicHandler = () => {
+    setFormItem({ name: '', description: '', action: 'new', type: 'topic' });
+    openModalForum();
+  };
+
   return (
     <WrapForum>
       <div className='nav-forum'>
         <div>
-          <button onClick={openModalForum}>New Topic</button>
+          <button onClick={newTopicHandler}>New Topic</button>
         </div>
         <div className='nav-links'>
           <span>{26} topics</span>

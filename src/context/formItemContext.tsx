@@ -9,7 +9,7 @@ import {
   MODAL_FORUM_CLOSE,
   EDITING_ENABLE,
   EDITING_DISABLE,
-  SET_EDIT_ITEM,
+  SET_FORM_ITEM,
 } from '../actions/actions';
 
 interface IFormItemProps {
@@ -29,7 +29,13 @@ type TFormItemContext = {
   isModalSignupOpen: boolean;
   isModalForumOpen: boolean;
   isEditing: boolean;
-  setEditItem: (args: {}) => void;
+  formItem: { name: string; description: string; type: string; action: string };
+  setFormItem: (args: {
+    name: string;
+    description: string;
+    action: string;
+    type: string;
+  }) => void;
 };
 
 export type TState = {
@@ -76,8 +82,16 @@ export const FormItemProvider = ({ children }: IFormItemProps) => {
   const editingDisable = () => {
     dispatch({ type: EDITING_DISABLE });
   };
-  const setEditItem = (editItem: {}) => {
-    dispatch({ type: SET_EDIT_ITEM, payload: editItem });
+  const setFormItem = (editItem: {
+    name: string;
+    description: string;
+    action: string;
+    type: string;
+  }) => {
+    dispatch({
+      type: SET_FORM_ITEM,
+      payload: editItem,
+    });
   };
   return (
     <FormItemContext.Provider
@@ -91,7 +105,7 @@ export const FormItemProvider = ({ children }: IFormItemProps) => {
         closeModalForum,
         editingEnable,
         editingDisable,
-        setEditItem,
+        setFormItem,
       }}
     >
       {children}

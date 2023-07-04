@@ -131,6 +131,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
     itemData: {};
     requestType: string;
   }) => {
+    console.log(topicData);
     try {
       if (topicData.requestType === 'new topic') {
         const data = await forumAPI.postTopic(topicData.itemData);

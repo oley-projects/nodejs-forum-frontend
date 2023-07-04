@@ -7,12 +7,21 @@ import {
   MODAL_FORUM_CLOSE,
   EDITING_ENABLE,
   EDITING_DISABLE,
+  SET_FORM_ITEM,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
 const formItemReducer = (
   state: TState,
-  action: { [key: string]: string | number | {} }
+  action: {
+    payload: {
+      name: string;
+      description: string;
+      action: string;
+      type: string;
+    };
+    type: string;
+  }
 ) => {
   if (action.type === MODAL_LOGIN_OPEN) {
     return { ...state, isModalLoginOpen: true };
@@ -37,6 +46,12 @@ const formItemReducer = (
   }
   if (action.type === EDITING_DISABLE) {
     return { ...state, isEditing: false };
+  }
+  if (action.type === SET_FORM_ITEM) {
+    return {
+      ...state,
+      formItem: action.payload,
+    };
   }
   return { ...state };
 };

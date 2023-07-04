@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useFormItemContext } from '../context/formItemContext';
 import ItemAction from './ItemAction';
 
 interface ITopicItemProps {
@@ -23,6 +24,7 @@ const TopicItem = ({
   lastPostUser,
   lastPostCreatedAt,
 }: ITopicItemProps) => {
+  const { openModalForum, setFormItem } = useFormItemContext();
   return (
     <WrapTopicItem className='grid-table-item'>
       <div>
@@ -49,7 +51,18 @@ const TopicItem = ({
       </div>
 
       <div className='box'>
-        <ItemAction onEdit={() => {}} onDelete={() => {}} />
+        <ItemAction
+          onEdit={() => {
+            setFormItem({
+              name: '',
+              description: '',
+              action: 'edit',
+              type: 'post',
+            });
+            openModalForum();
+          }}
+          onDelete={() => {}}
+        />
       </div>
     </WrapTopicItem>
   );
