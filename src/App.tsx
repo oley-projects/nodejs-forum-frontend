@@ -23,27 +23,15 @@ import GlobalStyle from './GlobalStyle';
 import { useFormItemContext } from './context/formItemContext';
 
 function App() {
-  const {
-    isModalLoginOpen,
-    isModalSignupOpen,
-    isModalForumOpen,
-    isEditing,
-    formItem,
-  } = useFormItemContext();
+  const { isModalLoginOpen, isModalSignupOpen, isModalForumOpen, formItem } =
+    useFormItemContext();
   return (
     <Router>
       <GlobalStyle />
       <Navbar />
       {isModalLoginOpen && <Login />}
       {isModalSignupOpen && <Signup />}
-      {isModalForumOpen && (
-        <ItemForm
-          type={formItem.type}
-          action={formItem.action}
-          name={isEditing ? formItem.name : ''}
-          description={isEditing ? formItem.description : ''}
-        />
-      )}
+      {isModalForumOpen && <ItemForm {...formItem} />}
       <NavlinksMobile />
       <div className='container page-100'>
         <Routes>

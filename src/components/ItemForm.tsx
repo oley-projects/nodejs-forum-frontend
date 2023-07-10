@@ -5,24 +5,31 @@ import { useForumContext } from '../context/forumContext';
 import { useFormItemContext } from '../context/formItemContext';
 
 interface IState {
-  type: string;
-  action: string;
+  id: number;
   name: string;
   description: string;
+  action: string;
+  type: string;
 }
 
-const FormItem = ({ type, action, name, description }: IState) => {
+const FormItem = ({ id, type, action, name, description }: IState) => {
   const { postTopic } = useForumContext();
   const { closeModalForum } = useFormItemContext();
-  const [itemData, setItemData] = useState({ name, description, type, action });
+  const [itemData, setItemData] = useState({
+    id,
+    name,
+    description,
+    type,
+    action,
+  });
 
   const stringCapitalize = (string: string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
 
-  const createTopicHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const setFormDataHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const requestType = action + ' ' + type;
-    postTopic({ itemData, requestType });
+    postTopic({ itemData, id, requestType });
     closeModalForum();
   };
   const topicOnchange = (e: React.ChangeEvent<any>) => {
@@ -64,7 +71,7 @@ const FormItem = ({ type, action, name, description }: IState) => {
             />
           </div>
           <div className='btn-panel'>
-            <button onClick={createTopicHandler}>
+            <button onClick={setFormDataHandler}>
               {stringCapitalize(action)} {type}
             </button>
             <button onClick={closeModalForum}>Cancel</button>

@@ -17,6 +17,7 @@ interface ITopicItemProps {
 const TopicItem = ({
   id,
   name,
+  description,
   createdUser,
   createdAt,
   replies,
@@ -25,6 +26,17 @@ const TopicItem = ({
   lastPostCreatedAt,
 }: ITopicItemProps) => {
   const { openModalForum, setFormItem } = useFormItemContext();
+
+  const editHandler = () => {
+    setFormItem({
+      id,
+      name,
+      description,
+      action: 'edit',
+      type: 'topic',
+    });
+    openModalForum();
+  };
   return (
     <WrapTopicItem className='grid-table-item'>
       <div>
@@ -51,18 +63,7 @@ const TopicItem = ({
       </div>
 
       <div className='box'>
-        <ItemAction
-          onEdit={() => {
-            setFormItem({
-              name: '',
-              description: '',
-              action: 'edit',
-              type: 'post',
-            });
-            openModalForum();
-          }}
-          onDelete={() => {}}
-        />
+        <ItemAction onEdit={editHandler} onDelete={() => {}} />
       </div>
     </WrapTopicItem>
   );

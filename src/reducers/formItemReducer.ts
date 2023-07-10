@@ -5,8 +5,6 @@ import {
   MODAL_SIGNUP_CLOSE,
   MODAL_FORUM_OPEN,
   MODAL_FORUM_CLOSE,
-  EDITING_ENABLE,
-  EDITING_DISABLE,
   SET_FORM_ITEM,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
@@ -40,12 +38,6 @@ const formItemReducer = (
   }
   if (action.type === MODAL_FORUM_CLOSE) {
     return { ...state, isModalForumOpen: false };
-  }
-  if (action.type === EDITING_ENABLE) {
-    return { ...state, isEditing: true };
-  }
-  if (action.type === EDITING_DISABLE) {
-    return { ...state, isEditing: false };
   }
   if (action.type === SET_FORM_ITEM) {
     return {

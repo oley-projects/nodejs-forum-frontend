@@ -7,8 +7,6 @@ import {
   MODAL_SIGNUP_CLOSE,
   MODAL_FORUM_OPEN,
   MODAL_FORUM_CLOSE,
-  EDITING_ENABLE,
-  EDITING_DISABLE,
   SET_FORM_ITEM,
 } from '../actions/actions';
 
@@ -23,14 +21,18 @@ type TFormItemContext = {
   closeModalSignup: () => void;
   openModalForum: () => void;
   closeModalForum: () => void;
-  editingEnable: () => void;
-  editingDisable: () => void;
   isModalLoginOpen: boolean;
   isModalSignupOpen: boolean;
   isModalForumOpen: boolean;
-  isEditing: boolean;
-  formItem: { name: string; description: string; type: string; action: string };
+  formItem: {
+    id: number;
+    name: string;
+    description: string;
+    type: string;
+    action: string;
+  };
   setFormItem: (args: {
+    id: number;
     name: string;
     description: string;
     action: string;
@@ -42,13 +44,17 @@ export type TState = {
   isModalLoginOpen: boolean;
   isModalSignupOpen: boolean;
   isModalForumOpen: boolean;
-  isEditing: boolean;
-  formItem: { name: string; description: string; type: string; action: string };
+  formItem: {
+    id: number;
+    name: string;
+    description: string;
+    type: string;
+    action: string;
+  };
 };
 
 const initialState: TState = {
-  formItem: { name: '', description: '', type: '', action: '' },
-  isEditing: false,
+  formItem: { id: 0, name: '', description: '', type: '', action: '' },
   isModalLoginOpen: false,
   isModalSignupOpen: false,
   isModalForumOpen: false,
@@ -76,13 +82,8 @@ export const FormItemProvider = ({ children }: IFormItemProps) => {
   const closeModalForum = () => {
     dispatch({ type: MODAL_FORUM_CLOSE });
   };
-  const editingEnable = () => {
-    dispatch({ type: EDITING_ENABLE });
-  };
-  const editingDisable = () => {
-    dispatch({ type: EDITING_DISABLE });
-  };
   const setFormItem = (editItem: {
+    id: number;
     name: string;
     description: string;
     action: string;
@@ -103,8 +104,6 @@ export const FormItemProvider = ({ children }: IFormItemProps) => {
         closeModalSignup,
         openModalForum,
         closeModalForum,
-        editingEnable,
-        editingDisable,
         setFormItem,
       }}
     >

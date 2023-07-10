@@ -15,7 +15,13 @@ const ForumPage = () => {
   );
 
   const newTopicHandler = () => {
-    setFormItem({ name: '', description: '', action: 'new', type: 'topic' });
+    setFormItem({
+      id: 0,
+      name: '',
+      description: '',
+      action: 'new',
+      type: 'topic',
+    });
     openModalForum();
   };
 

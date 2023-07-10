@@ -128,16 +128,23 @@ export const ForumProvider = ({ children }: IForumProps) => {
     }
   };
   const postTopic = async (topicData: {
-    itemData: {};
+    itemData: { id: number; name: string; description: string };
     requestType: string;
   }) => {
-    console.log(topicData);
+    const topic = {
+      id: topicData.itemData.id,
+      name: topicData.itemData.name,
+      description: topicData.itemData.description,
+    };
     try {
       if (topicData.requestType === 'new topic') {
-        const data = await forumAPI.postTopic(topicData.itemData);
-        const topic = data.data.topic;
-        const topics = [...state.topics, topic];
+        const data = await forumAPI.postTopic(topic);
+        const topicRes = data.data.topic;
+        const topics = [...state.topics, topicRes];
         dispatch({ type: POST_TOPIC, payload: topics });
+      } else if (topicData.requestType === 'edit topic') {
+        await forumAPI.updateTopic(topic);
+        getForum();
       }
     } catch (error) {
       console.log(error);

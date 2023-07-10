@@ -15,7 +15,10 @@ export const forumAPI = {
   getTopic(topicId: number) {
     return instance.get(`topic/${topicId}`);
   },
-  postTopic(topicData: {}) {
-    return instance.post('topic', topicData);
+  postTopic(topic: {}) {
+    return instance.post('topic', topic);
+  },
+  updateTopic(topic: { id: number }) {
+    return instance.put(`topic/${topic.id}`, topic);
   },
 };

@@ -13,6 +13,4 @@ export const GET_CATEGORY: string = 'GET_CATEGORY';
 export const GET_FORUM: string = 'GET_FORUM';
 export const GET_TOPIC: string = 'GET_TOPIC';
 export const POST_TOPIC: string = 'POST_TOPIC';
-export const EDITING_ENABLE: string = 'EDITING_ENABLE';
-export const EDITING_DISABLE: string = 'EDITING_DISABLE';
 export const SET_FORM_ITEM: string = 'SET_FORM_ITEM';
