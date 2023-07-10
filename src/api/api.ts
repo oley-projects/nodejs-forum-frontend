@@ -21,4 +21,7 @@ export const forumAPI = {
   updateTopic(topic: { id: number }) {
     return instance.put(`topic/${topic.id}`, topic);
   },
+  deleteTopic(topicId: number) {
+    return instance.delete(`topic/${topicId}`);
+  },
 };

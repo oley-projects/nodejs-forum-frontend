@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFormItemContext } from '../context/formItemContext';
+import { useForumContext } from '../context/forumContext';
 import ItemAction from './ItemAction';
 
 interface ITopicItemProps {
@@ -26,6 +27,7 @@ const TopicItem = ({
   lastPostCreatedAt,
 }: ITopicItemProps) => {
   const { openModalForum, setFormItem } = useFormItemContext();
+  const { deleteTopic } = useForumContext();
 
   const editHandler = () => {
     setFormItem({
@@ -63,7 +65,7 @@ const TopicItem = ({
       </div>
 
       <div className='box'>
-        <ItemAction onEdit={editHandler} onDelete={() => {}} />
+        <ItemAction onEdit={editHandler} onDelete={() => deleteTopic(id)} />
       </div>
     </WrapTopicItem>
   );

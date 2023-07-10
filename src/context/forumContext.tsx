@@ -52,12 +52,13 @@ interface IForumProps {
   children: ReactNode;
 }
 
-type TForumContext = {
+export type TForumContext = {
   getCategories: () => void;
   getCategory: () => void;
   getForum: () => void;
   getTopic: (args: number) => void;
   postTopic: (args: {}) => void;
+  deleteTopic: (args: number) => void;
   openNavbar: () => void;
   closeNavbar: () => void;
   isNavbarOpen: boolean;
@@ -145,10 +146,15 @@ export const ForumProvider = ({ children }: IForumProps) => {
       } else if (topicData.requestType === 'edit topic') {
         await forumAPI.updateTopic(topic);
         getForum();
+      } else if (topicData.requestType === 'delete topic') {
       }
     } catch (error) {
       console.log(error);
     }
+  };
+  const deleteTopic = async (topicId: number) => {
+    await forumAPI.deleteTopic(topicId);
+    getForum();
   };
   const getPosts = () => {
     dispatch({ type: GET_TOPIC, payload: posts });
@@ -175,6 +181,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
         getForum,
         getTopic,
         postTopic,
+        deleteTopic,
         openNavbar,
         closeNavbar,
       }}
