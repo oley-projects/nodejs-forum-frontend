@@ -5,7 +5,9 @@ import { useForumContext } from '../context/forumContext';
 import { useFormItemContext } from '../context/formItemContext';
 
 const ForumPage = () => {
-  const { topics, getForum, isLoading } = useForumContext();
+  const { topics, getForum, isLoading, totalItems, pageSize } =
+    useForumContext();
+  const pageCount = Math.ceil(totalItems / pageSize);
   const { openModalForum, setFormItem } = useFormItemContext();
   useEffect(
     () => {
@@ -32,8 +34,8 @@ const ForumPage = () => {
           <button onClick={newTopicHandler}>New Topic</button>
         </div>
         <div className='nav-links'>
-          <span>{26} topics</span>
-          <Paginator />
+          <span>{totalItems} topics</span>
+          {pageCount > 1 && <Paginator />}
         </div>
       </div>
       {isLoading ? (

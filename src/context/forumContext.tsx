@@ -9,6 +9,9 @@ import {
   LOADING_TRUE,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
+  GET_TOTAL_ITEMS,
+  SET_CURRENT_PAGE,
+  SET_PAGE_SIZE,
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
@@ -55,12 +58,14 @@ interface IForumProps {
 export type TForumContext = {
   getCategories: () => void;
   getCategory: () => void;
-  getForum: () => void;
+  getForum: (args?: number) => void;
   getTopic: (args: number) => void;
   postTopic: (args: {}) => void;
   deleteTopic: (args: number) => void;
   openNavbar: () => void;
   closeNavbar: () => void;
+  setPageSize: (args: number) => void;
+  setCurrentPage: (args: number) => void;
   isNavbarOpen: boolean;
   isLoading: boolean;
   categories: [{ id: number; name: string }];
@@ -80,6 +85,9 @@ export type TForumContext = {
   posts: [
     { id: number; text: string; topic: string; user: string; createdAt: string }
   ];
+  totalItems: number;
+  currentPage: number;
+  pageSize: number;
 };
 
 const initialState = {
@@ -87,6 +95,9 @@ const initialState = {
   forums: [],
   topics: [],
   posts: [],
+  totalItems: 0,
+  currentPage: 1,
+  pageSize: 10,
   isLoading: false,
 };
 
@@ -109,14 +120,15 @@ export const ForumProvider = ({ children }: IForumProps) => {
   const getCategory = () => {
     dispatch({ type: GET_CATEGORY, payload: forums });
   };
-  const getForum = async () => {
+  const getForum = async (page?: number) => {
     if (!state.isLoading) {
       dispatch({ type: LOADING_TRUE });
     }
     try {
       const data = await forumAPI.getForum();
-      const topics = data.data.topics;
+      const { totalItems, topics } = data.data;
       dispatch({ type: GET_FORUM, payload: topics });
+      getTotalItems(totalItems);
     } catch (error) {
       console.log(error);
     }
@@ -165,6 +177,16 @@ export const ForumProvider = ({ children }: IForumProps) => {
   const closeNavbar = () => {
     dispatch({ type: NAVBAR_CLOSE });
   };
+  const getTotalItems = (totalItems: number) => {
+    dispatch({ type: GET_TOTAL_ITEMS, payload: totalItems });
+  };
+  const setCurrentPage = (page: number) => {
+    dispatch({ type: SET_CURRENT_PAGE, payload: page });
+    getForum(page);
+  };
+  const setPageSize = (page: number) => {
+    dispatch({ type: SET_PAGE_SIZE, payload: page });
+  };
 
   useEffect(() => {
     getCategories();
@@ -184,6 +206,8 @@ export const ForumProvider = ({ children }: IForumProps) => {
         deleteTopic,
         openNavbar,
         closeNavbar,
+        setCurrentPage,
+        setPageSize,
       }}
     >
       {children}

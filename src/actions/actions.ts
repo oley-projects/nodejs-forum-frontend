@@ -14,3 +14,6 @@ export const GET_FORUM: string = 'GET_FORUM';
 export const GET_TOPIC: string = 'GET_TOPIC';
 export const POST_TOPIC: string = 'POST_TOPIC';
 export const SET_FORM_ITEM: string = 'SET_FORM_ITEM';
+export const GET_TOTAL_ITEMS: string = 'GET_TOTAL_ITEMS';
+export const SET_CURRENT_PAGE: string = 'SET_CURRENT_PAGE';
+export const SET_PAGE_SIZE: string = 'SET_PAGE_SIZE';

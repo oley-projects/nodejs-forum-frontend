@@ -9,8 +9,8 @@ export const forumAPI = {
   getCategories() {
     return instance.get('categories');
   },
-  getForum() {
-    return instance.get('topics');
+  getForum(page = 1, limit = 10) {
+    return instance.get(`topics?&page${page}&limit${limit}`);
   },
   getTopic(topicId: number) {
     return instance.get(`topic/${topicId}`);
