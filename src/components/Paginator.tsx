@@ -1,8 +1,9 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useForumContext } from '../context/forumContext';
 
-const Paginator = () => {
-  const { totalItems, currentPage, pageSize, setCurrentPage } =
+const Paginator = ({ name }: { name: string }) => {
+  const { totalItems, currentPage, pageSize, setCurrentPage, getForum } =
     useForumContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const pages = Array.from(Array(pageCount).keys());
@@ -15,7 +16,10 @@ const Paginator = () => {
   const pageHandler = (page: number) => {
     setCurrentPage(page);
   };
-  console.log(currentPage);
+  useEffect(() => {
+    getForum(name, currentPage);
+    // eslint-disable-next-line
+  }, [name, currentPage]);
   return (
     <WrapPaginator>
       <li>
@@ -38,9 +42,11 @@ const Paginator = () => {
             p !== pageCount - 2 &&
             currentPage < pageCount - 3) ? (
           <></>
-        ) : p === pageCount - 2 && currentPage < pageCount - 3 ? (
+        ) : p === pageCount - 2 &&
+          currentPage < pageCount - 3 &&
+          pageCount > 7 ? (
           <span>...</span>
-        ) : p === 1 && currentPage - p > 3 ? (
+        ) : p === 1 && currentPage - p > 3 && pageCount > 7 ? (
           <span>...</span>
         ) : (
           <li key={p}>

@@ -1,15 +1,16 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 import forumReducer from '../reducers/forumReducer';
 import {
-  GET_CATEGORIES,
-  GET_CATEGORY,
-  GET_FORUM,
-  GET_TOPIC,
+  SET_CATEGORIES,
+  SET_CATEGORY,
+  SET_FORUM,
+  SET_TOPIC,
   POST_TOPIC,
   LOADING_TRUE,
+  LOADING_FALSE,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
-  GET_TOTAL_ITEMS,
+  SET_TOTAL_ITEMS,
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
 } from '../actions/actions';
@@ -58,7 +59,7 @@ interface IForumProps {
 export type TForumContext = {
   getCategories: () => void;
   getCategory: () => void;
-  getForum: (args?: number) => void;
+  getForum: (name: string, page?: number, limit?: number) => void;
   getTopic: (args: number) => void;
   postTopic: (args: {}) => void;
   deleteTopic: (args: number) => void;
@@ -66,6 +67,7 @@ export type TForumContext = {
   closeNavbar: () => void;
   setPageSize: (args: number) => void;
   setCurrentPage: (args: number) => void;
+  setTotalItems: (args: number) => void;
   isNavbarOpen: boolean;
   isLoading: boolean;
   categories: [{ id: number; name: string }];
@@ -112,28 +114,30 @@ export const ForumProvider = ({ children }: IForumProps) => {
     try {
       const data = await forumAPI.getCategories();
       const categories = data.data.categories;
-      dispatch({ type: GET_CATEGORIES, payload: categories });
+      dispatch({ type: SET_CATEGORIES, payload: categories });
     } catch (error) {
       console.log(error);
     }
   };
   const getCategory = () => {
-    dispatch({ type: GET_CATEGORY, payload: forums });
+    dispatch({ type: SET_CATEGORY, payload: forums });
   };
-  const getForum = async (page?: number) => {
-    if (!state.isLoading) {
-      dispatch({ type: LOADING_TRUE });
-    }
+  const getForum = async (name: string, page?: number, limit?: number) => {
+    if (!state.isLoading) dispatch({ type: LOADING_TRUE });
     try {
-      const data = await forumAPI.getForum();
+      const data = await forumAPI.getData(name, page, limit);
       const { totalItems, topics } = data.data;
-      dispatch({ type: GET_FORUM, payload: topics });
-      getTotalItems(totalItems);
+      setForum(topics);
+      setTotalItems(totalItems);
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch({ type: LOADING_FALSE });
     }
   };
-  const getTopic = async (topicId: number) => {
+  const setForum = (topics: {}) =>
+    dispatch({ type: SET_FORUM, payload: topics });
+  const getTopic = (topicId: number) => {
     try {
       console.log('ok ' + topicId);
     } catch (error) {
@@ -153,11 +157,24 @@ export const ForumProvider = ({ children }: IForumProps) => {
       if (topicData.requestType === 'new topic') {
         const data = await forumAPI.postTopic(topic);
         const topicRes = data.data.topic;
-        const topics = [...state.topics, topicRes];
-        dispatch({ type: POST_TOPIC, payload: topics });
+        const pages = Math.ceil(state.totalItems / state.pageSize);
+
+        if (state.totalItems % state.pageSize > 0) {
+          if (state.currentPage >= pages) {
+            const topics = [...state.topics, topicRes];
+            dispatch({ type: POST_TOPIC, payload: topics });
+          } else {
+            setCurrentPage(pages);
+          }
+        } else {
+          setCurrentPage(pages + 1);
+        }
       } else if (topicData.requestType === 'edit topic') {
         await forumAPI.updateTopic(topic);
-        getForum();
+        getForum('topics');
+        if (state.totalItems % state.pageSize === 1) {
+          setCurrentPage(state.currentPage - 1);
+        }
       } else if (topicData.requestType === 'delete topic') {
       }
     } catch (error) {
@@ -166,27 +183,19 @@ export const ForumProvider = ({ children }: IForumProps) => {
   };
   const deleteTopic = async (topicId: number) => {
     await forumAPI.deleteTopic(topicId);
-    getForum();
+    getForum('topics');
   };
-  const getPosts = () => {
-    dispatch({ type: GET_TOPIC, payload: posts });
-  };
-  const openNavbar = () => {
-    dispatch({ type: NAVBAR_OPEN });
-  };
-  const closeNavbar = () => {
-    dispatch({ type: NAVBAR_CLOSE });
-  };
-  const getTotalItems = (totalItems: number) => {
-    dispatch({ type: GET_TOTAL_ITEMS, payload: totalItems });
-  };
+  const getPosts = () => dispatch({ type: SET_TOPIC, payload: posts });
+  const openNavbar = () => dispatch({ type: NAVBAR_OPEN });
+  const closeNavbar = () => dispatch({ type: NAVBAR_CLOSE });
+  const setTotalItems = (totalItems: number) =>
+    dispatch({ type: SET_TOTAL_ITEMS, payload: totalItems });
+
   const setCurrentPage = (page: number) => {
     dispatch({ type: SET_CURRENT_PAGE, payload: page });
-    getForum(page);
   };
-  const setPageSize = (page: number) => {
+  const setPageSize = (page: number) =>
     dispatch({ type: SET_PAGE_SIZE, payload: page });
-  };
 
   useEffect(() => {
     getCategories();
@@ -208,6 +217,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
         closeNavbar,
         setCurrentPage,
         setPageSize,
+        setTotalItems,
       }}
     >
       {children}

@@ -68,7 +68,7 @@ const TopicPage = () => {
         <button>Reply</button>
         <div className='nav-post'>
           <ItemAction onEdit={() => {}} onDelete={() => {}} />
-          <Paginator />
+          <Paginator name='posts' />
         </div>
       </header>
       <ul className='content'>

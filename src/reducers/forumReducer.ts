@@ -1,14 +1,14 @@
 import {
-  GET_CATEGORIES,
-  GET_CATEGORY,
-  GET_FORUM,
-  GET_TOPIC,
+  SET_CATEGORIES,
+  SET_CATEGORY,
+  SET_FORUM,
+  SET_TOPIC,
   POST_TOPIC,
   LOADING_TRUE,
   LOADING_FALSE,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
-  GET_TOTAL_ITEMS,
+  SET_TOTAL_ITEMS,
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
 } from '../actions/actions';
@@ -18,25 +18,22 @@ const forumReducer = (
   state: TState,
   action: { [key: string]: string | number }
 ) => {
-  if (action.type === GET_CATEGORIES) {
+  if (action.type === SET_CATEGORIES) {
     return {
       ...state,
       categories: action.payload,
-      isLoading: false,
     };
   }
-  if (action.type === GET_CATEGORY) {
+  if (action.type === SET_CATEGORY) {
     return {
       ...state,
       forums: action.payload,
     };
   }
-  if (action.type === GET_FORUM) {
-    const topics = action.payload;
+  if (action.type === SET_FORUM) {
     return {
       ...state,
-      topics,
-      isLoading: false,
+      topics: action.payload,
     };
   }
 
@@ -46,7 +43,7 @@ const forumReducer = (
       topics: action.payload,
     };
   }
-  if (action.type === GET_TOPIC) {
+  if (action.type === SET_TOPIC) {
     return {
       ...state,
       posts: action.payload,
@@ -56,7 +53,7 @@ const forumReducer = (
     return { ...state, isLoading: true };
   }
   if (action.type === LOADING_FALSE) {
-    return { ...state, isLoading: true };
+    return { ...state, isLoading: false };
   }
   if (action.type === NAVBAR_OPEN) {
     return { ...state, isNavbarOpen: true };
@@ -64,7 +61,7 @@ const forumReducer = (
   if (action.type === NAVBAR_CLOSE) {
     return { ...state, isNavbarOpen: false };
   }
-  if (action.type === GET_TOTAL_ITEMS) {
+  if (action.type === SET_TOTAL_ITEMS) {
     return { ...state, totalItems: action.payload };
   }
   if (action.type === SET_CURRENT_PAGE) {

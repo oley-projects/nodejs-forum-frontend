@@ -11,7 +11,7 @@ const ForumPage = () => {
   const { openModalForum, setFormItem } = useFormItemContext();
   useEffect(
     () => {
-      getForum();
+      getForum('topics');
     }, // eslint-disable-next-line
     []
   );
@@ -35,7 +35,7 @@ const ForumPage = () => {
         </div>
         <div className='nav-links'>
           <span>{totalItems} topics</span>
-          {pageCount > 1 && <Paginator />}
+          {pageCount > 1 && <Paginator name='topics' />}
         </div>
       </div>
       {isLoading ? (
