@@ -17,3 +17,4 @@ export const SET_FORM_ITEM: string = 'SET_FORM_ITEM';
 export const SET_TOTAL_ITEMS: string = 'SET_TOTAL_ITEMS';
 export const SET_CURRENT_PAGE: string = 'SET_CURRENT_PAGE';
 export const SET_PAGE_SIZE: string = 'SET_PAGE_SIZE';
+export const INITIAL_LOAD: string = 'INITIAL_LOAD';

@@ -3,8 +3,15 @@ import styled from 'styled-components';
 import { useForumContext } from '../context/forumContext';
 
 const Paginator = ({ name }: { name: string }) => {
-  const { totalItems, currentPage, pageSize, setCurrentPage, getForum } =
-    useForumContext();
+  const {
+    totalItems,
+    currentPage,
+    pageSize,
+    setCurrentPage,
+    getForum,
+    initialLoad,
+    setInitialLoad,
+  } = useForumContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const pages = Array.from(Array(pageCount).keys());
   const prevHandler = () => {
@@ -17,9 +24,13 @@ const Paginator = ({ name }: { name: string }) => {
     setCurrentPage(page);
   };
   useEffect(() => {
-    getForum(name, currentPage);
+    if (!initialLoad) {
+      getForum(name, currentPage);
+    } else {
+      setInitialLoad();
+    }
     // eslint-disable-next-line
-  }, [name, currentPage]);
+  }, [currentPage]);
   return (
     <WrapPaginator>
       <li>

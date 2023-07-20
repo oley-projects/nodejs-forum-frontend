@@ -39,6 +39,7 @@ const TopicItem = ({
     });
     openModalForum();
   };
+
   return (
     <WrapTopicItem className='grid-table-item'>
       <div>

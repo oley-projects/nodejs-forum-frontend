@@ -25,11 +25,12 @@ const FormItem = ({ id, type, action, name, description }: IState) => {
 
   const stringCapitalize = (string: string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
+
   const setFormDataHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const requestType = action + ' ' + type;
-    postTopic({ itemData, requestType });
     closeModalForum();
+    postTopic({ itemData, requestType });
   };
   const topicOnchange = (e: React.ChangeEvent<any>) => {
     setItemData((prevState) => ({

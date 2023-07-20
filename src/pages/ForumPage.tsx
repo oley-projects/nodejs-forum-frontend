@@ -1,20 +1,12 @@
-import { useEffect } from 'react';
 import styled from 'styled-components';
 import { Paginator, TopicItem, Loader, ItemAction } from '../components';
 import { useForumContext } from '../context/forumContext';
 import { useFormItemContext } from '../context/formItemContext';
 
 const ForumPage = () => {
-  const { topics, getForum, isLoading, totalItems, pageSize } =
-    useForumContext();
+  const { topics, isLoading, totalItems, pageSize } = useForumContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const { openModalForum, setFormItem } = useFormItemContext();
-  useEffect(
-    () => {
-      getForum('topics');
-    }, // eslint-disable-next-line
-    []
-  );
 
   const newTopicHandler = () => {
     setFormItem({

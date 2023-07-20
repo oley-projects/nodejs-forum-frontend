@@ -5,7 +5,6 @@ import {
   SET_CATEGORY,
   SET_FORUM,
   SET_TOPIC,
-  POST_TOPIC,
   LOADING_TRUE,
   LOADING_FALSE,
   NAVBAR_OPEN,
@@ -13,6 +12,7 @@ import {
   SET_TOTAL_ITEMS,
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
+  INITIAL_LOAD,
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
@@ -68,6 +68,7 @@ export type TForumContext = {
   setPageSize: (args: number) => void;
   setCurrentPage: (args: number) => void;
   setTotalItems: (args: number) => void;
+  setInitialLoad: () => void;
   isNavbarOpen: boolean;
   isLoading: boolean;
   categories: [{ id: number; name: string }];
@@ -90,6 +91,7 @@ export type TForumContext = {
   totalItems: number;
   currentPage: number;
   pageSize: number;
+  initialLoad: boolean;
 };
 
 const initialState = {
@@ -101,12 +103,14 @@ const initialState = {
   currentPage: 1,
   pageSize: 10,
   isLoading: false,
+  initialLoad: true,
 };
 
 const ForumContext = React.createContext({} as TForumContext);
 
 export const ForumProvider = ({ children }: IForumProps) => {
   const [state, dispatch]: any = useReducer<any>(forumReducer, initialState);
+  const pages = Math.ceil(state.totalItems / state.pageSize);
   const getCategories = async () => {
     if (!state.isLoading) {
       dispatch({ type: LOADING_TRUE });
@@ -153,37 +157,40 @@ export const ForumProvider = ({ children }: IForumProps) => {
       name: topicData.itemData.name,
       description: topicData.itemData.description,
     };
+    const pageCount = Math.ceil(state.totalItems / state.pageSize);
     try {
       if (topicData.requestType === 'new topic') {
-        const data = await forumAPI.postTopic(topic);
-        const topicRes = data.data.topic;
-        const pages = Math.ceil(state.totalItems / state.pageSize);
-
-        if (state.totalItems % state.pageSize > 0) {
-          if (state.currentPage >= pages) {
-            const topics = [...state.topics, topicRes];
-            dispatch({ type: POST_TOPIC, payload: topics });
-          } else {
-            setCurrentPage(pages);
-          }
+        await forumAPI.postTopic(topic);
+        if (state.totalItems % state.pageSize === 0) {
+          setCurrentPage(pageCount + 1);
+          getForum('topics', pageCount + 1);
         } else {
-          setCurrentPage(pages + 1);
+          setCurrentPage(pageCount);
+          getForum('topics', pageCount);
         }
       } else if (topicData.requestType === 'edit topic') {
         await forumAPI.updateTopic(topic);
-        getForum('topics');
-        if (state.totalItems % state.pageSize === 1) {
-          setCurrentPage(state.currentPage - 1);
-        }
-      } else if (topicData.requestType === 'delete topic') {
+        getForum('topics', state.currentPage);
       }
     } catch (error) {
       console.log(error);
     }
   };
   const deleteTopic = async (topicId: number) => {
+    if (
+      state.totalItems % state.pageSize === 0 &&
+      state.totalItems >= 1 &&
+      state.currentPage === pages
+    ) {
+      setCurrentPage(state.currentPage - 1);
+    }
     await forumAPI.deleteTopic(topicId);
-    getForum('topics');
+    if (state.currentPage > 1 && state.topics.length === 1) {
+      setCurrentPage(state.currentPage - 1);
+      getForum('topics', state.currentPage - 1);
+    } else {
+      getForum('topics', state.currentPage);
+    }
   };
   const getPosts = () => dispatch({ type: SET_TOPIC, payload: posts });
   const openNavbar = () => dispatch({ type: NAVBAR_OPEN });
@@ -196,10 +203,14 @@ export const ForumProvider = ({ children }: IForumProps) => {
   };
   const setPageSize = (page: number) =>
     dispatch({ type: SET_PAGE_SIZE, payload: page });
+  const setInitialLoad = () => dispatch({ type: INITIAL_LOAD });
 
   useEffect(() => {
-    getCategories();
-    getPosts();
+    if (state.initialLoad) {
+      getCategories();
+      getPosts();
+      getForum('topics');
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -218,6 +229,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
         setCurrentPage,
         setPageSize,
         setTotalItems,
+        setInitialLoad,
       }}
     >
       {children}
