@@ -4,6 +4,7 @@ import reportWebVitals from './reportWebVitals';
 
 import { ForumProvider } from './context/forumContext';
 import { FormItemProvider } from './context/formItemContext';
+import { AuthProvider } from './context/authContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <ForumProvider>
     <FormItemProvider>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </FormItemProvider>
   </ForumProvider>
 );

@@ -2,10 +2,42 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import { useFormItemContext } from '../context/formItemContext';
+import { useAuthContext } from '../context/authContext';
 
 const Signup = () => {
   const { closeModalSignup } = useFormItemContext();
+  const { signupUser } = useAuthContext();
   const [isShowPsw, setIsShowPsw] = useState<any>(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    password2: '',
+  });
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const signUpHandler = () => {
+    if (
+      formData.name.length > 2 &&
+      formData.email &&
+      formData.password.length > 4 &&
+      formData.password2.length > 4 &&
+      formData.password === formData.password2
+    ) {
+      signupUser(formData);
+      closeModalSignup();
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        password2: '',
+      });
+    } else {
+      console.log('Invalid Data');
+    }
+  };
 
   return (
     <Modal closeHandler={closeModalSignup}>
@@ -19,6 +51,8 @@ const Signup = () => {
             type='text'
             id='name'
             name='name'
+            value={formData.name || ''}
+            onChange={inputChange}
             required
             placeholder='Enter your Name'
           />
@@ -29,6 +63,8 @@ const Signup = () => {
             type='email'
             id='email'
             name='email'
+            value={formData.email || ''}
+            onChange={inputChange}
             required
             placeholder='Enter your email'
           />
@@ -39,6 +75,8 @@ const Signup = () => {
             type={!isShowPsw ? 'password' : 'text'}
             id='password'
             name='password'
+            value={formData.password || ''}
+            onChange={inputChange}
             required
             placeholder='Enter password'
           />
@@ -49,6 +87,8 @@ const Signup = () => {
             type={!isShowPsw ? 'password' : 'text'}
             id='password2'
             name='password2'
+            value={formData.password2 || ''}
+            onChange={inputChange}
             required
             placeholder='Confirm password'
           />
@@ -62,7 +102,7 @@ const Signup = () => {
           />
           <label htmlFor='checkbox'>show password</label>
         </div>
-        <button>
+        <button onClick={signUpHandler}>
           <Link to='#'>Signup</Link>
         </button>
       </form>
