@@ -27,4 +27,7 @@ export const forumAPI = {
   signUp(user: {}) {
     return instance.put(`auth/signup`, user);
   },
+  login(user: {}) {
+    return instance.post(`auth/login`, user);
+  },
 };

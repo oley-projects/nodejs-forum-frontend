@@ -2,13 +2,41 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import { useFormItemContext } from '../context/formItemContext';
+import { useAuthContext } from '../context/authContext';
 
 const Login = () => {
   const { closeModalLogin } = useFormItemContext();
+  const { loginUser } = useAuthContext();
   const [isShowPsw, setIsShowPsw] = useState<any>(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+  const [error, setError] = useState('');
+
+  const loginHandler = () => {
+    if (formData.password.length > 4 && formData.email) {
+      loginUser(formData);
+      closeModalLogin();
+      setFormData({ email: '', password: '' });
+    } else {
+      if (!error) {
+        setError('Invalid Form Data');
+        setTimeout(() => setError(''), 5000);
+      }
+    }
+  };
 
   return (
     <Modal closeHandler={closeModalLogin}>
+      {error && (
+        <div className='error-block'>
+          <p>{error}</p>
+        </div>
+      )}
       <header className='text-center'>
         <h3>Login</h3>
       </header>
@@ -19,6 +47,8 @@ const Login = () => {
             type='email'
             id='email'
             name='email'
+            value={formData.email || ''}
+            onChange={inputChange}
             required
             placeholder='Enter your email'
           />
@@ -29,6 +59,8 @@ const Login = () => {
             type={!isShowPsw ? 'password' : 'text'}
             id='password'
             name='password'
+            value={formData.password || ''}
+            onChange={inputChange}
             required
             placeholder='Enter password'
           />
@@ -42,7 +74,7 @@ const Login = () => {
           />
           <label htmlFor='checkbox'>show password</label>
         </div>
-        <button>
+        <button onClick={loginHandler}>
           <Link to='#'>Login</Link>
         </button>
       </form>

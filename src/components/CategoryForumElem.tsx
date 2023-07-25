@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ItemAction from './ItemAction';
+import { useForumContext } from '../context/forumContext';
 
 interface ICatForumElemProps {
   id: number;
@@ -23,10 +24,16 @@ const CategoryForumElem = ({
   lastUser,
   lastPostDate,
 }: ICatForumElemProps) => {
+  const { getForum } = useForumContext();
+
   return (
     <WrapCatTopicEl>
       <div>
-        <Link className='inline-link' to={`/viewforum/${id}`}>
+        <Link
+          className='inline-link'
+          to={`/viewforum/${id}`}
+          onClick={() => getForum('topics')}
+        >
           {name}
         </Link>
         <div>{description}</div>

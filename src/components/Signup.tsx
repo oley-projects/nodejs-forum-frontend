@@ -14,6 +14,7 @@ const Signup = () => {
     password: '',
     password2: '',
   });
+  const [error, setError] = useState('');
   const inputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -35,12 +36,20 @@ const Signup = () => {
         password2: '',
       });
     } else {
-      console.log('Invalid Data');
+      if (!error) {
+        setError('Invalid Form Data');
+        setTimeout(() => setError(''), 5000);
+      }
     }
   };
 
   return (
     <Modal closeHandler={closeModalSignup}>
+      {error && (
+        <div className='error-block'>
+          <p>{error}</p>
+        </div>
+      )}
       <header className='text-center'>
         <h3>Signup</h3>
       </header>

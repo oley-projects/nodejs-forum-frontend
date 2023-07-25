@@ -54,6 +54,7 @@ const ModalWrap = styled.div`
   }
   .modal-form {
     padding: 0 1.5rem 1.5rem;
+    position: relative;
     button {
       margin-top: 1.2rem;
       width: 100%;
@@ -86,6 +87,19 @@ const ModalWrap = styled.div`
     label {
       padding-left: 0.5rem;
       font-size: 0.9em;
+    }
+  }
+  .error-block {
+    margin-right: 1.5rem;
+    padding-left: 0.5rem;
+    //max-width: 50%;
+    position: absolute;
+    top: -1.5rem;
+    left: 1.2rem;
+    background-color: #eee;
+    p {
+      margin: 0;
+      color: #f06a6a;
     }
   }
 `;

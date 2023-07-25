@@ -12,6 +12,7 @@ interface IAuthProps {
 }
 interface IAuthContext {
   signupUser: (formData: {}) => void;
+  loginUser: (formData: {}) => void;
 }
 
 const initialState = {
@@ -43,8 +44,17 @@ export const AuthProvider = ({ children }: IAuthProps) => {
       loadingUserFalse();
     }
   };
-  const loginUser = (user: {}) => {
-    console.log(user);
+  const loginUser = async (user: {}) => {
+    try {
+      loadingUserTrue();
+      const requestUser = await forumAPI.login(user);
+      setUser(requestUser);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      loadingUserFalse();
+    }
+    console.log(state.user);
   };
 
   return (
