@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoMdSearch } from 'react-icons/io';
 import { useFormItemContext } from '../context/formItemContext';
+import { useAuthContext } from '../context/authContext';
 
 interface NavlinksPropsType {
   openModalLogin: () => void;
@@ -12,6 +13,7 @@ const Navlinks = () => {
   const { openModalLogin, openModalSignup }: NavlinksPropsType =
     useFormItemContext();
 
+  const { logoutUser, isAuth } = useAuthContext();
   return (
     <WrapNav>
       <li>
@@ -20,16 +22,31 @@ const Navlinks = () => {
           <IoMdSearch size={'1.75rem'} />
         </Link>
       </li>
-      <li>
-        <Link to='#' onClick={openModalLogin}>
-          login
-        </Link>
-      </li>
-      <li>
-        <Link to='#' onClick={openModalSignup}>
-          signup
-        </Link>
-      </li>
+      {!isAuth ? (
+        <>
+          <li>
+            <Link to='#' onClick={openModalLogin}>
+              login
+            </Link>
+          </li>
+          <li>
+            <Link to='#' onClick={openModalSignup}>
+              signup
+            </Link>
+          </li>
+        </>
+      ) : (
+        <>
+          <li>
+            <Link to='#' onClick={logoutUser}>
+              logout
+            </Link>
+          </li>
+          <li>
+            <Link to='#'>my profile</Link>
+          </li>
+        </>
+      )}
     </WrapNav>
   );
 };

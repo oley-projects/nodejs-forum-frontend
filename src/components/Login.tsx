@@ -29,7 +29,6 @@ const Login = () => {
       }
     }
   };
-
   return (
     <Modal closeHandler={closeModalLogin}>
       {error && (

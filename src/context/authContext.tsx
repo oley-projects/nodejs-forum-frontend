@@ -1,10 +1,11 @@
-import React, { ReactNode, useContext, useReducer } from 'react';
+import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 import authReducer from '../reducers/authReducer';
 import { forumAPI } from '../api/api';
 import {
   SET_USER,
   LOADING_USER_TRUE,
   LOADING_USER_FALSE,
+  SET_IS_AUTH,
 } from '../actions/actions';
 
 interface IAuthProps {
@@ -13,11 +14,22 @@ interface IAuthProps {
 interface IAuthContext {
   signupUser: (formData: {}) => void;
   loginUser: (formData: {}) => void;
+  logoutUser: () => void;
+  user: {};
+  isAuth: boolean;
+}
+
+let initUser = {};
+const currentUser = localStorage.getItem('user');
+
+if (currentUser !== null) {
+  initUser = JSON.parse(currentUser);
 }
 
 const initialState = {
-  user: {},
+  user: initUser,
   isLoading: false,
+  isAuth: currentUser !== null ? true : false,
 };
 
 const AuthContext = React.createContext({} as IAuthContext);
@@ -47,16 +59,26 @@ export const AuthProvider = ({ children }: IAuthProps) => {
   const loginUser = async (user: {}) => {
     try {
       loadingUserTrue();
-      const requestUser = await forumAPI.login(user);
-      setUser(requestUser);
+      const { data } = await forumAPI.login(user);
+      setUser(data);
+      dispatch({ type: SET_IS_AUTH, payload: true });
+      localStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
       console.log(error);
     } finally {
       loadingUserFalse();
     }
-    console.log(state.user);
   };
-
+  const logoutUser = () => {
+    setUser({});
+    dispatch({ type: SET_IS_AUTH, payload: false });
+    localStorage.removeItem('user');
+  };
+  useEffect(() => {
+    if (currentUser !== null) {
+      setUser(currentUser);
+    }
+  }, []);
   return (
     <AuthContext.Provider
       value={{
@@ -66,6 +88,7 @@ export const AuthProvider = ({ children }: IAuthProps) => {
         loadingUserFalse,
         signupUser,
         loginUser,
+        logoutUser,
       }}
     >
       {children}
