@@ -2,9 +2,11 @@ import styled from 'styled-components';
 import { Paginator, TopicItem, Loader, ItemAction } from '../components';
 import { useForumContext } from '../context/forumContext';
 import { useFormItemContext } from '../context/formItemContext';
+import { useAuthContext } from '../context/authContext';
 
 const ForumPage = () => {
   const { topics, isLoading, totalItems, pageSize } = useForumContext();
+  const { isAuth } = useAuthContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const { openModalForum, setFormItem } = useFormItemContext();
 
@@ -23,8 +25,9 @@ const ForumPage = () => {
     <WrapForum>
       <div className='nav-forum'>
         <div>
-          <button onClick={newTopicHandler}>New Topic</button>
+          {isAuth && <button onClick={newTopicHandler}>New Topic</button>}
         </div>
+
         <div className='nav-links'>
           <span>{totalItems} topics</span>
           {pageCount > 1 && <Paginator name='topics' />}

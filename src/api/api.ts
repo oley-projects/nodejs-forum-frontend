@@ -1,8 +1,14 @@
 import axios from 'axios';
 
+let token = '';
+if (localStorage.getItem('user')) {
+  token = JSON.parse(localStorage.getItem('user') || '').token;
+}
+
 const instance = axios.create({
   baseURL: 'http://localhost:8080/',
   timeout: 7000,
+  headers: { Authorization: `Bearer ${token}` },
 });
 
 export const forumAPI = {

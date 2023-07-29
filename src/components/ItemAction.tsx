@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { CiEdit } from 'react-icons/ci';
+import { useAuthContext } from '../context/authContext';
 
 interface IItemActionProps {
   onEdit: () => void;
@@ -8,6 +9,10 @@ interface IItemActionProps {
 }
 
 const ItemAction = ({ onEdit, onDelete }: IItemActionProps) => {
+  const { isAuth } = useAuthContext();
+  if (!isAuth) {
+    return null;
+  }
   return (
     <WrapItemAction>
       <button onClick={onEdit}>

@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }: IAuthProps) => {
       const { data } = await forumAPI.login(user);
       setUser(data);
       dispatch({ type: SET_IS_AUTH, payload: true });
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('user', JSON.stringify(data));
     } catch (error) {
       console.log(error);
     } finally {
