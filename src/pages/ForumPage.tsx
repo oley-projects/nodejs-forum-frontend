@@ -40,7 +40,7 @@ const ForumPage = () => {
           <header>
             <div>Topics</div>
             <div>
-              <ItemAction onEdit={() => {}} onDelete={() => {}} />
+              <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
             </div>
           </header>
           <ul>

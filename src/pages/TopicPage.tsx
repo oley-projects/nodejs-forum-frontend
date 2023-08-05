@@ -67,7 +67,7 @@ const TopicPage = () => {
       <header className='header-post'>
         <button>Reply</button>
         <div className='nav-post'>
-          <ItemAction onEdit={() => {}} onDelete={() => {}} />
+          <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
           <Paginator name='posts' />
         </div>
       </header>

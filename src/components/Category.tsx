@@ -64,7 +64,7 @@ const Category = ({ id, name }: ICatProps) => {
               {name}
             </Link>
           </h5>
-          <ItemAction onEdit={() => {}} onDelete={() => {}} />
+          <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
         </header>
         <section>
           {forums.map((forum) => (

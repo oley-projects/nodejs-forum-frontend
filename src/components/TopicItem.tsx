@@ -9,7 +9,7 @@ interface ITopicItemProps {
   id: number;
   name: string;
   description: string;
-  createdUser: string;
+  creator: { name: string; _id: string };
   createdAt: string;
   replies: string;
   views: string;
@@ -21,7 +21,7 @@ const TopicItem = ({
   id,
   name,
   description,
-  createdUser,
+  creator,
   createdAt,
   replies,
   views,
@@ -51,7 +51,7 @@ const TopicItem = ({
           </Link>
         </div>
         <div>
-          by {createdUser}, {createdAt}
+          by {creator.name}, {createdAt}
         </div>
       </div>
       <div className='align-center'>
@@ -71,6 +71,7 @@ const TopicItem = ({
         <ItemAction
           onEdit={editHandler}
           onDelete={() => deleteTopic(topicIds)}
+          creatorId={creator._id}
         />
       </div>
     </WrapTopicItem>

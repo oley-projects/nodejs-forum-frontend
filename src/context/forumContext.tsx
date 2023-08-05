@@ -78,7 +78,7 @@ export type TForumContext = {
       id: number;
       name: string;
       description: string;
-      createdUser: string;
+      creator: { name: string; _id: string };
       createdAt: string;
       replies: string;
       views: string;

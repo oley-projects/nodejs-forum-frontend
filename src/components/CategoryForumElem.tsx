@@ -56,7 +56,7 @@ const CategoryForumElem = ({
         <div>at {lastPostDate}</div>
       </div>
       <div className='box'>
-        <ItemAction onEdit={() => {}} onDelete={() => {}} />
+        <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
       </div>
     </WrapCatTopicEl>
   );

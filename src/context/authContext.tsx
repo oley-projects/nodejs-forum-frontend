@@ -15,28 +15,30 @@ interface IAuthContext {
   signupUser: (formData: {}) => void;
   loginUser: (formData: {}) => void;
   logoutUser: () => void;
-  user: {};
+  user: { userId: string };
   isAuth: boolean;
 }
 
 let initUser = {};
-const currentUser = localStorage.getItem('user');
+let currentUser = '';
+if (localStorage.getItem('user')) {
+  currentUser = JSON.parse(localStorage.getItem('user') || '');
+}
 
-if (currentUser !== null) {
-  initUser = JSON.parse(currentUser);
+if (currentUser !== '') {
+  initUser = currentUser;
 }
 
 const initialState = {
   user: initUser,
   isLoading: false,
-  isAuth: currentUser !== null ? true : false,
+  isAuth: currentUser !== '' ? true : false,
 };
 
 const AuthContext = React.createContext({} as IAuthContext);
 
 export const AuthProvider = ({ children }: IAuthProps) => {
   const [state, dispatch]: any = useReducer<any>(authReducer, initialState);
-
   const setUser = (user: {}) => {
     dispatch({ type: SET_USER, payload: user });
   };
@@ -75,9 +77,10 @@ export const AuthProvider = ({ children }: IAuthProps) => {
     localStorage.removeItem('user');
   };
   useEffect(() => {
-    if (currentUser !== null) {
+    if (currentUser !== '' && !state.user) {
       setUser(currentUser);
     }
+    // eslint-disable-next-line
   }, []);
   return (
     <AuthContext.Provider

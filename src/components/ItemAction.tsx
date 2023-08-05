@@ -6,11 +6,15 @@ import { useAuthContext } from '../context/authContext';
 interface IItemActionProps {
   onEdit: () => void;
   onDelete: () => void;
+  creatorId: string;
 }
 
-const ItemAction = ({ onEdit, onDelete }: IItemActionProps) => {
-  const { isAuth } = useAuthContext();
-  if (!isAuth) {
+const ItemAction = ({ onEdit, onDelete, creatorId }: IItemActionProps) => {
+  const {
+    isAuth,
+    user: { userId },
+  } = useAuthContext();
+  if (!isAuth || userId !== creatorId) {
     return null;
   }
   return (

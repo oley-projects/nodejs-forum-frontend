@@ -39,7 +39,7 @@ const TopicPostItem = ({
         <div>{content}</div>
         <div>{signature}</div>{' '}
         <div className='post-detail-action' style={{ marginTop: '0.5rem' }}>
-          <ItemAction onEdit={() => {}} onDelete={() => {}} />
+          <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
         </div>
       </div>
     </WrapTopicPostItem>
