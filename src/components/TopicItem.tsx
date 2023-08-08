@@ -5,7 +5,6 @@ import { useForumContext } from '../context/forumContext';
 import ItemAction from './ItemAction';
 
 interface ITopicItemProps {
-  _id: string;
   id: number;
   name: string;
   description: string;
@@ -17,7 +16,6 @@ interface ITopicItemProps {
   lastPostCreatedAt: string;
 }
 const TopicItem = ({
-  _id: objectId,
   id,
   name,
   description,
@@ -41,7 +39,6 @@ const TopicItem = ({
     });
     openModalForum();
   };
-  const topicIds = { id, objectId };
   return (
     <WrapTopicItem className='grid-table-item'>
       <div>
@@ -70,7 +67,7 @@ const TopicItem = ({
       <div className='box'>
         <ItemAction
           onEdit={editHandler}
-          onDelete={() => deleteTopic(topicIds)}
+          onDelete={() => deleteTopic(id)}
           creatorId={creator._id}
         />
       </div>

@@ -62,7 +62,7 @@ export type TForumContext = {
   getForum: (name: string, page?: number, limit?: number) => void;
   getTopic: (args: number) => void;
   postTopic: (args: {}) => void;
-  deleteTopic: (args: { id: number; objectId: string }) => void;
+  deleteTopic: (id: number) => void;
   openNavbar: () => void;
   closeNavbar: () => void;
   setPageSize: (args: number) => void;
@@ -183,7 +183,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
       console.log(error);
     }
   };
-  const deleteTopic = async (topicIds: { id: number; objectId: string }) => {
+  const deleteTopic = async (topicId: number) => {
     if (
       state.totalItems % state.pageSize === 0 &&
       state.totalItems >= 1 &&
@@ -191,7 +191,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
     ) {
       setCurrentPage(state.currentPage - 1);
     }
-    await forumAPI.deleteTopic(topicIds);
+    await forumAPI.deleteTopic(topicId);
     if (state.currentPage > 1 && state.topics.length === 1) {
       setCurrentPage(state.currentPage - 1);
       getForum('topics', state.currentPage - 1);

@@ -27,10 +27,8 @@ export const forumAPI = {
   updateTopic(topic: { id: number }) {
     return instance.put(`forum/topic/${topic.id}`, topic);
   },
-  deleteTopic(topicIds: { id: number; objectId: string }) {
-    return instance.delete(`forum/topic/${topicIds.id}`, {
-      data: { objectId: topicIds.objectId },
-    });
+  deleteTopic(topicid: number) {
+    return instance.delete(`forum/topic/${topicid}`);
   },
   signUp(user: {}) {
     return instance.put(`auth/signup`, user);
