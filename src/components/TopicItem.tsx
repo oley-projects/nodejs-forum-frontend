@@ -27,7 +27,7 @@ const TopicItem = ({
   lastPostCreatedAt,
 }: ITopicItemProps) => {
   const { openModalForum, setFormItem } = useFormItemContext();
-  const { deleteTopic } = useForumContext();
+  const { deleteTopic, getTopic } = useForumContext();
 
   const editHandler = () => {
     setFormItem({
@@ -39,11 +39,19 @@ const TopicItem = ({
     });
     openModalForum();
   };
+
+  const clickTopicHandler = () => {
+    getTopic('posts');
+  };
   return (
     <WrapTopicItem className='grid-table-item'>
       <div>
         <div>
-          <Link className='inline-link' to={`/viewtopic/${id}`}>
+          <Link
+            className='inline-link'
+            to={`/viewtopic/${id}`}
+            onClick={clickTopicHandler}
+          >
             {name}
           </Link>
         </div>

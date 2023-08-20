@@ -12,7 +12,7 @@ import SinglePost from './SinglePost';
 import Paginator from './Paginator';
 import TopicItem from './TopicItem';
 import TopicPostItem from './TopicPostItem';
-import ItemForm from './ItemForm';
+import FormItem from './FormItem';
 import Loader from './Loader';
 import ItemAction from './ItemAction';
 
@@ -31,7 +31,7 @@ export {
   Paginator,
   TopicItem,
   TopicPostItem,
-  ItemForm,
+  FormItem,
   Loader,
   ItemAction,
 };

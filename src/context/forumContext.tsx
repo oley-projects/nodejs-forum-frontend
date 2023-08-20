@@ -16,8 +16,6 @@ import {
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
-const date = new Date().toLocaleString();
-
 const forums = [
   { id: 1, name: 'Topic 1', categoty: 'main' },
   { id: 2, name: 'Topic 2', categoty: 'main' },
@@ -30,27 +28,6 @@ const forums = [
   { id: 9, name: 'Topic 9', categoty: 'addition' },
   { id: 10, name: 'Topic 10', categoty: 'main' },
 ];
-const posts = [
-  { id: 2, text: 'post 2', topic: 'topic 1', user: 'User', createdAt: date },
-  { id: 1, text: 'post 1', topic: 'topic 1', user: 'User', createdAt: date },
-  { id: 3, text: 'post 3', topic: 'topic 3', user: 'User', createdAt: date },
-  { id: 4, text: 'post 4', topic: 'topic 2', user: 'User', createdAt: date },
-  { id: 5, text: 'post 5', topic: 'topic 2', user: 'User', createdAt: date },
-  { id: 6, text: 'post 6', topic: 'topic 2', user: 'User', createdAt: date },
-  { id: 7, text: 'post 7', topic: 'topic 3', user: 'User', createdAt: date },
-  { id: 8, text: 'post 8', topic: 'topic 3', user: 'User', createdAt: date },
-  { id: 9, text: 'post 9', topic: 'topic 1', user: 'User', createdAt: date },
-  { id: 10, text: 'post 10', topic: 'topic 2', user: 'User', createdAt: date },
-  { id: 11, text: 'post 11', topic: 'topic 2', user: 'User', createdAt: date },
-  { id: 12, text: 'post 12', topic: 'topic 4', user: 'User', createdAt: date },
-  { id: 13, text: 'post 13', topic: 'topic 5', user: 'User', createdAt: date },
-  { id: 14, text: 'post 14', topic: 'topic 6', user: 'User', createdAt: date },
-  { id: 15, text: 'post 15', topic: 'topic 6', user: 'User', createdAt: date },
-  { id: 16, text: 'post 16', topic: 'topic 7', user: 'User', createdAt: date },
-  { id: 17, text: 'post 17', topic: 'topic 8', user: 'User', createdAt: date },
-  { id: 18, text: 'post 18', topic: 'topic 9', user: 'User', createdAt: date },
-  { id: 19, text: 'post 19', topic: 'topic 10', user: 'User', createdAt: date },
-];
 
 interface IForumProps {
   children: ReactNode;
@@ -60,9 +37,12 @@ export type TForumContext = {
   getCategories: () => void;
   getCategory: () => void;
   getForum: (name: string, page?: number, limit?: number) => void;
-  getTopic: (args: number) => void;
+  getTopic: (name: string, page?: number, limit?: number) => void;
   postTopic: (args: {}) => void;
   deleteTopic: (id: number) => void;
+  getPost: (args: number) => void;
+  postPost: (args: {}) => void;
+  deletePost: (id: number) => void;
   openNavbar: () => void;
   closeNavbar: () => void;
   setPageSize: (args: number) => void;
@@ -117,6 +97,7 @@ const ForumContext = React.createContext({} as TForumContext);
 
 export const ForumProvider = ({ children }: IForumProps) => {
   const [state, dispatch]: any = useReducer<any>(forumReducer, initialState);
+  console.log(state.posts);
   const pages = Math.ceil(state.totalItems / state.pageSize);
   const getCategories = async () => {
     if (!state.isLoading) {
@@ -148,13 +129,17 @@ export const ForumProvider = ({ children }: IForumProps) => {
   };
   const setForum = (topics: {}) =>
     dispatch({ type: SET_FORUM, payload: topics });
-  const getTopic = (topicId: number) => {
+  const getTopic = async (name: string, page?: number, limit?: number) => {
     try {
-      console.log('ok ' + topicId);
+      const data = await forumAPI.getData(name, page, limit);
+      const { totalItems, posts } = data.data;
+      setTopic(posts);
+      setTotalItems(totalItems);
     } catch (error) {
       console.log(error);
     }
   };
+  const setTopic = (posts: {}) => dispatch({ type: SET_TOPIC, payload: posts });
   const postTopic = async (topicData: {
     itemData: { id: number; name: string; description: string };
     requestType: string;
@@ -199,7 +184,37 @@ export const ForumProvider = ({ children }: IForumProps) => {
       getForum('topics', state.currentPage);
     }
   };
-  const getPosts = () => dispatch({ type: SET_TOPIC, payload: posts });
+  // const getPosts = () => dispatch({ type: SET_TOPIC, payload: posts });
+  const getPost = (postId: number) => {
+    try {
+      console.log('ok ' + postId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const postPost = async (postData: {
+    itemData: { id: number; name: string; description: string };
+    requestType: string;
+  }) => {
+    const post = {
+      id: postData.itemData.id,
+      name: postData.itemData.name,
+      description: postData.itemData.description,
+    };
+    try {
+      if (postData.requestType === 'new post') {
+        await forumAPI.postPost(post);
+      } else if (postData.requestType === 'edit post') {
+        await forumAPI.updateTopic(post);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const deletePost = async (postId: number) => {
+    await forumAPI.deletePost(postId);
+  };
+
   const openNavbar = () => dispatch({ type: NAVBAR_OPEN });
   const closeNavbar = () => dispatch({ type: NAVBAR_CLOSE });
   const setTotalItems = (totalItems: number) =>
@@ -215,7 +230,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
   useEffect(() => {
     if (state.initialLoad) {
       getCategories();
-      getPosts();
+      // getPosts();
       getForum('topics');
     }
     // eslint-disable-next-line
@@ -231,6 +246,9 @@ export const ForumProvider = ({ children }: IForumProps) => {
         getTopic,
         postTopic,
         deleteTopic,
+        getPost,
+        postPost,
+        deletePost,
         openNavbar,
         closeNavbar,
         setCurrentPage,

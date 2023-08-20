@@ -4,6 +4,8 @@ import {
   SET_FORUM,
   SET_TOPIC,
   POST_TOPIC,
+  SET_POST,
+  POST_POST,
   LOADING_TRUE,
   LOADING_FALSE,
   NAVBAR_OPEN,
@@ -44,6 +46,18 @@ const forumReducer = (
     };
   }
   if (action.type === SET_TOPIC) {
+    return {
+      ...state,
+      posts: action.payload,
+    };
+  }
+  if (action.type === POST_POST) {
+    return {
+      ...state,
+      topics: action.payload,
+    };
+  }
+  if (action.type === SET_POST) {
     return {
       ...state,
       posts: action.payload,

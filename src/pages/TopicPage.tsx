@@ -1,10 +1,16 @@
-// import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ItemAction, Paginator, TopicPostItem } from '../components';
+import { useForumContext } from '../context/forumContext';
 
 const TopicPage = () => {
-  // const { pathname } = useLocation();
-  const topicPosts = [
+  const { posts, postPost } = useForumContext();
+  const [postText, setPostText] = useState('');
+
+  const { pathname } = useLocation();
+  const topicId = pathname.split('/')[2];
+  /* const topicPosts = [
     {
       id: 1,
       user: 'User',
@@ -16,65 +22,35 @@ const TopicPage = () => {
       content: `Post text of topic 1, created at ${new Date().toLocaleString()}`,
       signature: 'User signature',
     },
-    {
-      id: 2,
-      user: 'User1',
-      postCount: '15',
-      joined: new Date().toLocaleString().split(',')[0],
-      location: 'CA',
-      topic: 'topic 1',
-      createdAt: new Date().toLocaleString(),
-      content: `Second post text of topic 1, created at ${new Date().toLocaleString()}`,
-      signature: 'User1 signature',
-    },
-    {
-      id: 3,
-      user: 'User2',
-      postCount: '2',
-      joined: new Date().toLocaleString().split(',')[0],
-      location: 'US',
-      topic: 'topic 1',
-      createdAt: new Date().toLocaleString(),
-      content: `Third text of topic 1, created at ${new Date().toLocaleString()}`,
-      signature: 'User2 signature',
-    },
-    {
-      id: 4,
-      user: 'User1',
-      postCount: '15',
-      joined: new Date().toLocaleString().split(',')[0],
-      location: 'CA',
-      topic: 'topic 1',
-      createdAt: new Date().toLocaleString(),
-      content: `Nexd text of topic 1, created at ${new Date().toLocaleString()}`,
-      signature: 'User1 signature',
-    },
-    {
-      id: 5,
-      user: 'User',
-      postCount: '12',
-      joined: new Date().toLocaleString().split(',')[0],
-      location: 'UK',
-      topic: 'topic 1',
-      createdAt: new Date().toLocaleString(),
-      content: `Last text of topic 1, created at ${new Date().toLocaleString()}`,
-      signature: 'User signature',
-    },
-  ];
+  ]; */
+
+  const changePostTextHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPostText(e.target.value);
+  };
+  const newPostHandler = () => {
+    const postData = {
+      itemData: { id: topicId, name: '', description: postText },
+      requestType: 'new post',
+    };
+    postPost(postData);
+    setPostText('');
+  };
 
   return (
     <WrapTopicPage>
       <header className='header-post'>
-        <button>Reply</button>
+        <div></div>
         <div className='nav-post'>
           <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
           <Paginator name='posts' />
         </div>
       </header>
       <ul className='content'>
-        {topicPosts.map((post) => (
-          <TopicPostItem key={post.id} {...post} />
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => <TopicPostItem key={post.id} {...post} />)
+        ) : (
+          <div>Empty topic</div>
+        )}
       </ul>
       <div className='post-action'>
         <header>
@@ -87,10 +63,10 @@ const TopicPage = () => {
             <button>Preview</button>
           </div>
         </header>
-        <textarea />
+        <textarea value={postText} onChange={changePostTextHandler} />
         <footer>
           <button>Load files</button>
-          <button>Send</button>
+          <button onClick={newPostHandler}>Send</button>
         </footer>
       </div>
     </WrapTopicPage>

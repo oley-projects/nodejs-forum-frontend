@@ -2,25 +2,27 @@ import styled from 'styled-components';
 import ItemAction from './ItemAction';
 
 interface ITopicPostItemProps {
-  user: string;
+  /* user: string;
   postCount: string;
   joined: string;
   location: string;
   topic: string;
   createdAt: string;
   content: string;
-  signature: string;
+  signature: string; */
+  id: number;
+  text: string;
+  topic: string;
+  user: string;
+  createdAt: string;
 }
 
 const TopicPostItem = ({
-  user,
-  postCount,
-  joined,
-  location,
+  id,
+  text,
   topic,
+  user,
   createdAt,
-  content,
-  signature,
 }: ITopicPostItemProps) => {
   return (
     <WrapTopicPostItem
@@ -29,15 +31,15 @@ const TopicPostItem = ({
     >
       <div className='user-details'>
         <div>{user}</div>
-        <div>Posts: {postCount}</div>
+        {/* <div>Posts: {postCount}</div>
         <div>Joined: {joined}</div>
-        <div>Location: {location}</div>
+        <div>Location: {location}</div> */}
       </div>
       <div className='post-details'>
         <div>{topic}</div>
+        <div>{text}</div>
         <div>{createdAt}</div>
-        <div>{content}</div>
-        <div>{signature}</div>{' '}
+        {/* <div>{signature}</div> */}
         <div className='post-detail-action' style={{ marginTop: '0.5rem' }}>
           <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
         </div>

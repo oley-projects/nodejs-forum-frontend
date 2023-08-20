@@ -5,7 +5,7 @@ import {
   Footer,
   Login,
   Signup,
-  ItemForm,
+  FormItem,
 } from './components';
 import {
   HomePage,
@@ -31,7 +31,7 @@ function App() {
       <Navbar />
       {isModalLoginOpen && <Login />}
       {isModalSignupOpen && <Signup />}
-      {isModalForumOpen && <ItemForm {...formItem} />}
+      {isModalForumOpen && <FormItem {...formItem} />}
       <NavlinksMobile />
       <div className='container page-100'>
         <Routes>
