@@ -12,7 +12,7 @@ interface ITopicPostItemProps {
   signature: string; */
   id: number;
   description: string;
-  topic: string;
+  topic: { name: string };
   creator: { name: string };
   createdAt: string;
 }

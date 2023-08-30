@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface ISinglePostType {
   id: number;
-  topic: string;
+  topic: { name: string };
   description: string;
   creator: { name: string };
   createdAt: string;
@@ -20,7 +20,7 @@ const SinglePost = ({
     <WrapSinglePost>
       <header>
         <Link to={`/viewtopic/${id}`} className='inline-link'>
-          {topic}
+          {topic.name}
         </Link>
       </header>
       <div>by {creator.name}</div>
