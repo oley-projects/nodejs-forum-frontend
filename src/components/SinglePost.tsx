@@ -4,11 +4,18 @@ import styled from 'styled-components';
 interface ISinglePostType {
   id: number;
   topic: string;
-  user: string;
+  description: string;
+  creator: { name: string };
   createdAt: string;
 }
 
-const SinglePost = ({ id, topic, user, createdAt: date }: ISinglePostType) => {
+const SinglePost = ({
+  id,
+  topic,
+  creator,
+  description,
+  createdAt: date,
+}: ISinglePostType) => {
   return (
     <WrapSinglePost>
       <header>
@@ -16,7 +23,8 @@ const SinglePost = ({ id, topic, user, createdAt: date }: ISinglePostType) => {
           {topic}
         </Link>
       </header>
-      <div>by {user}</div>
+      <div>by {creator.name}</div>
+      <div>{description}</div>
       <div>{date}</div>
     </WrapSinglePost>
   );

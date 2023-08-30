@@ -11,17 +11,16 @@ interface ITopicPostItemProps {
   content: string;
   signature: string; */
   id: number;
-  text: string;
+  description: string;
   topic: string;
-  user: string;
+  creator: { name: string };
   createdAt: string;
 }
 
 const TopicPostItem = ({
   id,
-  text,
-  topic,
-  user,
+  description,
+  creator,
   createdAt,
 }: ITopicPostItemProps) => {
   return (
@@ -30,14 +29,13 @@ const TopicPostItem = ({
       style={{ paddingTop: '0', paddingBottom: '0' }}
     >
       <div className='user-details'>
-        <div>{user}</div>
+        <div>{creator.name}</div>
         {/* <div>Posts: {postCount}</div>
         <div>Joined: {joined}</div>
         <div>Location: {location}</div> */}
       </div>
       <div className='post-details'>
-        <div>{topic}</div>
-        <div>{text}</div>
+        <div>{description}</div>
         <div>{createdAt}</div>
         {/* <div>{signature}</div> */}
         <div className='post-detail-action' style={{ marginTop: '0.5rem' }}>

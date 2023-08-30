@@ -8,7 +8,7 @@ interface ITopicItemProps {
   id: number;
   name: string;
   description: string;
-  creator: { name: string; _id: string };
+  creator: { _id: string; name: string };
   createdAt: string;
   replies: string;
   views: string;
@@ -52,7 +52,7 @@ const TopicItem = ({
             to={`/viewtopic/${id}`}
             onClick={clickTopicHandler}
           >
-            {name}
+            {creator.name}
           </Link>
         </div>
         <div>

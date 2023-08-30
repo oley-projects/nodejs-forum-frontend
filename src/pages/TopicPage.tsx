@@ -23,7 +23,6 @@ const TopicPage = () => {
       signature: 'User signature',
     },
   ]; */
-
   const changePostTextHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPostText(e.target.value);
   };
@@ -35,11 +34,10 @@ const TopicPage = () => {
     postPost(postData);
     setPostText('');
   };
-
   return (
     <WrapTopicPage>
       <header className='header-post'>
-        <div></div>
+        <div>{topicId}</div>
         <div className='nav-post'>
           <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
           <Paginator name='posts' />

@@ -58,7 +58,7 @@ export type TForumContext = {
       id: number;
       name: string;
       description: string;
-      creator: { name: string; _id: string };
+      creator: { _id: string; name: string };
       createdAt: string;
       replies: string;
       views: string;
@@ -69,9 +69,10 @@ export type TForumContext = {
   posts: [
     {
       id: number;
-      text: string;
+      name: string;
+      description: string;
       topic: string;
-      user: string;
+      creator: { _id: string; name: string };
       createdAt: string;
     }
   ];
@@ -97,7 +98,6 @@ const ForumContext = React.createContext({} as TForumContext);
 
 export const ForumProvider = ({ children }: IForumProps) => {
   const [state, dispatch]: any = useReducer<any>(forumReducer, initialState);
-  console.log(state.posts);
   const pages = Math.ceil(state.totalItems / state.pageSize);
   const getCategories = async () => {
     if (!state.isLoading) {
@@ -232,6 +232,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
       getCategories();
       // getPosts();
       getForum('topics');
+      getTopic('posts');
     }
     // eslint-disable-next-line
   }, []);
