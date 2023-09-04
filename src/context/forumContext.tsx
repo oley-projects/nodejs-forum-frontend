@@ -1,10 +1,12 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import forumReducer from '../reducers/forumReducer';
 import {
   SET_CATEGORIES,
   SET_CATEGORY,
   SET_FORUM,
   SET_TOPIC,
+  SET_TOPIC_POSTS,
   LOADING_TRUE,
   LOADING_FALSE,
   NAVBAR_OPEN,
@@ -37,7 +39,7 @@ export type TForumContext = {
   getCategories: () => void;
   getCategory: () => void;
   getForum: (name: string, page?: number, limit?: number) => void;
-  getTopic: (name: string, page?: number, limit?: number) => void;
+  getTopic: (id: number, page?: number, limit?: number) => void;
   postTopic: (args: {}) => void;
   deleteTopic: (id: number) => void;
   getPost: (args: number) => void;
@@ -52,6 +54,7 @@ export type TForumContext = {
   isNavbarOpen: boolean;
   isLoading: boolean;
   categories: [{ id: number; name: string }];
+  topic: { name: string };
   topics: [
     {
       _id: string;
@@ -87,6 +90,7 @@ const initialState = {
   forums: [],
   topics: [],
   posts: [],
+  topic: {},
   totalItems: 0,
   currentPage: 1,
   pageSize: 10,
@@ -99,6 +103,10 @@ const ForumContext = React.createContext({} as TForumContext);
 export const ForumProvider = ({ children }: IForumProps) => {
   const [state, dispatch]: any = useReducer<any>(forumReducer, initialState);
   const pages = Math.ceil(state.totalItems / state.pageSize);
+  const { pathname } = useLocation();
+  const type = pathname.split('/')[1].slice(4);
+  const pathId = parseInt(pathname.split('/')[2]);
+
   const getCategories = async () => {
     if (!state.isLoading) {
       dispatch({ type: LOADING_TRUE });
@@ -129,17 +137,20 @@ export const ForumProvider = ({ children }: IForumProps) => {
   };
   const setForum = (topics: {}) =>
     dispatch({ type: SET_FORUM, payload: topics });
-  const getTopic = async (name: string, page?: number, limit?: number) => {
+  const getTopic = async (topicId: number, page?: number, limit?: number) => {
     try {
-      const data = await forumAPI.getData(name, page, limit);
-      const { totalItems, posts } = data.data;
-      setTopic(posts);
+      const data = await forumAPI.getTopic(topicId, page, limit);
+      const { totalItems, posts, topic } = data.data;
+      setTopicPosts(posts);
+      setTopic(topic);
       setTotalItems(totalItems);
     } catch (error) {
       console.log(error);
     }
   };
-  const setTopic = (posts: {}) => dispatch({ type: SET_TOPIC, payload: posts });
+  const setTopic = (topic: {}) => dispatch({ type: SET_TOPIC, payload: topic });
+  const setTopicPosts = (posts: []) =>
+    dispatch({ type: SET_TOPIC_POSTS, payload: posts });
   const postTopic = async (topicData: {
     itemData: { id: number; name: string; description: string };
     requestType: string;
@@ -229,11 +240,16 @@ export const ForumProvider = ({ children }: IForumProps) => {
 
   useEffect(() => {
     if (state.initialLoad) {
-      getCategories();
+      if (type === 'forum') {
+        getForum('topics');
+      } else if (type === 'topic' && pathId) {
+        getTopic(pathId);
+      } else {
+        getCategories();
+      }
       // getPosts();
-      getForum('topics');
-      getTopic('posts');
     }
+
     // eslint-disable-next-line
   }, []);
 

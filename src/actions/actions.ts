@@ -13,6 +13,7 @@ export const SET_CATEGORY: string = 'SET_CATEGORY';
 export const SET_FORUM: string = 'SET_FORUM';
 export const SET_TOPIC: string = 'SET_TOPIC';
 export const POST_TOPIC: string = 'POST_TOPIC';
+export const SET_TOPIC_POSTS: string = 'SET_TOPIC_POSTS';
 export const SET_POST: string = 'SET_POST';
 export const POST_POST: string = 'POST_POST';
 export const SET_FORM_ITEM: string = 'SET_FORM_ITEM';

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import {
   Navbar,
   NavlinksMobile,
@@ -26,7 +26,7 @@ function App() {
   const { isModalLoginOpen, isModalSignupOpen, isModalForumOpen, formItem } =
     useFormItemContext();
   return (
-    <Router>
+    <>
       <GlobalStyle />
       <Navbar />
       {isModalLoginOpen && <Login />}
@@ -56,7 +56,7 @@ function App() {
         </Routes>
       </div>
       <Footer />
-    </Router>
+    </>
   );
 }
 export default App;

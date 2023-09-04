@@ -18,8 +18,10 @@ export const forumAPI = {
   getData(name: string, page = 1, limit = 10) {
     return instance.get(`forum/${name}?&page=${page}&limit=${limit}`);
   },
-  getTopic(topicId: number) {
-    return instance.get(`forum/topic/${topicId}`);
+  getTopic(topicId: number, page = 1, limit = 10) {
+    return instance.get(
+      `forum/topicPosts/${topicId}?&page=${page}&limit=${limit}`
+    );
   },
   postTopic(topic: {}) {
     return instance.post('forum/topic', topic);

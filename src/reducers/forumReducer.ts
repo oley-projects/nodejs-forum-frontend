@@ -3,6 +3,7 @@ import {
   SET_CATEGORY,
   SET_FORUM,
   SET_TOPIC,
+  SET_TOPIC_POSTS,
   POST_TOPIC,
   SET_POST,
   POST_POST,
@@ -39,13 +40,19 @@ const forumReducer = (
       topics: action.payload,
     };
   }
+  if (action.type === SET_TOPIC) {
+    return {
+      ...state,
+      topic: action.payload,
+    };
+  }
   if (action.type === POST_TOPIC) {
     return {
       ...state,
       topics: action.payload,
     };
   }
-  if (action.type === SET_TOPIC) {
+  if (action.type === SET_TOPIC_POSTS) {
     return {
       ...state,
       posts: action.payload,

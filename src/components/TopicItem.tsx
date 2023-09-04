@@ -41,7 +41,7 @@ const TopicItem = ({
   };
 
   const clickTopicHandler = () => {
-    getTopic('posts');
+    getTopic(id);
   };
   return (
     <WrapTopicItem className='grid-table-item'>
@@ -52,7 +52,7 @@ const TopicItem = ({
             to={`/viewtopic/${id}`}
             onClick={clickTopicHandler}
           >
-            {creator.name}
+            {name}
           </Link>
         </div>
         <div>

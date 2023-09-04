@@ -5,7 +5,7 @@ import { ItemAction, Paginator, TopicPostItem } from '../components';
 import { useForumContext } from '../context/forumContext';
 
 const TopicPage = () => {
-  const { posts, postPost } = useForumContext();
+  const { topic, posts, postPost } = useForumContext();
   const [postText, setPostText] = useState('');
 
   const { pathname } = useLocation();
@@ -37,7 +37,7 @@ const TopicPage = () => {
   return (
     <WrapTopicPage>
       <header className='header-post'>
-        <div>{topicId}</div>
+        <div>{topic.name}</div>
         <div className='nav-post'>
           <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
           <Paginator name='posts' />
