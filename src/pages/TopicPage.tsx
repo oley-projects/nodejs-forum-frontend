@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { ItemAction, Paginator, TopicPostItem } from '../components';
+import { ItemAction, Paginator, TopicPostItem, Loader } from '../components';
 import { useForumContext } from '../context/forumContext';
 
 const TopicPage = () => {
-  const { topic, posts, postPost } = useForumContext();
+  const { topic, posts, postPost, isLoading, totalItems, pageSize } =
+    useForumContext();
+  const pageCount = Math.ceil(totalItems / pageSize);
   const [postText, setPostText] = useState('');
 
   const { pathname } = useLocation();
@@ -36,37 +38,45 @@ const TopicPage = () => {
   };
   return (
     <WrapTopicPage>
-      <header className='header-post'>
-        <div>{topic.name}</div>
-        <div className='nav-post'>
-          <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
-          <Paginator name='posts' />
-        </div>
-      </header>
-      <ul className='content'>
-        {posts.length > 0 ? (
-          posts.map((post) => <TopicPostItem key={post.id} {...post} />)
-        ) : (
-          <div>Empty topic</div>
-        )}
-      </ul>
-      <div className='post-action'>
-        <header>
-          <div>
-            <button>B</button>
-            <button>I</button>
-            <button>L</button>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <header className='header-post'>
+            <div>{topic.name}</div>
+            <div className='nav-post'>
+              <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
+              {pageCount > 1 && (
+                <Paginator name='topic' id={parseInt(topicId)} />
+              )}
+            </div>
+          </header>
+          <ul className='content'>
+            {posts.length > 0 ? (
+              posts.map((post) => <TopicPostItem key={post.id} {...post} />)
+            ) : (
+              <div>Empty topic</div>
+            )}
+          </ul>
+          <div className='post-action'>
+            <header>
+              <div>
+                <button>B</button>
+                <button>I</button>
+                <button>L</button>
+              </div>
+              <div>
+                <button>Preview</button>
+              </div>
+            </header>
+            <textarea value={postText} onChange={changePostTextHandler} />
+            <footer>
+              <button>Load files</button>
+              <button onClick={newPostHandler}>Send</button>
+            </footer>
           </div>
-          <div>
-            <button>Preview</button>
-          </div>
-        </header>
-        <textarea value={postText} onChange={changePostTextHandler} />
-        <footer>
-          <button>Load files</button>
-          <button onClick={newPostHandler}>Send</button>
-        </footer>
-      </div>
+        </>
+      )}
     </WrapTopicPage>
   );
 };

@@ -10,7 +10,7 @@ interface ITopicItemProps {
   description: string;
   creator: { _id: string; name: string };
   createdAt: string;
-  replies: string;
+  posts: [];
   views: string;
   lastPostUser: string;
   lastPostCreatedAt: string;
@@ -21,7 +21,7 @@ const TopicItem = ({
   description,
   creator,
   createdAt,
-  replies,
+  posts,
   views,
   lastPostUser,
   lastPostCreatedAt,
@@ -60,7 +60,7 @@ const TopicItem = ({
         </div>
       </div>
       <div className='align-center'>
-        <div>{replies}</div>
+        <div>{posts?.length || 0}</div>
         <div>Replies</div>
       </div>
       <div className='align-center'>

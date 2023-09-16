@@ -14,7 +14,7 @@ import {
   SET_TOTAL_ITEMS,
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
-  INITIAL_LOAD,
+  SET_INITIAL_LOAD,
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
@@ -50,7 +50,7 @@ export type TForumContext = {
   setPageSize: (args: number) => void;
   setCurrentPage: (args: number) => void;
   setTotalItems: (args: number) => void;
-  setInitialLoad: () => void;
+  setInitialLoad: (initialLoad: boolean) => void;
   isNavbarOpen: boolean;
   isLoading: boolean;
   categories: [{ id: number; name: string }];
@@ -63,7 +63,7 @@ export type TForumContext = {
       description: string;
       creator: { _id: string; name: string };
       createdAt: string;
-      replies: string;
+      posts: [];
       views: string;
       lastPostUser: string;
       lastPostCreatedAt: string;
@@ -135,9 +135,10 @@ export const ForumProvider = ({ children }: IForumProps) => {
       dispatch({ type: LOADING_FALSE });
     }
   };
-  const setForum = (topics: {}) =>
+  const setForum = (topics: []) =>
     dispatch({ type: SET_FORUM, payload: topics });
   const getTopic = async (topicId: number, page?: number, limit?: number) => {
+    if (!state.isLoading) dispatch({ type: LOADING_TRUE });
     try {
       const data = await forumAPI.getTopic(topicId, page, limit);
       const { totalItems, posts, topic } = data.data;
@@ -146,6 +147,8 @@ export const ForumProvider = ({ children }: IForumProps) => {
       setTotalItems(totalItems);
     } catch (error) {
       console.log(error);
+    } finally {
+      dispatch({ type: LOADING_FALSE });
     }
   };
   const setTopic = (topic: {}) => dispatch({ type: SET_TOPIC, payload: topic });
@@ -236,7 +239,8 @@ export const ForumProvider = ({ children }: IForumProps) => {
   };
   const setPageSize = (page: number) =>
     dispatch({ type: SET_PAGE_SIZE, payload: page });
-  const setInitialLoad = () => dispatch({ type: INITIAL_LOAD });
+  const setInitialLoad = (initialLoad: boolean) =>
+    dispatch({ type: SET_INITIAL_LOAD, payload: initialLoad });
 
   useEffect(() => {
     if (state.initialLoad) {
@@ -249,7 +253,6 @@ export const ForumProvider = ({ children }: IForumProps) => {
       }
       // getPosts();
     }
-
     // eslint-disable-next-line
   }, []);
 

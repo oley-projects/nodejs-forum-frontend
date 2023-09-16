@@ -14,7 +14,7 @@ import {
   SET_TOTAL_ITEMS,
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
-  INITIAL_LOAD,
+  SET_INITIAL_LOAD,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
@@ -91,8 +91,8 @@ const forumReducer = (
   if (action.type === SET_PAGE_SIZE) {
     return { ...state, pageSize: action.payload };
   }
-  if (action.type === INITIAL_LOAD) {
-    return { ...state, initialLoad: false };
+  if (action.type === SET_INITIAL_LOAD) {
+    return { ...state, initialLoad: action.payload };
   }
   return { ...state };
 };

@@ -2,35 +2,54 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useForumContext } from '../context/forumContext';
 
-const Paginator = ({ name }: { name: string }) => {
+const Paginator = ({ name, id }: { name: string; id: number }) => {
   const {
     totalItems,
     currentPage,
     pageSize,
     setCurrentPage,
     getForum,
+    getTopic,
     initialLoad,
-    setInitialLoad,
   } = useForumContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const pages = Array.from(Array(pageCount).keys());
+
+  const getData = (name: string, id: number, currentPage: number) => {
+    if (name === 'topics') {
+      getForum(name, currentPage);
+    } else if (name === 'topic') {
+      getTopic(id, currentPage);
+    }
+  };
+
   const prevHandler = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      getData(name, id || 0, currentPage - 1);
+      setCurrentPage(currentPage - 1);
+    }
   };
   const nextHandler = () => {
-    if (currentPage < pageCount) setCurrentPage(currentPage + 1);
+    if (currentPage < pageCount) {
+      getData(name, id || 0, currentPage + 1);
+      setCurrentPage(currentPage + 1);
+    }
   };
   const pageHandler = (page: number) => {
+    getData(name, id || 0, page);
     setCurrentPage(page);
   };
   useEffect(() => {
     if (!initialLoad) {
-      getForum(name, currentPage);
-    } else {
-      setInitialLoad();
+      if (name === 'topics') {
+        getForum(name, currentPage);
+      } else if (name === 'topic') {
+        getTopic(id, currentPage);
+      }
+      getData(name, id, currentPage);
     }
     // eslint-disable-next-line
-  }, [currentPage]);
+  }, []);
   return (
     <WrapPaginator>
       <li>

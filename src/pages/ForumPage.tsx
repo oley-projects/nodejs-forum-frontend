@@ -30,7 +30,7 @@ const ForumPage = () => {
 
         <div className='nav-links'>
           <span>{totalItems} topics</span>
-          {pageCount > 1 && <Paginator name='topics' />}
+          {pageCount > 1 && <Paginator name='topics' id={0} />}
         </div>
       </div>
       {isLoading ? (
