@@ -8,7 +8,7 @@ const TopicPage = () => {
   const { topic, posts, postPost, isLoading, totalItems, pageSize } =
     useForumContext();
   const pageCount = Math.ceil(totalItems / pageSize);
-  const [postText, setPostText] = useState('');
+  const [postText, setPostText] = useState<string>('');
 
   const { pathname } = useLocation();
   const topicId = pathname.split('/')[2];
@@ -36,6 +36,7 @@ const TopicPage = () => {
     postPost(postData);
     setPostText('');
   };
+
   return (
     <WrapTopicPage>
       {isLoading ? (
@@ -53,7 +54,14 @@ const TopicPage = () => {
           </header>
           <ul className='content'>
             {posts.length > 0 ? (
-              posts.map((post) => <TopicPostItem key={post.id} {...post} />)
+              posts.map((post) => (
+                <TopicPostItem
+                  key={post.id}
+                  {...post}
+                  postText={postText}
+                  setPostText={setPostText}
+                />
+              ))
             ) : (
               <div>Empty topic</div>
             )}

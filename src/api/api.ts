@@ -39,10 +39,10 @@ export const forumAPI = {
     return instance.post('forum/post', post);
   },
   updatePost(post: { id: number }) {
-    return instance.put(`forum/topic/${post.id}`, post);
+    return instance.put(`forum/post/${post.id}`, post);
   },
   deletePost(postId: number) {
-    return instance.delete(`forum/topic/${postId}`);
+    return instance.delete(`forum/post/${postId}`);
   },
   signUp(user: {}) {
     return instance.put(`auth/signup`, user);

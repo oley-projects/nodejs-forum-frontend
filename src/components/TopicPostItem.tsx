@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import ItemAction from './ItemAction';
+import { useForumContext } from '../context/forumContext';
 
 interface ITopicPostItemProps {
   /* user: string;
@@ -13,8 +14,10 @@ interface ITopicPostItemProps {
   id: number;
   description: string;
   topic: { name: string };
-  creator: { name: string };
+  creator: { name: string; _id: string };
   createdAt: string;
+  postText: string;
+  setPostText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const TopicPostItem = ({
@@ -22,7 +25,14 @@ const TopicPostItem = ({
   description,
   creator,
   createdAt,
+  postText,
+  setPostText,
 }: ITopicPostItemProps) => {
+  const { deletePost } = useForumContext();
+  const editPostHandler = (id: number) => {
+    setPostText(description);
+    window.scrollTo(0, document.body.scrollHeight);
+  };
   return (
     <WrapTopicPostItem
       className='grid-table-item'
@@ -39,7 +49,11 @@ const TopicPostItem = ({
         <div>{createdAt}</div>
         {/* <div>{signature}</div> */}
         <div className='post-detail-action' style={{ marginTop: '0.5rem' }}>
-          <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
+          <ItemAction
+            onEdit={() => editPostHandler(id)}
+            onDelete={() => deletePost(id)}
+            creatorId={creator._id}
+          />
         </div>
       </div>
     </WrapTopicPostItem>
