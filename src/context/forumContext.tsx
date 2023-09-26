@@ -15,6 +15,7 @@ import {
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
   SET_INITIAL_LOAD,
+  SET_IS_POST_EDIT,
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
@@ -41,18 +42,20 @@ export type TForumContext = {
   getForum: (name: string, page?: number, limit?: number) => void;
   getTopic: (id: number, page?: number, limit?: number) => void;
   postTopic: (args: {}) => void;
-  deleteTopic: (id: number) => void;
+  deleteTopic: (postId: number) => void;
   getPost: (args: number) => void;
   postPost: (args: {}) => void;
-  deletePost: (id: number) => void;
+  deletePost: (postId: number) => void;
   openNavbar: () => void;
   closeNavbar: () => void;
   setPageSize: (args: number) => void;
   setCurrentPage: (args: number) => void;
   setTotalItems: (args: number) => void;
   setInitialLoad: (initialLoad: boolean) => void;
+  setIsPostEdit: (isPostEdit: boolean) => void;
   isNavbarOpen: boolean;
   isLoading: boolean;
+  isPostEdit: boolean;
   categories: [{ id: number; name: string }];
   topic: { name: string };
   topics: [
@@ -96,6 +99,7 @@ const initialState = {
   pageSize: 10,
   isLoading: false,
   initialLoad: true,
+  isPostEdit: false,
 };
 
 const ForumContext = React.createContext({} as TForumContext);
@@ -215,18 +219,40 @@ export const ForumProvider = ({ children }: IForumProps) => {
       name: postData.itemData.name,
       description: postData.itemData.description,
     };
+    const pageCount = Math.ceil(state.totalItems / state.pageSize);
     try {
       if (postData.requestType === 'new post') {
         await forumAPI.postPost(post);
+        if (state.totalItems % state.pageSize === 0) {
+          setCurrentPage(pageCount + 1);
+          getTopic(pathId, pageCount + 1);
+        } else {
+          setCurrentPage(pageCount);
+          getTopic(pathId, pageCount);
+        }
       } else if (postData.requestType === 'edit post') {
-        await forumAPI.updateTopic(post);
+        await forumAPI.updatePost(post);
+        getTopic(pathId, state.currentPage);
       }
     } catch (error) {
       console.log(error);
     }
   };
   const deletePost = async (postId: number) => {
+    if (
+      state.totalItems % state.pageSize === 0 &&
+      state.totalItems >= 1 &&
+      state.currentPage === pages
+    ) {
+      setCurrentPage(state.currentPage - 1);
+    }
     await forumAPI.deletePost(postId);
+    if (state.currentPage > 1 && state.topics.length === 1) {
+      setCurrentPage(state.currentPage - 1);
+      getTopic(pathId, state.currentPage - 1);
+    } else {
+      getTopic(pathId, state.currentPage);
+    }
   };
 
   const openNavbar = () => dispatch({ type: NAVBAR_OPEN });
@@ -241,12 +267,20 @@ export const ForumProvider = ({ children }: IForumProps) => {
     dispatch({ type: SET_PAGE_SIZE, payload: page });
   const setInitialLoad = (initialLoad: boolean) =>
     dispatch({ type: SET_INITIAL_LOAD, payload: initialLoad });
+  const setIsPostEdit = (isPostEdit: boolean) =>
+    dispatch({ type: SET_IS_POST_EDIT, payload: isPostEdit });
 
   useEffect(() => {
     if (state.initialLoad) {
       if (type === 'forum') {
+        if (state.currentPage > 1) {
+          setCurrentPage(1);
+        }
         getForum('topics');
       } else if (type === 'topic' && pathId) {
+        if (state.currentPage > 1) {
+          setCurrentPage(1);
+        }
         getTopic(pathId);
       } else {
         getCategories();
@@ -254,7 +288,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
       // getPosts();
     }
     // eslint-disable-next-line
-  }, []);
+  }, [type]);
 
   return (
     <ForumContext.Provider
@@ -275,6 +309,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
         setPageSize,
         setTotalItems,
         setInitialLoad,
+        setIsPostEdit,
       }}
     >
       {children}

@@ -5,10 +5,21 @@ import { ItemAction, Paginator, TopicPostItem, Loader } from '../components';
 import { useForumContext } from '../context/forumContext';
 
 const TopicPage = () => {
-  const { topic, posts, postPost, isLoading, totalItems, pageSize } =
-    useForumContext();
+  const {
+    topic,
+    posts,
+    postPost,
+    isLoading,
+    totalItems,
+    pageSize,
+    isPostEdit,
+    setIsPostEdit,
+  } = useForumContext();
   const pageCount = Math.ceil(totalItems / pageSize);
-  const [postText, setPostText] = useState<string>('');
+  const [editPost, setEditPost] = useState<{ id: number; text: string }>({
+    id: 0,
+    text: '',
+  });
 
   const { pathname } = useLocation();
   const topicId = pathname.split('/')[2];
@@ -26,15 +37,25 @@ const TopicPage = () => {
     },
   ]; */
   const changePostTextHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPostText(e.target.value);
+    setEditPost((prev) => ({ ...prev, text: e.target.value }));
   };
   const newPostHandler = () => {
+    let requestType;
+    let id;
+    if (isPostEdit) {
+      setIsPostEdit(false);
+      requestType = 'edit post';
+      id = editPost.id;
+    } else {
+      requestType = 'new post';
+      id = topicId;
+    }
     const postData = {
-      itemData: { id: topicId, name: '', description: postText },
-      requestType: 'new post',
+      itemData: { id, name: '', description: editPost.text },
+      requestType,
     };
     postPost(postData);
-    setPostText('');
+    setEditPost({ id: 0, text: '' });
   };
 
   return (
@@ -58,8 +79,7 @@ const TopicPage = () => {
                 <TopicPostItem
                   key={post.id}
                   {...post}
-                  postText={postText}
-                  setPostText={setPostText}
+                  setEditPost={setEditPost}
                 />
               ))
             ) : (
@@ -77,7 +97,7 @@ const TopicPage = () => {
                 <button>Preview</button>
               </div>
             </header>
-            <textarea value={postText} onChange={changePostTextHandler} />
+            <textarea value={editPost.text} onChange={changePostTextHandler} />
             <footer>
               <button>Load files</button>
               <button onClick={newPostHandler}>Send</button>

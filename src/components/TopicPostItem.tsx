@@ -16,21 +16,26 @@ interface ITopicPostItemProps {
   topic: { name: string };
   creator: { name: string; _id: string };
   createdAt: string;
-  postText: string;
-  setPostText: React.Dispatch<React.SetStateAction<string>>;
+  setEditPost: React.Dispatch<
+    React.SetStateAction<{ id: number; text: string }>
+  >;
 }
 
 const TopicPostItem = ({
   id,
   description,
+  topic,
   creator,
   createdAt,
-  postText,
-  setPostText,
+  setEditPost,
 }: ITopicPostItemProps) => {
-  const { deletePost } = useForumContext();
+  const { deletePost, isPostEdit, setIsPostEdit } = useForumContext();
   const editPostHandler = (id: number) => {
-    setPostText(description);
+    if (!isPostEdit) {
+      setIsPostEdit(true);
+    }
+    const postData = { id, text: description };
+    setEditPost(postData);
     window.scrollTo(0, document.body.scrollHeight);
   };
   return (

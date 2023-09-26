@@ -15,6 +15,7 @@ import {
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
   SET_INITIAL_LOAD,
+  SET_IS_POST_EDIT,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
@@ -93,6 +94,9 @@ const forumReducer = (
   }
   if (action.type === SET_INITIAL_LOAD) {
     return { ...state, initialLoad: action.payload };
+  }
+  if (action.type === SET_IS_POST_EDIT) {
+    return { ...state, isPostEdit: action.payload };
   }
   return { ...state };
 };
