@@ -167,16 +167,15 @@ export const ForumProvider = ({ children }: IForumProps) => {
       name: topicData.itemData.name,
       description: topicData.itemData.description,
     };
-    const pageCount = Math.ceil(state.totalItems / state.pageSize);
     try {
       if (topicData.requestType === 'new topic') {
         await forumAPI.postTopic(topic);
         if (state.totalItems % state.pageSize === 0) {
-          setCurrentPage(pageCount + 1);
-          getForum('topics', pageCount + 1);
+          setCurrentPage(pages + 1);
+          getForum('topics', pages + 1);
         } else {
-          setCurrentPage(pageCount);
-          getForum('topics', pageCount);
+          setCurrentPage(pages);
+          getForum('topics', pages);
         }
       } else if (topicData.requestType === 'edit topic') {
         await forumAPI.updateTopic(topic);
@@ -187,19 +186,25 @@ export const ForumProvider = ({ children }: IForumProps) => {
     }
   };
   const deleteTopic = async (topicId: number) => {
-    if (
-      state.totalItems % state.pageSize === 0 &&
-      state.totalItems >= 1 &&
-      state.currentPage === pages
-    ) {
-      setCurrentPage(state.currentPage - 1);
-    }
-    await forumAPI.deleteTopic(topicId);
-    if (state.currentPage > 1 && state.topics.length === 1) {
-      setCurrentPage(state.currentPage - 1);
-      getForum('topics', state.currentPage - 1);
-    } else {
-      getForum('topics', state.currentPage);
+    try {
+      await forumAPI.deleteTopic(topicId);
+      if (
+        state.totalItems % state.pageSize === 0 &&
+        state.totalItems >= 1 &&
+        state.currentPage === pages &&
+        state.topics.length < state.pageSize
+      ) {
+        setCurrentPage(state.currentPage - 1);
+      }
+
+      if (state.currentPage > 1 && state.topics.length === 1) {
+        setCurrentPage(state.currentPage - 1);
+        getForum('topics', state.currentPage - 1);
+      } else {
+        getForum('topics', state.currentPage);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
   // const getPosts = () => dispatch({ type: SET_TOPIC, payload: posts });
@@ -219,16 +224,15 @@ export const ForumProvider = ({ children }: IForumProps) => {
       name: postData.itemData.name,
       description: postData.itemData.description,
     };
-    const pageCount = Math.ceil(state.totalItems / state.pageSize);
     try {
       if (postData.requestType === 'new post') {
         await forumAPI.postPost(post);
         if (state.totalItems % state.pageSize === 0) {
-          setCurrentPage(pageCount + 1);
-          getTopic(pathId, pageCount + 1);
+          setCurrentPage(pages + 1);
+          getTopic(pathId, pages + 1);
         } else {
-          setCurrentPage(pageCount);
-          getTopic(pathId, pageCount);
+          setCurrentPage(pages);
+          getTopic(pathId, pages);
         }
       } else if (postData.requestType === 'edit post') {
         await forumAPI.updatePost(post);
@@ -239,19 +243,25 @@ export const ForumProvider = ({ children }: IForumProps) => {
     }
   };
   const deletePost = async (postId: number) => {
-    if (
-      state.totalItems % state.pageSize === 0 &&
-      state.totalItems >= 1 &&
-      state.currentPage === pages
-    ) {
-      setCurrentPage(state.currentPage - 1);
-    }
-    await forumAPI.deletePost(postId);
-    if (state.currentPage > 1 && state.topics.length === 1) {
-      setCurrentPage(state.currentPage - 1);
-      getTopic(pathId, state.currentPage - 1);
-    } else {
-      getTopic(pathId, state.currentPage);
+    try {
+      await forumAPI.deletePost(postId);
+      if (
+        state.totalItems % state.pageSize <= 1 &&
+        state.totalItems >= 1 &&
+        state.currentPage === pages &&
+        state.posts.length < state.pageSize
+      ) {
+        setCurrentPage(pages - 1);
+        getTopic(pathId, pages - 1);
+      }
+      if (state.currentPage > 1 && state.topics.length === 1) {
+        setCurrentPage(state.currentPage - 1);
+        getTopic(pathId, state.page - 1);
+      } else {
+        getTopic(pathId, state.currentPage);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -271,7 +281,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
     dispatch({ type: SET_IS_POST_EDIT, payload: isPostEdit });
 
   useEffect(() => {
-    if (state.initialLoad) {
+    if (state.initialLoad && !state.isLoading) {
       if (type === 'forum') {
         if (state.currentPage > 1) {
           setCurrentPage(1);
