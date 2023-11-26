@@ -1,9 +1,9 @@
 import Navlinks from './Navlinks';
 import styled from 'styled-components';
-import { useForumContext } from '../context/forumContext';
+import { useGeneralContext } from '../context/generalContext';
 
 const NavlinksMobile = () => {
-  const { isNavbarOpen } = useForumContext();
+  const { isNavbarOpen } = useGeneralContext();
   return (
     <WrapNav className={isNavbarOpen ? 'show-navbar' : ''}>
       <Navlinks />

@@ -13,36 +13,59 @@ const instance = axios.create({
 
 export const forumAPI = {
   getCategories() {
-    return instance.get('forum/categories');
+    return instance.get('categories');
   },
   getData(name: string, page = 1, limit = 10) {
-    return instance.get(`forum/${name}?&page=${page}&limit=${limit}`);
+    return instance.get(`${name}?&page=${page}&limit=${limit}`);
+  },
+  getCategory(categoryId: number, page = 1, limit = 10) {
+    return instance.get(`category/${categoryId}?&page=${page}&limit=${limit}`);
+  },
+  postCategory(category: {}) {
+    console.log(category);
+    return instance.post('category', category);
+  },
+  updateCategory(category: { id: number }) {
+    return instance.put(`category/${category.id}`, category);
+  },
+  deleteCategory(categoryId: number) {
+    return instance.delete(`category/${categoryId}`);
+  },
+  getForum(forumId: number, page = 1, limit = 10) {
+    return instance.get(`forum/${forumId}?&page=${page}&limit=${limit}`);
+  },
+  postForum(forum: {}) {
+    return instance.post('forum', forum);
+  },
+  updateForum(forum: { id: number }) {
+    return instance.put(`forum/${forum.id}`, forum);
+  },
+  deleteForum(forumId: number) {
+    return instance.delete(`forum/${forumId}`);
   },
   getTopic(topicId: number, page = 1, limit = 10) {
-    return instance.get(
-      `forum/topicPosts/${topicId}?&page=${page}&limit=${limit}`
-    );
+    return instance.get(`topicPosts/${topicId}?&page=${page}&limit=${limit}`);
   },
   postTopic(topic: {}) {
-    return instance.post('forum/topic', topic);
+    return instance.post('topic', topic);
   },
   updateTopic(topic: { id: number }) {
-    return instance.put(`forum/topic/${topic.id}`, topic);
+    return instance.put(`topic/${topic.id}`, topic);
   },
   deleteTopic(topicId: number) {
-    return instance.delete(`forum/topic/${topicId}`);
+    return instance.delete(`topic/${topicId}`);
   },
   getPost(postId: number) {
-    return instance.get(`forum/post/${postId}`);
+    return instance.get(`post/${postId}`);
   },
   postPost(post: {}) {
-    return instance.post('forum/post', post);
+    return instance.post('post', post);
   },
   updatePost(post: { id: number }) {
-    return instance.put(`forum/post/${post.id}`, post);
+    return instance.put(`post/${post.id}`, post);
   },
   deletePost(postId: number) {
-    return instance.delete(`forum/post/${postId}`);
+    return instance.delete(`post/${postId}`);
   },
   signUp(user: {}) {
     return instance.put(`auth/signup`, user);

@@ -3,55 +3,20 @@ import styled from 'styled-components';
 import CategoryForumElem from './CategoryForumElem';
 import ItemAction from './ItemAction';
 
-const forums = [
-  {
-    id: 1,
-    name: 'First forum',
-    description: 'This is just text for forum 1',
-    topics: '3',
-    posts: '10',
-    lastTopic: 'Last topic',
-    lastUser: 'User',
-    lastPostDate: `${new Date().toLocaleString()}`,
-  },
-  {
-    id: 2,
-    name: 'Second forum',
-    description: 'This is just text for forum 2',
-    topics: '6',
-    posts: '21',
-    lastTopic: 'Last topic',
-    lastUser: 'User',
-    lastPostDate: `${new Date().toLocaleString()}`,
-  },
-  {
-    id: 3,
-    name: 'Thirt forum',
-    description: 'This is just text for forum 3',
-    topics: '2',
-    posts: '8',
-    lastTopic: 'Last topic',
-    lastUser: 'User',
-    lastPostDate: `${new Date().toLocaleString()}`,
-  },
-  {
-    id: 4,
-    name: 'Fourth forum',
-    description: 'This is just text for forum 4',
-    topics: '3',
-    posts: '7',
-    lastTopic: 'Last topic',
-    lastUser: 'User',
-    lastPostDate: `${new Date().toLocaleString()}`,
-  },
-];
-
 interface ICatProps {
   id: number;
   name: string;
+  description: string;
+  forums: [
+    {
+      id: number;
+      name: string;
+      topics: [];
+    }
+  ];
 }
 
-const Category = ({ id, name }: ICatProps) => {
+const Category = ({ id, name, forums }: ICatProps) => {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'end' }}>

@@ -2,19 +2,15 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ItemAction, Paginator, TopicPostItem, Loader } from '../components';
-import { useForumContext } from '../context/forumContext';
+import { useGeneralContext } from '../context/generalContext';
+import { useTopicContext } from '../context/topicContext';
+import { usePostContext } from '../context/postContext';
 
 const TopicPage = () => {
-  const {
-    topic,
-    posts,
-    postPost,
-    isLoading,
-    totalItems,
-    pageSize,
-    isPostEdit,
-    setIsPostEdit,
-  } = useForumContext();
+  const { isLoading, totalItems, pageSize, isPostEdit, setIsPostEdit } =
+    useGeneralContext();
+  const { topic } = useTopicContext();
+  const { posts, postPost } = usePostContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const [editPost, setEditPost] = useState<{ id: number; text: string }>({
     id: 0,

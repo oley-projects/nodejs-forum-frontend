@@ -4,7 +4,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { GeneralProvider } from './context/generalContext';
+import { CategoryProvider } from './context/categoryContext';
 import { ForumProvider } from './context/forumContext';
+import { TopicProvider } from './context/topicContext';
+import { PostProvider } from './context/postContext';
 import { FormItemProvider } from './context/formItemContext';
 import { AuthProvider } from './context/authContext';
 
@@ -13,13 +17,21 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Router>
-    <ForumProvider>
-      <FormItemProvider>
-        <AuthProvider>
-          <App />
-        </AuthProvider>
-      </FormItemProvider>
-    </ForumProvider>
+    <GeneralProvider>
+      <CategoryProvider>
+        <ForumProvider>
+          <TopicProvider>
+            <PostProvider>
+              <FormItemProvider>
+                <AuthProvider>
+                  <App />
+                </AuthProvider>
+              </FormItemProvider>
+            </PostProvider>
+          </TopicProvider>
+        </ForumProvider>
+      </CategoryProvider>
+    </GeneralProvider>
   </Router>
 );
 // If you want to start measuring performance in your app, pass a function

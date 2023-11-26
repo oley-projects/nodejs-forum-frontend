@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFormItemContext } from '../context/formItemContext';
-import { useForumContext } from '../context/forumContext';
+import { useTopicContext } from '../context/topicContext';
 import ItemAction from './ItemAction';
 
 interface ITopicItemProps {
@@ -27,7 +27,7 @@ const TopicItem = ({
   lastPostCreatedAt,
 }: ITopicItemProps) => {
   const { openModalForum, setFormItem } = useFormItemContext();
-  const { deleteTopic, getTopic } = useForumContext();
+  const { deleteTopic, getTopic } = useTopicContext();
 
   const editHandler = () => {
     setFormItem({

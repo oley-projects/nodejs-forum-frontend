@@ -1,5 +1,4 @@
-export const LOADING_TRUE: string = 'LOADING_TRUE';
-export const LOADING_FALSE: string = 'LOADING_FALSE';
+export const SET_IS_LOADING: string = 'SET_IS_LOADING';
 export const NAVBAR_OPEN: string = 'NAVBAR_OPEN';
 export const NAVBAR_CLOSE: string = 'NAVBAR_CLOSE';
 export const MODAL_LOGIN_OPEN: string = 'MODAL_LOGIN_OPEN';
@@ -12,10 +11,8 @@ export const SET_CATEGORIES: string = 'SET_CATEGORIES';
 export const SET_CATEGORY: string = 'SET_CATEGORY';
 export const SET_FORUM: string = 'SET_FORUM';
 export const SET_TOPIC: string = 'SET_TOPIC';
-export const POST_TOPIC: string = 'POST_TOPIC';
 export const SET_TOPIC_POSTS: string = 'SET_TOPIC_POSTS';
 export const SET_POST: string = 'SET_POST';
-export const POST_POST: string = 'POST_POST';
 export const SET_FORM_ITEM: string = 'SET_FORM_ITEM';
 export const SET_TOTAL_ITEMS: string = 'SET_TOTAL_ITEMS';
 export const SET_CURRENT_PAGE: string = 'SET_CURRENT_PAGE';

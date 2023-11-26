@@ -1,22 +1,44 @@
 import styled from 'styled-components';
-import { Sidebar, Category, PostList } from '../components';
-import { useForumContext } from '../context/forumContext';
+import { Sidebar, Category, PostList, Loader } from '../components';
+import { useGeneralContext } from '../context/generalContext';
+import { useCategoryContext } from '../context/categoryContext';
+import { useFormItemContext } from '../context/formItemContext';
 
 const HomePage = () => {
-  const { categories } = useForumContext();
+  const { isLoading } = useGeneralContext();
+
+  const { categories } = useCategoryContext();
+  const { openModalForum, setFormItem } = useFormItemContext();
+
+  const newCategoryHandler = () => {
+    setFormItem({
+      id: 0,
+      name: '',
+      description: '',
+      action: 'new',
+      type: 'category',
+    });
+    openModalForum();
+  };
   return (
     <WrapHome>
-      <div>
-        {categories.map((category) => (
-          <Category key={category.id} {...category} />
-        ))}
-        <div style={{ display: 'flex', justifyContent: 'end' }}>
-          <button>Add Category</button>
-        </div>
-      </div>
-      <Sidebar>
-        <PostList />
-      </Sidebar>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <div>
+            {categories.map((category) => (
+              <Category key={category.id} {...category} />
+            ))}
+            <div style={{ display: 'flex', justifyContent: 'end' }}>
+              <button onClick={newCategoryHandler}>Add Category</button>
+            </div>
+          </div>
+          <Sidebar>
+            <PostList />
+          </Sidebar>
+        </>
+      )}
     </WrapHome>
   );
 };

@@ -6,24 +6,10 @@ import { useForumContext } from '../context/forumContext';
 interface ICatForumElemProps {
   id: number;
   name: string;
-  description: string;
-  topics: string;
-  posts: string;
-  lastTopic: string;
-  lastUser: string;
-  lastPostDate: string;
+  topics: [];
 }
 
-const CategoryForumElem = ({
-  id,
-  name,
-  description,
-  topics,
-  posts,
-  lastTopic,
-  lastUser,
-  lastPostDate,
-}: ICatForumElemProps) => {
+const CategoryForumElem = ({ id, name, topics }: ICatForumElemProps) => {
   const { getForum } = useForumContext();
 
   return (
@@ -36,24 +22,23 @@ const CategoryForumElem = ({
         >
           {name}
         </Link>
-        <div>{description}</div>
       </div>
       <div className='total-stats'>
         <div>{topics}</div>
         <div>Topics</div>
       </div>
       <div className='total-stats'>
-        <div>{posts}</div>
+        <div>{topics.length + ' topics'}</div>
         <div>Posts</div>
       </div>
       <div>
         <div>
           <Link className='inline-link' to={`/viewtopic/1`}>
-            {lastTopic}
+            {'lastTopic'}
           </Link>
         </div>
-        <div>by {lastUser}</div>
-        <div>at {lastPostDate}</div>
+        <div>by {'lastUser'}</div>
+        <div>at {'lastPostDate'}</div>
       </div>
       <div className='box'>
         <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />

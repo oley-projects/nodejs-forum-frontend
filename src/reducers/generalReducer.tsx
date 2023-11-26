@@ -4,11 +4,7 @@ import {
   SET_FORUM,
   SET_TOPIC,
   SET_TOPIC_POSTS,
-  POST_TOPIC,
-  SET_POST,
-  POST_POST,
-  LOADING_TRUE,
-  LOADING_FALSE,
+  SET_IS_LOADING,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
   SET_TOTAL_ITEMS,
@@ -19,7 +15,7 @@ import {
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
-const forumReducer = (
+const generalReducer = (
   state: TState,
   action: { [key: string]: string | number }
 ) => {
@@ -32,7 +28,7 @@ const forumReducer = (
   if (action.type === SET_CATEGORY) {
     return {
       ...state,
-      forums: action.payload,
+      category: action.payload,
     };
   }
   if (action.type === SET_FORUM) {
@@ -47,35 +43,14 @@ const forumReducer = (
       topic: action.payload,
     };
   }
-  if (action.type === POST_TOPIC) {
-    return {
-      ...state,
-      topics: action.payload,
-    };
-  }
   if (action.type === SET_TOPIC_POSTS) {
     return {
       ...state,
       posts: action.payload,
     };
   }
-  if (action.type === POST_POST) {
-    return {
-      ...state,
-      topics: action.payload,
-    };
-  }
-  if (action.type === SET_POST) {
-    return {
-      ...state,
-      posts: action.payload,
-    };
-  }
-  if (action.type === LOADING_TRUE) {
-    return { ...state, isLoading: true };
-  }
-  if (action.type === LOADING_FALSE) {
-    return { ...state, isLoading: false };
+  if (action.type === SET_IS_LOADING) {
+    return { ...state, isLoading: action.payload };
   }
   if (action.type === NAVBAR_OPEN) {
     return { ...state, isNavbarOpen: true };
@@ -101,4 +76,4 @@ const forumReducer = (
   return { ...state };
 };
 
-export default forumReducer;
+export default generalReducer;

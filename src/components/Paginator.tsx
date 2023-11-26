@@ -1,17 +1,14 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { useGeneralContext } from '../context/generalContext';
 import { useForumContext } from '../context/forumContext';
+import { useTopicContext } from '../context/topicContext';
 
 const Paginator = ({ name, id }: { name: string; id: number }) => {
-  const {
-    totalItems,
-    currentPage,
-    pageSize,
-    setCurrentPage,
-    getForum,
-    getTopic,
-    initialLoad,
-  } = useForumContext();
+  const { totalItems, currentPage, pageSize, setCurrentPage, initialLoad } =
+    useGeneralContext();
+  const { getForum } = useForumContext();
+  const { getTopic } = useTopicContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const pages = Array.from(Array(pageCount).keys());
 

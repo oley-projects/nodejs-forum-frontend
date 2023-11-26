@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import Modal from './Modal';
 import styled from 'styled-components';
+import { useTopicContext } from '../context/topicContext';
 import { useForumContext } from '../context/forumContext';
+import { useCategoryContext } from '../context/categoryContext';
 import { useFormItemContext } from '../context/formItemContext';
 
 interface IState {
@@ -13,7 +15,9 @@ interface IState {
 }
 
 const FormItem = ({ id, type, action, name, description }: IState) => {
-  const { postTopic } = useForumContext();
+  const { postTopic } = useTopicContext();
+  const { postForum } = useForumContext();
+  const { postCategory } = useCategoryContext();
   const { closeModalForum } = useFormItemContext();
   const [itemData, setItemData] = useState({
     id,
@@ -29,10 +33,17 @@ const FormItem = ({ id, type, action, name, description }: IState) => {
   const setFormDataHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const requestType = action + ' ' + type;
+    const postData: { [key: string]: Function } = {
+      postTopic,
+      postForum,
+      postCategory,
+    };
     closeModalForum();
-    postTopic({ itemData, requestType });
+
+    // Dynamic function call, depent on forum type
+    postData['post' + stringCapitalize(type)]({ itemData, requestType });
   };
-  const topicOnchange = (e: React.ChangeEvent<any>) => {
+  const inputOnchange = (e: React.ChangeEvent<any>) => {
     setItemData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
@@ -56,7 +67,7 @@ const FormItem = ({ id, type, action, name, description }: IState) => {
               required
               placeholder={`Enter ${type} name`}
               value={itemData.name || ''}
-              onChange={topicOnchange}
+              onChange={inputOnchange}
             />
           </div>
           <div className='input'>
@@ -67,7 +78,7 @@ const FormItem = ({ id, type, action, name, description }: IState) => {
               placeholder={`${stringCapitalize(type)} description`}
               required
               value={itemData.description || ''}
-              onChange={topicOnchange}
+              onChange={inputOnchange}
             />
           </div>
           <div className='btn-panel'>

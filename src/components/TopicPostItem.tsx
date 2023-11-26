@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import ItemAction from './ItemAction';
-import { useForumContext } from '../context/forumContext';
+import { usePostContext } from '../context/postContext';
+import { useGeneralContext } from '../context/generalContext';
 
 interface ITopicPostItemProps {
   /* user: string;
@@ -29,7 +30,8 @@ const TopicPostItem = ({
   createdAt,
   setEditPost,
 }: ITopicPostItemProps) => {
-  const { deletePost, isPostEdit, setIsPostEdit } = useForumContext();
+  const { deletePost } = usePostContext();
+  const { isPostEdit, setIsPostEdit } = useGeneralContext();
   const editPostHandler = (id: number) => {
     if (!isPostEdit) {
       setIsPostEdit(true);

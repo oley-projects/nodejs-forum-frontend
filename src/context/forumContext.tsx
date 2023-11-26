@@ -1,133 +1,48 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import forumReducer from '../reducers/forumReducer';
+//import { useLocation } from 'react-router-dom';
+import generalReducer from '../reducers/generalReducer';
+import { useGeneralContext } from './generalContext';
+
 import {
-  SET_CATEGORIES,
-  SET_CATEGORY,
   SET_FORUM,
-  SET_TOPIC,
-  SET_TOPIC_POSTS,
-  LOADING_TRUE,
-  LOADING_FALSE,
-  NAVBAR_OPEN,
-  NAVBAR_CLOSE,
-  SET_TOTAL_ITEMS,
-  SET_CURRENT_PAGE,
-  SET_PAGE_SIZE,
-  SET_INITIAL_LOAD,
-  SET_IS_POST_EDIT,
+  //SET_TOPIC,
+  //SET_TOPIC_POSTS,
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
-
-const forums = [
-  { id: 1, name: 'Topic 1', categoty: 'main' },
-  { id: 2, name: 'Topic 2', categoty: 'main' },
-  { id: 3, name: 'Topic 3', categoty: 'addition' },
-  { id: 4, name: 'Topic 4', categoty: 'main' },
-  { id: 5, name: 'Topic 5', categoty: 'main' },
-  { id: 6, name: 'Topic 6', categoty: 'main' },
-  { id: 7, name: 'Topic 7', categoty: 'addition' },
-  { id: 8, name: 'Topic 8', categoty: 'addition' },
-  { id: 9, name: 'Topic 9', categoty: 'addition' },
-  { id: 10, name: 'Topic 10', categoty: 'main' },
-];
 
 interface IForumProps {
   children: ReactNode;
 }
 
 export type TForumContext = {
-  getCategories: () => void;
-  getCategory: () => void;
   getForum: (name: string, page?: number, limit?: number) => void;
-  getTopic: (id: number, page?: number, limit?: number) => void;
-  postTopic: (args: {}) => void;
-  deleteTopic: (postId: number) => void;
-  getPost: (args: number) => void;
-  postPost: (args: {}) => void;
-  deletePost: (postId: number) => void;
-  openNavbar: () => void;
-  closeNavbar: () => void;
-  setPageSize: (args: number) => void;
-  setCurrentPage: (args: number) => void;
-  setTotalItems: (args: number) => void;
-  setInitialLoad: (initialLoad: boolean) => void;
-  setIsPostEdit: (isPostEdit: boolean) => void;
-  isNavbarOpen: boolean;
-  isLoading: boolean;
-  isPostEdit: boolean;
-  categories: [{ id: number; name: string }];
-  topic: { name: string };
-  topics: [
-    {
-      _id: string;
-      id: number;
-      name: string;
-      description: string;
-      creator: { _id: string; name: string };
-      createdAt: string;
-      posts: [];
-      views: string;
-      lastPostUser: string;
-      lastPostCreatedAt: string;
-    }
-  ];
-  posts: [
-    {
-      id: number;
-      name: string;
-      description: string;
-      topic: { _id: string; name: string };
-      creator: { _id: string; name: string };
-      createdAt: string;
-    }
-  ];
-  totalItems: number;
-  currentPage: number;
-  pageSize: number;
-  initialLoad: boolean;
+  postForum: (args: {}) => void;
+  deleteForum: (forumId: number) => void;
 };
 
 const initialState = {
-  categories: [],
   forums: [],
-  topics: [],
-  posts: [],
-  topic: {},
-  totalItems: 0,
-  currentPage: 1,
-  pageSize: 10,
-  isLoading: false,
-  initialLoad: true,
-  isPostEdit: false,
+  forum: {},
 };
 
 const ForumContext = React.createContext({} as TForumContext);
 
 export const ForumProvider = ({ children }: IForumProps) => {
-  const [state, dispatch]: any = useReducer<any>(forumReducer, initialState);
-  const pages = Math.ceil(state.totalItems / state.pageSize);
-  const { pathname } = useLocation();
-  const type = pathname.split('/')[1].slice(4);
-  const pathId = parseInt(pathname.split('/')[2]);
-
-  const getCategories = async () => {
-    if (!state.isLoading) {
-      dispatch({ type: LOADING_TRUE });
-    }
-    try {
-      const data = await forumAPI.getCategories();
-      const categories = data.data.categories;
-      dispatch({ type: SET_CATEGORIES, payload: categories });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const getCategory = () => {
-    dispatch({ type: SET_CATEGORY, payload: forums });
-  };
+  const {
+    setIsLoading,
+    setTotalItems,
+    setCurrentPage,
+    totalItems,
+    pageSize,
+    currentPage,
+    isLoading,
+    initialLoad,
+    forumType,
+  } = useGeneralContext();
+  const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
+  const pages = Math.ceil(totalItems / pageSize);
   const getForum = async (name: string, page?: number, limit?: number) => {
-    if (!state.isLoading) dispatch({ type: LOADING_TRUE });
+    if (!isLoading) setIsLoading(true);
     try {
       const data = await forumAPI.getData(name, page, limit);
       const { totalItems, topics } = data.data;
@@ -136,190 +51,68 @@ export const ForumProvider = ({ children }: IForumProps) => {
     } catch (error) {
       console.log(error);
     } finally {
-      dispatch({ type: LOADING_FALSE });
+      setIsLoading(false);
     }
   };
-  const setForum = (topics: []) =>
-    dispatch({ type: SET_FORUM, payload: topics });
-  const getTopic = async (topicId: number, page?: number, limit?: number) => {
-    if (!state.isLoading) dispatch({ type: LOADING_TRUE });
-    try {
-      const data = await forumAPI.getTopic(topicId, page, limit);
-      const { totalItems, posts, topic } = data.data;
-      setTopicPosts(posts);
-      setTopic(topic);
-      setTotalItems(totalItems);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      dispatch({ type: LOADING_FALSE });
-    }
-  };
-  const setTopic = (topic: {}) => dispatch({ type: SET_TOPIC, payload: topic });
-  const setTopicPosts = (posts: []) =>
-    dispatch({ type: SET_TOPIC_POSTS, payload: posts });
-  const postTopic = async (topicData: {
+  const setForum = (forum: {}) => dispatch({ type: SET_FORUM, payload: forum });
+  const postForum = async (forumData: {
     itemData: { id: number; name: string; description: string };
     requestType: string;
   }) => {
-    const topic = {
-      id: topicData.itemData.id,
-      name: topicData.itemData.name,
-      description: topicData.itemData.description,
+    const forum = {
+      id: forumData.itemData.id,
+      name: forumData.itemData.name,
+      description: forumData.itemData.description,
     };
     try {
-      if (topicData.requestType === 'new topic') {
-        await forumAPI.postTopic(topic);
-        if (state.totalItems % state.pageSize === 0) {
+      if (forumData.requestType === 'new topic') {
+        await forumAPI.postTopic(forum);
+        if (totalItems % pageSize === 0) {
           setCurrentPage(pages + 1);
           getForum('topics', pages + 1);
         } else {
           setCurrentPage(pages);
           getForum('topics', pages);
         }
-      } else if (topicData.requestType === 'edit topic') {
-        await forumAPI.updateTopic(topic);
-        getForum('topics', state.currentPage);
+      } else if (forumData.requestType === 'edit topic') {
+        await forumAPI.updateTopic(forum);
+        getForum('topics', currentPage);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  const deleteTopic = async (topicId: number) => {
+  const deleteForum = async (forumId: number) => {
     try {
-      await forumAPI.deleteTopic(topicId);
-      if (
-        state.totalItems % state.pageSize === 0 &&
-        state.totalItems >= 1 &&
-        state.currentPage === pages &&
-        state.topics.length < state.pageSize
-      ) {
-        setCurrentPage(state.currentPage - 1);
-      }
-
-      if (state.currentPage > 1 && state.topics.length === 1) {
-        setCurrentPage(state.currentPage - 1);
-        getForum('topics', state.currentPage - 1);
+      await forumAPI.deleteTopic(forumId);
+      if (currentPage > 1 && state.forums.length === 1) {
+        setCurrentPage(currentPage - 1);
+        getForum('topics', currentPage - 1);
       } else {
-        getForum('topics', state.currentPage);
+        getForum('topics', currentPage);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  // const getPosts = () => dispatch({ type: SET_TOPIC, payload: posts });
-  const getPost = (postId: number) => {
-    try {
-      console.log('ok ' + postId);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const postPost = async (postData: {
-    itemData: { id: number; name: string; description: string };
-    requestType: string;
-  }) => {
-    const post = {
-      id: postData.itemData.id,
-      name: postData.itemData.name,
-      description: postData.itemData.description,
-    };
-    try {
-      if (postData.requestType === 'new post') {
-        await forumAPI.postPost(post);
-        if (state.totalItems % state.pageSize === 0) {
-          setCurrentPage(pages + 1);
-          getTopic(pathId, pages + 1);
-        } else {
-          setCurrentPage(pages);
-          getTopic(pathId, pages);
-        }
-      } else if (postData.requestType === 'edit post') {
-        await forumAPI.updatePost(post);
-        getTopic(pathId, state.currentPage);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const deletePost = async (postId: number) => {
-    try {
-      await forumAPI.deletePost(postId);
-      if (
-        state.totalItems % state.pageSize <= 1 &&
-        state.totalItems >= 1 &&
-        state.currentPage === pages &&
-        state.posts.length < state.pageSize
-      ) {
-        setCurrentPage(pages - 1);
-        getTopic(pathId, pages - 1);
-      }
-      if (state.currentPage > 1 && state.topics.length === 1) {
-        setCurrentPage(state.currentPage - 1);
-        getTopic(pathId, state.page - 1);
-      } else {
-        getTopic(pathId, state.currentPage);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const openNavbar = () => dispatch({ type: NAVBAR_OPEN });
-  const closeNavbar = () => dispatch({ type: NAVBAR_CLOSE });
-  const setTotalItems = (totalItems: number) =>
-    dispatch({ type: SET_TOTAL_ITEMS, payload: totalItems });
-
-  const setCurrentPage = (page: number) => {
-    dispatch({ type: SET_CURRENT_PAGE, payload: page });
-  };
-  const setPageSize = (page: number) =>
-    dispatch({ type: SET_PAGE_SIZE, payload: page });
-  const setInitialLoad = (initialLoad: boolean) =>
-    dispatch({ type: SET_INITIAL_LOAD, payload: initialLoad });
-  const setIsPostEdit = (isPostEdit: boolean) =>
-    dispatch({ type: SET_IS_POST_EDIT, payload: isPostEdit });
 
   useEffect(() => {
-    if (state.initialLoad && !state.isLoading) {
-      if (type === 'forum') {
-        if (state.currentPage > 1) {
-          setCurrentPage(1);
-        }
-        getForum('topics');
-      } else if (type === 'topic' && pathId) {
-        if (state.currentPage > 1) {
-          setCurrentPage(1);
-        }
-        getTopic(pathId);
-      } else {
-        getCategories();
+    if (initialLoad && !isLoading && forumType === 'forum') {
+      if (currentPage > 1) {
+        setCurrentPage(1);
       }
-      // getPosts();
+      getForum('topics');
     }
     // eslint-disable-next-line
-  }, [type]);
+  }, []);
 
   return (
     <ForumContext.Provider
       value={{
         ...state,
-        getCategories,
-        getCategory,
         getForum,
-        getTopic,
-        postTopic,
-        deleteTopic,
-        getPost,
-        postPost,
-        deletePost,
-        openNavbar,
-        closeNavbar,
-        setCurrentPage,
-        setPageSize,
-        setTotalItems,
-        setInitialLoad,
-        setIsPostEdit,
+        postForum,
+        deleteForum,
       }}
     >
       {children}

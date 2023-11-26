@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { Paginator, TopicItem, Loader, ItemAction } from '../components';
-import { useForumContext } from '../context/forumContext';
+import { useGeneralContext } from '../context/generalContext';
+import { useTopicContext } from '../context/topicContext';
 import { useFormItemContext } from '../context/formItemContext';
 import { useAuthContext } from '../context/authContext';
 
 const ForumPage = () => {
-  const { topics, isLoading, totalItems, pageSize } = useForumContext();
+  const { isLoading, totalItems, pageSize } = useGeneralContext();
+  const { topics } = useTopicContext();
   const { isAuth } = useAuthContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const { openModalForum, setFormItem } = useFormItemContext();
