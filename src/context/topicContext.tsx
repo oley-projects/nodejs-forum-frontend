@@ -2,7 +2,7 @@ import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 //import { useLocation } from 'react-router-dom';
 import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
-import { SET_TOPIC, SET_TOPIC_POSTS } from '../actions/actions';
+import { SET_TOPIC /*, SET_TOPIC_POSTS*/ } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
 interface ITopicProps {
@@ -58,8 +58,8 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     if (!isLoading) setIsLoading(true);
     try {
       const data = await forumAPI.getTopic(topicId, page, limit);
-      const { totalItems, posts, topic } = data.data;
-      setTopicPosts(posts);
+      const { totalItems, /*posts, */ topic } = data.data;
+      // setTopicPosts(posts);
       setTopic(topic);
       setTotalItems(totalItems);
     } catch (error) {
@@ -69,8 +69,8 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     }
   };
   const setTopic = (topic: {}) => dispatch({ type: SET_TOPIC, payload: topic });
-  const setTopicPosts = (posts: []) =>
-    dispatch({ type: SET_TOPIC_POSTS, payload: posts });
+  /* const setTopicPosts = (posts: []) =>
+    dispatch({ type: SET_TOPIC_POSTS, payload: posts }); */
   const postTopic = async (topicData: {
     itemData: { id: number; name: string; description: string };
     requestType: string;

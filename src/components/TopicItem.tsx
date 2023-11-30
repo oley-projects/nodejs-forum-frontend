@@ -77,6 +77,7 @@ const TopicItem = ({
           onEdit={editHandler}
           onDelete={() => deleteTopic(id)}
           creatorId={creator._id}
+          type={'topic'}
         />
       </div>
     </WrapTopicItem>

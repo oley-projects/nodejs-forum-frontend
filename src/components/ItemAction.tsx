@@ -7,9 +7,15 @@ interface IItemActionProps {
   onEdit: () => void;
   onDelete: () => void;
   creatorId: string;
+  type: string;
 }
-
-const ItemAction = ({ onEdit, onDelete, creatorId }: IItemActionProps) => {
+// const { setCurrentType } = useGeneralContext();
+const ItemAction = ({
+  onEdit,
+  onDelete,
+  creatorId,
+  type,
+}: IItemActionProps) => {
   const {
     isAuth,
     user: { userId },
@@ -23,13 +29,13 @@ const ItemAction = ({ onEdit, onDelete, creatorId }: IItemActionProps) => {
         <div>
           <CiEdit size={'1.2rem'} className='icon' />
         </div>
-        <div>edit</div>
+        <div>edit {type}</div>
       </button>
       <button onClick={onDelete}>
         <div>
           <AiOutlineDelete size={'1.2rem'} className='icon' />
         </div>
-        <div>delete</div>
+        <div>delete {type}</div>
       </button>
     </WrapItemAction>
   );

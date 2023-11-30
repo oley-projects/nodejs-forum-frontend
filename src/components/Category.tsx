@@ -2,11 +2,16 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import CategoryForumElem from './CategoryForumElem';
 import ItemAction from './ItemAction';
+import { useGeneralContext } from '../context/generalContext';
+import { useCategoryContext } from '../context/categoryContext';
+import { useFormItemContext } from '../context/formItemContext';
+import { useAuthContext } from '../context/authContext';
 
 interface ICatProps {
   id: number;
   name: string;
   description: string;
+  creator: { _id: string };
   forums: [
     {
       id: number;
@@ -16,28 +21,60 @@ interface ICatProps {
   ];
 }
 
-const Category = ({ id, name, forums }: ICatProps) => {
+const Category = ({ id, name, description, creator, forums }: ICatProps) => {
+  const { currentType, setCurrentType } = useGeneralContext();
+  const { openModalForum, setFormItem } = useFormItemContext();
+  const { deleteCategory } = useCategoryContext();
+  const { isAuth } = useAuthContext();
+  const editHandler = () => {
+    setFormItem({
+      id,
+      name,
+      description,
+      action: 'edit',
+      type: 'category',
+    });
+    openModalForum();
+    if (currentType !== 'category') setCurrentType('category');
+  };
+  const newForumHandler = () => {
+    setFormItem({
+      id,
+      name: '',
+      description: '',
+      action: 'new',
+      type: 'forum',
+    });
+    openModalForum();
+    if (currentType !== 'forum') setCurrentType('forum');
+  };
   return (
-    <>
-      <div style={{ display: 'flex', justifyContent: 'end' }}>
-        <button>Create New Forum</button>
-      </div>
-      <WrapCategory>
-        <header>
-          <h5>
-            <Link to={`/viewcategoty/${id}`} className='inline-link'>
-              {name}
-            </Link>
-          </h5>
-          <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
-        </header>
-        <section>
-          {forums.map((forum) => (
+    <WrapCategory>
+      <header>
+        <h5>
+          <Link to={`/viewcategoty/${id}`} className='inline-link'>
+            {name}
+          </Link>
+        </h5>
+        <ItemAction
+          onEdit={editHandler}
+          onDelete={() => deleteCategory(id)}
+          creatorId={creator?._id}
+          type={'category'}
+        />
+      </header>
+      <section>
+        {forums &&
+          forums.map((forum) => (
             <CategoryForumElem key={forum.id} {...forum} />
           ))}
-        </section>
-      </WrapCategory>
-    </>
+      </section>
+      {isAuth && (
+        <div className='add-element'>
+          <button onClick={newForumHandler}>Create new forum</button>
+        </div>
+      )}
+    </WrapCategory>
   );
 };
 
@@ -51,6 +88,11 @@ const WrapCategory = styled.section`
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 0.5rem 1rem;
+    background: var(--color-white-bg-transparent);
+  }
+  .add-element {
+    padding: 0 0.5rem;
+    text-align: right;
     background: var(--color-white-bg-transparent);
   }
 `;

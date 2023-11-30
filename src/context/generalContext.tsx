@@ -10,6 +10,7 @@ import {
   SET_PAGE_SIZE,
   SET_INITIAL_LOAD,
   SET_IS_POST_EDIT,
+  SET_CURRENT_TYPE,
 } from '../actions/actions';
 // import { forumAPI } from '../api/api';
 
@@ -26,17 +27,19 @@ export type TGeneralContext = {
   setInitialLoad: (initialLoad: boolean) => void;
   setIsPostEdit: (isPostEdit: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
+  setCurrentType: (currentType: string) => void;
   isNavbarOpen: boolean;
   isLoading: boolean;
   isPostEdit: boolean;
-
   totalItems: number;
   currentPage: number;
   pageSize: number;
   initialLoad: boolean;
   pages: number;
   forumType: string;
+  currentType: string;
   pathId: number;
+  location: {};
 };
 
 const initialState = {
@@ -46,6 +49,7 @@ const initialState = {
   isLoading: false,
   initialLoad: true,
   isPostEdit: false,
+  currentType: 'category',
 };
 
 const GeneralContext = React.createContext({} as TGeneralContext);
@@ -53,8 +57,9 @@ const GeneralContext = React.createContext({} as TGeneralContext);
 export const GeneralProvider = ({ children }: IGeneralProps) => {
   const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
   const pages = Math.ceil(state.totalItems / state.pageSize);
-  const { pathname } = useLocation();
-  const forumType = pathname.split('/')[1].slice(4);
+  const location = useLocation();
+  const { pathname } = location;
+  const forumType = pathname.split('/')[1].slice(4) || 'categories';
   const pathId = parseInt(pathname.split('/')[2]);
 
   const openNavbar = () => dispatch({ type: NAVBAR_OPEN });
@@ -73,6 +78,8 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
     dispatch({ type: SET_IS_POST_EDIT, payload: isPostEdit });
   const setIsLoading = (isLoading: boolean) =>
     dispatch({ type: SET_IS_LOADING, payload: isLoading });
+  const setCurrentType = (currentType: string) =>
+    dispatch({ type: SET_CURRENT_TYPE, payload: currentType });
   /*useEffect(() => {
     if (state.initialLoad && !state.isLoading && !type) {
       if (type === 'forum') {
@@ -100,6 +107,7 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
         pages,
         forumType,
         pathId,
+        location,
         openNavbar,
         closeNavbar,
         setCurrentPage,
@@ -108,6 +116,7 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
         setInitialLoad,
         setIsPostEdit,
         setIsLoading,
+        setCurrentType,
       }}
     >
       {children}

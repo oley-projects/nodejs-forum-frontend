@@ -11,14 +11,13 @@ interface ICatForumElemProps {
 
 const CategoryForumElem = ({ id, name, topics }: ICatForumElemProps) => {
   const { getForum } = useForumContext();
-
   return (
     <WrapCatTopicEl>
       <div>
         <Link
           className='inline-link'
           to={`/viewforum/${id}`}
-          onClick={() => getForum('topics')}
+          onClick={() => getForum(id)}
         >
           {name}
         </Link>
@@ -28,7 +27,7 @@ const CategoryForumElem = ({ id, name, topics }: ICatForumElemProps) => {
         <div>Topics</div>
       </div>
       <div className='total-stats'>
-        <div>{topics.length + ' topics'}</div>
+        <div>{topics?.length + ' topics'}</div>
         <div>Posts</div>
       </div>
       <div>
@@ -41,7 +40,12 @@ const CategoryForumElem = ({ id, name, topics }: ICatForumElemProps) => {
         <div>at {'lastPostDate'}</div>
       </div>
       <div className='box'>
-        <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
+        <ItemAction
+          onEdit={() => {}}
+          onDelete={() => {}}
+          creatorId={''}
+          type={'category'}
+        />
       </div>
     </WrapCatTopicEl>
   );

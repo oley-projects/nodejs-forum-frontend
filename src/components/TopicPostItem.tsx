@@ -60,6 +60,7 @@ const TopicPostItem = ({
             onEdit={() => editPostHandler(id)}
             onDelete={() => deletePost(id)}
             creatorId={creator._id}
+            type={'post'}
           />
         </div>
       </div>

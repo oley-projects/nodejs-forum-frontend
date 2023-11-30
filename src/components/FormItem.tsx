@@ -5,6 +5,7 @@ import { useTopicContext } from '../context/topicContext';
 import { useForumContext } from '../context/forumContext';
 import { useCategoryContext } from '../context/categoryContext';
 import { useFormItemContext } from '../context/formItemContext';
+import { stringCapitalize } from '../utils/utils';
 
 interface IState {
   id: number;
@@ -26,9 +27,6 @@ const FormItem = ({ id, type, action, name, description }: IState) => {
     type,
     action,
   });
-
-  const stringCapitalize = (string: string) =>
-    string.charAt(0).toUpperCase() + string.slice(1);
 
   const setFormDataHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

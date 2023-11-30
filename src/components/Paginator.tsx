@@ -14,7 +14,7 @@ const Paginator = ({ name, id }: { name: string; id: number }) => {
 
   const getData = (name: string, id: number, currentPage: number) => {
     if (name === 'topics') {
-      getForum(name, currentPage);
+      getForum(id, currentPage);
     } else if (name === 'topic') {
       getTopic(id, currentPage);
     }
@@ -39,7 +39,7 @@ const Paginator = ({ name, id }: { name: string; id: number }) => {
   useEffect(() => {
     if (!initialLoad) {
       if (name === 'topics') {
-        getForum(name, currentPage);
+        getForum(id, currentPage);
       } else if (name === 'topic') {
         getTopic(id, currentPage);
       }

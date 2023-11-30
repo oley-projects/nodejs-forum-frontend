@@ -1,5 +1,4 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
-//import { useLocation } from 'react-router-dom';
 import categoryReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
 import { useTopicContext } from './topicContext';
@@ -11,18 +10,24 @@ interface ICategoryProps {
 }
 
 export type TCategoryContext = {
-  getCategories: () => void;
+  getCategories: (page?: number, limit?: number) => void;
   getCategory: (id: number, page?: number, limit?: number) => void;
   postCategory: (args: {}) => void;
   deleteCategory: (postId: number) => void;
-  category: { name: string };
+  category: {
+    id: number;
+    description: string;
+    creator: { _id: string };
+    name: string;
+    forums: [{ id: number; name: string; topics: [] }];
+  };
   categories: [
     {
       //_id: string;
       id: number;
       name: string;
       description: string;
-      //creator: { _id: string; name: string };
+      creator: { _id: string; name: string };
       //createdAt: string;
       forums: [{ id: number; name: string; topics: [] }];
       //views: string;
@@ -50,16 +55,17 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     isLoading,
     initialLoad,
     forumType,
+    pages,
+    location,
   } = useGeneralContext();
   const { topics } = useTopicContext();
   const [state, dispatch]: any = useReducer<any>(categoryReducer, initialState);
-  const pages = Math.ceil(totalItems / pageSize);
-  const getCategories = async () => {
+  const getCategories = async (_?: any, page?: number, limit?: number) => {
     if (!isLoading) {
       setIsLoading(true);
     }
     try {
-      const data = await forumAPI.getCategories();
+      const data = await forumAPI.getCategories(page, limit);
       const categories = data.data.categories;
       setCategories(categories);
     } catch (error) {
@@ -77,7 +83,7 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
   ) => {
     if (!isLoading) setIsLoading(true);
     try {
-      const data = await forumAPI.getTopic(categoryId, page, limit);
+      const data = await forumAPI.getCategory(categoryId, page, limit);
       const { totalItems, category } = data.data;
       //setTopicPosts(posts);
       setCategory(category);
@@ -106,14 +112,14 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
         await forumAPI.postCategory(category);
         if (totalItems % pageSize === 0) {
           setCurrentPage(pages + 1);
-          getCategory(category.id, pages + 1);
+          getCategories(pages + 1);
         } else {
           setCurrentPage(pages);
-          getCategory(category.id, pages);
+          getCategories(pages);
         }
       } else if (categoryData.requestType === 'edit category') {
         await forumAPI.updateCategory(category);
-        getCategory(category.id, currentPage);
+        getCategories(currentPage);
       }
     } catch (error) {
       console.log(error);
@@ -121,24 +127,27 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
   };
   const deleteCategory = async (categoryId: number) => {
     try {
-      // await forumAPI.deleteCategory(categoryId);
+      await forumAPI.deleteCategory(categoryId);
       if (currentPage > 1 && topics.length === 1) {
         setCurrentPage(currentPage - 1);
-        getCategory(categoryId, currentPage - 1);
+        getCategories(currentPage - 1);
       } else {
-        getCategory(categoryId, currentPage);
+        getCategories(currentPage);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
+  // console.log(state.categories);
   useEffect(() => {
-    if (initialLoad && !isLoading && !forumType) {
+    if (
+      (initialLoad && !isLoading && forumType === 'categories') ||
+      (!isLoading && forumType === 'categories' && !state.categories.length)
+    ) {
       getCategories();
     }
     // eslint-disable-next-line
-  }, []);
+  }, [location]);
 
   return (
     <CategoryContext.Provider

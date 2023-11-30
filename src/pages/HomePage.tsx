@@ -3,13 +3,14 @@ import { Sidebar, Category, PostList, Loader } from '../components';
 import { useGeneralContext } from '../context/generalContext';
 import { useCategoryContext } from '../context/categoryContext';
 import { useFormItemContext } from '../context/formItemContext';
+import { useAuthContext } from '../context/authContext';
 
 const HomePage = () => {
-  const { isLoading } = useGeneralContext();
+  const { isLoading, currentType, setCurrentType } = useGeneralContext();
 
   const { categories } = useCategoryContext();
   const { openModalForum, setFormItem } = useFormItemContext();
-
+  const { isAuth } = useAuthContext();
   const newCategoryHandler = () => {
     setFormItem({
       id: 0,
@@ -19,6 +20,7 @@ const HomePage = () => {
       type: 'category',
     });
     openModalForum();
+    if (currentType !== 'category') setCurrentType('category');
   };
   return (
     <WrapHome>
@@ -27,12 +29,18 @@ const HomePage = () => {
       ) : (
         <>
           <div>
-            {categories.map((category) => (
-              <Category key={category.id} {...category} />
-            ))}
-            <div style={{ display: 'flex', justifyContent: 'end' }}>
-              <button onClick={newCategoryHandler}>Add Category</button>
-            </div>
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <Category key={category.id} {...category} />
+              ))
+            ) : (
+              <div className='empty'>Empty forum</div>
+            )}
+            {isAuth && (
+              <div style={{ display: 'flex', justifyContent: 'end' }}>
+                <button onClick={newCategoryHandler}>Add Category</button>
+              </div>
+            )}
           </div>
           <Sidebar>
             <PostList />

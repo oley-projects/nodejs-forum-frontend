@@ -12,6 +12,7 @@ import {
   SET_PAGE_SIZE,
   SET_INITIAL_LOAD,
   SET_IS_POST_EDIT,
+  SET_CURRENT_TYPE,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
@@ -72,6 +73,9 @@ const generalReducer = (
   }
   if (action.type === SET_IS_POST_EDIT) {
     return { ...state, isPostEdit: action.payload };
+  }
+  if (action.type === SET_CURRENT_TYPE) {
+    return { ...state, currentType: action.payload };
   }
   return { ...state };
 };

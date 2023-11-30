@@ -1,7 +1,8 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
-//import { useLocation } from 'react-router-dom';
 import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
+import { useCategoryContext } from './categoryContext';
+import { stringCapitalize } from '../utils/utils';
 
 import {
   SET_FORUM,
@@ -15,13 +16,12 @@ interface IForumProps {
 }
 
 export type TForumContext = {
-  getForum: (name: string, page?: number, limit?: number) => void;
+  getForum: (id: number, page?: number, limit?: number) => void;
   postForum: (args: {}) => void;
   deleteForum: (forumId: number) => void;
 };
 
 const initialState = {
-  forums: [],
   forum: {},
 };
 
@@ -38,21 +38,30 @@ export const ForumProvider = ({ children }: IForumProps) => {
     isLoading,
     initialLoad,
     forumType,
+    pathId,
   } = useGeneralContext();
+  const { getCategories, getCategory, category } = useCategoryContext();
+
   const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
   const pages = Math.ceil(totalItems / pageSize);
-  const getForum = async (name: string, page?: number, limit?: number) => {
+  const getForum = async (forumId: number, page?: number, limit?: number) => {
     if (!isLoading) setIsLoading(true);
     try {
-      const data = await forumAPI.getData(name, page, limit);
-      const { totalItems, topics } = data.data;
-      setForum(topics);
+      const data = await forumAPI.getForum(forumId, page, limit);
+      const { totalItems, forum } = data.data;
+      setForum(forum);
       setTotalItems(totalItems);
     } catch (error) {
       console.log(error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const getData: { [key: string]: Function } = {
+    getCategories,
+    getCategory,
+    getForum,
   };
   const setForum = (forum: {}) => dispatch({ type: SET_FORUM, payload: forum });
   const postForum = async (forumData: {
@@ -65,18 +74,18 @@ export const ForumProvider = ({ children }: IForumProps) => {
       description: forumData.itemData.description,
     };
     try {
-      if (forumData.requestType === 'new topic') {
-        await forumAPI.postTopic(forum);
+      if (forumData.requestType === 'new forum') {
+        await forumAPI.postForum(forum);
         if (totalItems % pageSize === 0) {
           setCurrentPage(pages + 1);
-          getForum('topics', pages + 1);
+          getData['get' + stringCapitalize(forumType)](category.id, pages + 1);
         } else {
           setCurrentPage(pages);
-          getForum('topics', pages);
+          getData['get' + stringCapitalize(forumType)](category.id, pages);
         }
-      } else if (forumData.requestType === 'edit topic') {
-        await forumAPI.updateTopic(forum);
-        getForum('topics', currentPage);
+      } else if (forumData.requestType === 'edit forum') {
+        await forumAPI.updateForum(forum);
+        getData['get' + stringCapitalize(forumType)](category.id, currentPage);
       }
     } catch (error) {
       console.log(error);
@@ -84,12 +93,12 @@ export const ForumProvider = ({ children }: IForumProps) => {
   };
   const deleteForum = async (forumId: number) => {
     try {
-      await forumAPI.deleteTopic(forumId);
+      await forumAPI.deleteForum(forumId);
       if (currentPage > 1 && state.forums.length === 1) {
         setCurrentPage(currentPage - 1);
-        getForum('topics', currentPage - 1);
+        getCategory(category.id, currentPage - 1);
       } else {
-        getForum('topics', currentPage);
+        getCategory(category.id, currentPage);
       }
     } catch (error) {
       console.log(error);
@@ -101,7 +110,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
       if (currentPage > 1) {
         setCurrentPage(1);
       }
-      getForum('topics');
+      getForum(pathId);
     }
     // eslint-disable-next-line
   }, []);

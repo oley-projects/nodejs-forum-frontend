@@ -63,7 +63,12 @@ const TopicPage = () => {
           <header className='header-post'>
             <div>{topic.name}</div>
             <div className='nav-post'>
-              <ItemAction onEdit={() => {}} onDelete={() => {}} creatorId='' />
+              <ItemAction
+                onEdit={() => {}}
+                onDelete={() => {}}
+                creatorId={''}
+                type={'topic'}
+              />
               {pageCount > 1 && (
                 <Paginator name='topic' id={parseInt(topicId)} />
               )}

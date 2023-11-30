@@ -12,8 +12,8 @@ const instance = axios.create({
 });
 
 export const forumAPI = {
-  getCategories() {
-    return instance.get('categories');
+  getCategories(page = 1, limit = 10) {
+    return instance.get(`categories?page=${page}&limit=${limit}`);
   },
   getData(name: string, page = 1, limit = 10) {
     return instance.get(`${name}?&page=${page}&limit=${limit}`);
@@ -22,7 +22,6 @@ export const forumAPI = {
     return instance.get(`category/${categoryId}?&page=${page}&limit=${limit}`);
   },
   postCategory(category: {}) {
-    console.log(category);
     return instance.post('category', category);
   },
   updateCategory(category: { id: number }) {

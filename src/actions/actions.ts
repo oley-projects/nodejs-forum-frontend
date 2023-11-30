@@ -25,3 +25,4 @@ export const LOADING_USER_TRUE: string = 'LOGIN_USER';
 export const LOADING_USER_FALSE: string = 'LOGIN_USER';
 export const SET_IS_AUTH: string = 'SET_IS_AUTH';
 export const SET_IS_POST_EDIT: string = 'SET_IS_POST_EDIT';
+export const SET_CURRENT_TYPE: string = 'SET_CURRENT_TYPE';
