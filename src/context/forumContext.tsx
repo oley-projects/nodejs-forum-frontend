@@ -2,13 +2,8 @@ import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
 import { useCategoryContext } from './categoryContext';
-import { stringCapitalize } from '../utils/utils';
 
-import {
-  SET_FORUM,
-  //SET_TOPIC,
-  //SET_TOPIC_POSTS,
-} from '../actions/actions';
+import { SET_FORUM } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
 interface IForumProps {
@@ -19,6 +14,25 @@ export type TForumContext = {
   getForum: (id: number, page?: number, limit?: number) => void;
   postForum: (args: {}) => void;
   deleteForum: (forumId: number) => void;
+  forum: {
+    id: number;
+    name: string;
+    description: string;
+    creator: { _id: string; name: string };
+    topics: [
+      {
+        id: number;
+        name: string;
+        description: string;
+        creator: { _id: string; name: string };
+        posts: [];
+        createdAt: string;
+        views: string;
+        lastPostUser: string;
+        lastPostCreatedAt: string;
+      }
+    ];
+  };
 };
 
 const initialState = {
@@ -28,6 +42,7 @@ const initialState = {
 const ForumContext = React.createContext({} as TForumContext);
 
 export const ForumProvider = ({ children }: IForumProps) => {
+  const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
   const {
     setIsLoading,
     setTotalItems,
@@ -39,11 +54,9 @@ export const ForumProvider = ({ children }: IForumProps) => {
     initialLoad,
     forumType,
     pathId,
+    pages,
   } = useGeneralContext();
   const { getCategories, getCategory, category } = useCategoryContext();
-
-  const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
-  const pages = Math.ceil(totalItems / pageSize);
   const getForum = async (forumId: number, page?: number, limit?: number) => {
     if (!isLoading) setIsLoading(true);
     try {
@@ -58,10 +71,17 @@ export const ForumProvider = ({ children }: IForumProps) => {
     }
   };
 
-  const getData: { [key: string]: Function } = {
-    getCategories,
-    getCategory,
-    getForum,
+  const getData = (
+    forumType: string,
+    id: number,
+    currentPage?: number,
+    limit?: number
+  ) => {
+    if (forumType === 'categories') {
+      getCategories();
+    } else if (forumType === 'category') {
+      getCategory(id, currentPage, limit);
+    }
   };
   const setForum = (forum: {}) => dispatch({ type: SET_FORUM, payload: forum });
   const postForum = async (forumData: {
@@ -76,16 +96,17 @@ export const ForumProvider = ({ children }: IForumProps) => {
     try {
       if (forumData.requestType === 'new forum') {
         await forumAPI.postForum(forum);
+        console.log(forum);
         if (totalItems % pageSize === 0) {
+          getData(forumType, category.id, pages + 1);
           setCurrentPage(pages + 1);
-          getData['get' + stringCapitalize(forumType)](category.id, pages + 1);
         } else {
+          getData(forumType, category.id, pages);
           setCurrentPage(pages);
-          getData['get' + stringCapitalize(forumType)](category.id, pages);
         }
       } else if (forumData.requestType === 'edit forum') {
         await forumAPI.updateForum(forum);
-        getData['get' + stringCapitalize(forumType)](category.id, currentPage);
+        getCategory(category.id, currentPage);
       }
     } catch (error) {
       console.log(error);
@@ -95,10 +116,10 @@ export const ForumProvider = ({ children }: IForumProps) => {
     try {
       await forumAPI.deleteForum(forumId);
       if (currentPage > 1 && state.forums.length === 1) {
+        getData(forumType, category.id, currentPage - 1);
         setCurrentPage(currentPage - 1);
-        getCategory(category.id, currentPage - 1);
       } else {
-        getCategory(category.id, currentPage);
+        getData(forumType, category.id, currentPage);
       }
     } catch (error) {
       console.log(error);

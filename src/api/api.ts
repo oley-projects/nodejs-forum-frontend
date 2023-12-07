@@ -43,7 +43,7 @@ export const forumAPI = {
     return instance.delete(`forum/${forumId}`);
   },
   getTopic(topicId: number, page = 1, limit = 10) {
-    return instance.get(`topicPosts/${topicId}?&page=${page}&limit=${limit}`);
+    return instance.get(`topic/${topicId}?&page=${page}&limit=${limit}`);
   },
   postTopic(topic: {}) {
     return instance.post('topic', topic);

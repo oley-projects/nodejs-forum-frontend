@@ -3,29 +3,28 @@ import styled from 'styled-components';
 
 interface ISinglePostType {
   id: number;
-  topic: { name: string };
+  topic: { name: string; id: number };
   description: string;
   creator: { name: string };
   createdAt: string;
 }
 
 const SinglePost = ({
-  id,
   topic,
   creator,
   description,
-  createdAt: date,
+  createdAt,
 }: ISinglePostType) => {
   return (
     <WrapSinglePost>
       <header>
-        <Link to={`/viewtopic/${id}`} className='inline-link'>
+        <Link to={`/viewtopic/${topic.id}`} className='inline-link'>
           {topic.name}
         </Link>
       </header>
       <div>by {creator.name}</div>
       <div>{description}</div>
-      <div>{date}</div>
+      <div>{createdAt}</div>
     </WrapSinglePost>
   );
 };

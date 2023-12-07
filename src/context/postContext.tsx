@@ -3,22 +3,13 @@ import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
 import { SET_POST } from '../actions/actions';
 import { forumAPI } from '../api/api';
+import { useTopicContext } from './topicContext';
 
 export type TPostContext = {
   getPost: (args: number) => void;
   postPost: (args: {}) => void;
   deletePost: (postId: number) => void;
   post: { name: string };
-  posts: [
-    {
-      id: number;
-      name: string;
-      description: string;
-      topic: { _id: string; name: string };
-      creator: { _id: string; name: string };
-      createdAt: string;
-    }
-  ];
 };
 
 interface IPostProps {
@@ -26,13 +17,13 @@ interface IPostProps {
 }
 
 const initialState = {
-  posts: [],
   post: {},
 };
 
 const PostContext = React.createContext({} as TPostContext);
 
 export const PostProvider = ({ children }: IPostProps) => {
+  const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
   const {
     setIsLoading,
     setCurrentPage,
@@ -40,9 +31,9 @@ export const PostProvider = ({ children }: IPostProps) => {
     totalItems,
     currentPage,
     isLoading,
+    pages,
   } = useGeneralContext();
-  const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
-  const pages = Math.ceil(totalItems / pageSize);
+  const { getTopic, topic } = useTopicContext();
 
   const getPost = async (postId: number, page?: number, limit?: number) => {
     if (!isLoading) setIsLoading(true);
@@ -71,14 +62,14 @@ export const PostProvider = ({ children }: IPostProps) => {
         await forumAPI.postPost(post);
         if (totalItems % pageSize === 0) {
           setCurrentPage(pages + 1);
-          getPost(post.id, pages + 1);
+          getTopic(topic.id, pages + 1);
         } else {
           setCurrentPage(pages);
-          getPost(post.id, pages);
+          getTopic(topic.id, pages);
         }
       } else if (postData.requestType === 'edit topic') {
         await forumAPI.updateTopic(post);
-        getPost(post.id, currentPage);
+        getTopic(topic.id, currentPage);
       }
     } catch (error) {
       console.log(error);
@@ -89,9 +80,9 @@ export const PostProvider = ({ children }: IPostProps) => {
       await forumAPI.deletePost(postId);
       if (currentPage > 1 && state.topics.length === 1) {
         setCurrentPage(state.currentPage - 1);
-        getPost(postId, currentPage - 1);
+        getTopic(topic.id, currentPage - 1);
       } else {
-        getPost(postId, currentPage);
+        getTopic(topic.id, currentPage);
       }
     } catch (error) {
       console.log(error);

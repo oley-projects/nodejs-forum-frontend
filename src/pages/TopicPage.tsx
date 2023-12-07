@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { ItemAction, Paginator, TopicPostItem, Loader } from '../components';
 import { useGeneralContext } from '../context/generalContext';
@@ -7,31 +6,14 @@ import { useTopicContext } from '../context/topicContext';
 import { usePostContext } from '../context/postContext';
 
 const TopicPage = () => {
-  const { isLoading, totalItems, pageSize, isPostEdit, setIsPostEdit } =
+  const { isLoading, isPostEdit, setIsPostEdit, pathId, pages } =
     useGeneralContext();
   const { topic } = useTopicContext();
-  const { posts, postPost } = usePostContext();
-  const pageCount = Math.ceil(totalItems / pageSize);
+  const { postPost } = usePostContext();
   const [editPost, setEditPost] = useState<{ id: number; text: string }>({
     id: 0,
     text: '',
   });
-
-  const { pathname } = useLocation();
-  const topicId = pathname.split('/')[2];
-  /* const topicPosts = [
-    {
-      id: 1,
-      user: 'User',
-      postCount: '12',
-      joined: new Date().toLocaleString().split(',')[0],
-      location: 'UK',
-      topic: 'topic 1',
-      createdAt: new Date().toLocaleString(),
-      content: `Post text of topic 1, created at ${new Date().toLocaleString()}`,
-      signature: 'User signature',
-    },
-  ]; */
   const changePostTextHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditPost((prev) => ({ ...prev, text: e.target.value }));
   };
@@ -44,7 +26,7 @@ const TopicPage = () => {
       id = editPost.id;
     } else {
       requestType = 'new post';
-      id = topicId;
+      id = pathId;
     }
     const postData = {
       itemData: { id, name: '', description: editPost.text },
@@ -69,14 +51,12 @@ const TopicPage = () => {
                 creatorId={''}
                 type={'topic'}
               />
-              {pageCount > 1 && (
-                <Paginator name='topic' id={parseInt(topicId)} />
-              )}
+              {pages > 1 && <Paginator name='topic' id={pathId} />}
             </div>
           </header>
           <ul className='content'>
-            {posts.length > 0 ? (
-              posts.map((post) => (
+            {topic.posts?.length > 0 ? (
+              topic.posts.map((post) => (
                 <TopicPostItem
                   key={post.id}
                   {...post}

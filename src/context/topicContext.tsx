@@ -1,9 +1,9 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
-//import { useLocation } from 'react-router-dom';
 import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
-import { SET_TOPIC /*, SET_TOPIC_POSTS*/ } from '../actions/actions';
+import { SET_TOPIC } from '../actions/actions';
 import { forumAPI } from '../api/api';
+import { useForumContext } from './forumContext';
 
 interface ITopicProps {
   children: ReactNode;
@@ -13,32 +13,29 @@ export type TTopicContext = {
   getTopic: (id: number, page?: number, limit?: number) => void;
   postTopic: (args: {}) => void;
   deleteTopic: (postId: number) => void;
-  topic: { name: string };
-  topics: [
-    {
-      _id: string;
-      id: number;
-      name: string;
-      description: string;
-      creator: { _id: string; name: string };
-      createdAt: string;
-      forum: { _id: string; name: string };
-      posts: [];
-      views: string;
-      lastPostUser: string;
-      lastPostCreatedAt: string;
-    }
-  ];
+  topic: {
+    id: number;
+    name: string;
+    posts: [
+      {
+        id: number;
+        description: string;
+        creator: { name: string; _id: string };
+        createdAt: string;
+        topic: { name: string; id: number };
+      }
+    ];
+  };
 };
 
 const initialState = {
-  topics: [],
   topic: {},
 };
 
 const TopicContext = React.createContext({} as TTopicContext);
 
 export const TopicProvider = ({ children }: ITopicProps) => {
+  const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
   const {
     setIsLoading,
     setTotalItems,
@@ -50,16 +47,15 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     initialLoad,
     forumType,
     pathId,
+    pages,
   } = useGeneralContext();
-  const [state, dispatch]: any = useReducer<any>(generalReducer, initialState);
-  const pages = Math.ceil(totalItems / pageSize);
+  const { getForum, forum } = useForumContext();
 
   const getTopic = async (topicId: number, page?: number, limit?: number) => {
     if (!isLoading) setIsLoading(true);
     try {
       const data = await forumAPI.getTopic(topicId, page, limit);
-      const { totalItems, /*posts, */ topic } = data.data;
-      // setTopicPosts(posts);
+      const { totalItems, topic } = data.data;
       setTopic(topic);
       setTotalItems(totalItems);
     } catch (error) {
@@ -69,8 +65,6 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     }
   };
   const setTopic = (topic: {}) => dispatch({ type: SET_TOPIC, payload: topic });
-  /* const setTopicPosts = (posts: []) =>
-    dispatch({ type: SET_TOPIC_POSTS, payload: posts }); */
   const postTopic = async (topicData: {
     itemData: { id: number; name: string; description: string };
     requestType: string;
@@ -85,14 +79,14 @@ export const TopicProvider = ({ children }: ITopicProps) => {
         await forumAPI.postTopic(topic);
         if (totalItems % pageSize === 0) {
           setCurrentPage(pages + 1);
-          getTopic(topic.id, pages + 1);
+          getForum(forum.id, pages + 1);
         } else {
           setCurrentPage(pages);
-          getTopic(topic.id, pages);
+          getForum(forum.id, pages);
         }
       } else if (topicData.requestType === 'edit topic') {
         await forumAPI.updateTopic(topic);
-        getTopic(topic.id, currentPage);
+        getForum(forum.id, currentPage);
       }
     } catch (error) {
       console.log(error);
@@ -103,9 +97,9 @@ export const TopicProvider = ({ children }: ITopicProps) => {
       await forumAPI.deleteTopic(topicId);
       if (currentPage > 1 && state.topics.length === 1) {
         setCurrentPage(currentPage - 1);
-        getTopic(topicId, currentPage - 1);
+        getForum(forum.id, currentPage - 1);
       } else {
-        getTopic(topicId, currentPage);
+        getForum(forum.id, currentPage);
       }
     } catch (error) {
       console.log(error);

@@ -9,7 +9,6 @@ interface IItemActionProps {
   creatorId: string;
   type: string;
 }
-// const { setCurrentType } = useGeneralContext();
 const ItemAction = ({
   onEdit,
   onDelete,

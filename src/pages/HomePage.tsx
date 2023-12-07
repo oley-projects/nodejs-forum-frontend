@@ -6,7 +6,7 @@ import { useFormItemContext } from '../context/formItemContext';
 import { useAuthContext } from '../context/authContext';
 
 const HomePage = () => {
-  const { isLoading, currentType, setCurrentType } = useGeneralContext();
+  const { isLoading } = useGeneralContext();
 
   const { categories } = useCategoryContext();
   const { openModalForum, setFormItem } = useFormItemContext();
@@ -20,7 +20,6 @@ const HomePage = () => {
       type: 'category',
     });
     openModalForum();
-    if (currentType !== 'category') setCurrentType('category');
   };
   return (
     <WrapHome>

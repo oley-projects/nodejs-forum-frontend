@@ -27,8 +27,7 @@ const FormItem = ({ id, type, action, name, description }: IState) => {
     type,
     action,
   });
-
-  const setFormDataHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const setFormDataHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const requestType = action + ' ' + type;
     const postData: { [key: string]: Function } = {
@@ -37,9 +36,8 @@ const FormItem = ({ id, type, action, name, description }: IState) => {
       postCategory,
     };
     closeModalForum();
-
     // Dynamic function call, depent on forum type
-    postData['post' + stringCapitalize(type)]({ itemData, requestType });
+    await postData['post' + stringCapitalize(type)]({ itemData, requestType });
   };
   const inputOnchange = (e: React.ChangeEvent<any>) => {
     setItemData((prevState) => ({

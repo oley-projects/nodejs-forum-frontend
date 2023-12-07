@@ -1,23 +1,44 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ItemAction from './ItemAction';
+import { useFormItemContext } from '../context/formItemContext';
 import { useForumContext } from '../context/forumContext';
 
 interface ICatForumElemProps {
   id: number;
   name: string;
+  description: string;
+  creator: { _id: string };
   topics: [];
 }
 
-const CategoryForumElem = ({ id, name, topics }: ICatForumElemProps) => {
-  const { getForum } = useForumContext();
+const CategoryForumElem = ({
+  id,
+  name,
+  description,
+  creator,
+  topics,
+}: ICatForumElemProps) => {
+  const { /*getForum, */ deleteForum } = useForumContext();
+  const { openModalForum, setFormItem } = useFormItemContext();
+
+  const editHandler = () => {
+    setFormItem({
+      id,
+      name,
+      description,
+      action: 'edit',
+      type: 'forum',
+    });
+    openModalForum();
+  };
   return (
     <WrapCatTopicEl>
       <div>
         <Link
           className='inline-link'
           to={`/viewforum/${id}`}
-          onClick={() => getForum(id)}
+          // onClick={() => getForum(id)}
         >
           {name}
         </Link>
@@ -41,10 +62,10 @@ const CategoryForumElem = ({ id, name, topics }: ICatForumElemProps) => {
       </div>
       <div className='box'>
         <ItemAction
-          onEdit={() => {}}
-          onDelete={() => {}}
-          creatorId={''}
-          type={'category'}
+          onEdit={editHandler}
+          onDelete={() => deleteForum(id)}
+          creatorId={creator._id}
+          type={'forum'}
         />
       </div>
     </WrapCatTopicEl>

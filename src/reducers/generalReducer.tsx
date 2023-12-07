@@ -3,7 +3,6 @@ import {
   SET_CATEGORY,
   SET_FORUM,
   SET_TOPIC,
-  SET_TOPIC_POSTS,
   SET_IS_LOADING,
   NAVBAR_OPEN,
   NAVBAR_CLOSE,
@@ -12,7 +11,7 @@ import {
   SET_PAGE_SIZE,
   SET_INITIAL_LOAD,
   SET_IS_POST_EDIT,
-  SET_CURRENT_TYPE,
+  SET_REQUESTED_DATA,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
@@ -35,19 +34,13 @@ const generalReducer = (
   if (action.type === SET_FORUM) {
     return {
       ...state,
-      topics: action.payload,
+      forum: action.payload,
     };
   }
   if (action.type === SET_TOPIC) {
     return {
       ...state,
       topic: action.payload,
-    };
-  }
-  if (action.type === SET_TOPIC_POSTS) {
-    return {
-      ...state,
-      posts: action.payload,
     };
   }
   if (action.type === SET_IS_LOADING) {
@@ -74,8 +67,8 @@ const generalReducer = (
   if (action.type === SET_IS_POST_EDIT) {
     return { ...state, isPostEdit: action.payload };
   }
-  if (action.type === SET_CURRENT_TYPE) {
-    return { ...state, currentType: action.payload };
+  if (action.type === SET_REQUESTED_DATA) {
+    return { ...state, requestedData: action.payload };
   }
   return { ...state };
 };

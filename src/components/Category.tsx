@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import CategoryForumElem from './CategoryForumElem';
 import ItemAction from './ItemAction';
-import { useGeneralContext } from '../context/generalContext';
 import { useCategoryContext } from '../context/categoryContext';
 import { useFormItemContext } from '../context/formItemContext';
 import { useAuthContext } from '../context/authContext';
@@ -16,13 +15,14 @@ interface ICatProps {
     {
       id: number;
       name: string;
+      description: string;
+      creator: { _id: string; name: string };
       topics: [];
     }
   ];
 }
 
 const Category = ({ id, name, description, creator, forums }: ICatProps) => {
-  const { currentType, setCurrentType } = useGeneralContext();
   const { openModalForum, setFormItem } = useFormItemContext();
   const { deleteCategory } = useCategoryContext();
   const { isAuth } = useAuthContext();
@@ -35,7 +35,6 @@ const Category = ({ id, name, description, creator, forums }: ICatProps) => {
       type: 'category',
     });
     openModalForum();
-    if (currentType !== 'category') setCurrentType('category');
   };
   const newForumHandler = () => {
     setFormItem({
@@ -46,7 +45,6 @@ const Category = ({ id, name, description, creator, forums }: ICatProps) => {
       type: 'forum',
     });
     openModalForum();
-    if (currentType !== 'forum') setCurrentType('forum');
   };
   return (
     <WrapCategory>
@@ -64,10 +62,11 @@ const Category = ({ id, name, description, creator, forums }: ICatProps) => {
         />
       </header>
       <section>
-        {forums &&
-          forums.map((forum) => (
-            <CategoryForumElem key={forum.id} {...forum} />
-          ))}
+        {forums?.length > 0 ? (
+          forums.map((forum) => <CategoryForumElem key={forum.id} {...forum} />)
+        ) : (
+          <div className='empty'>Empty forum</div>
+        )}
       </section>
       {isAuth && (
         <div className='add-element'>

@@ -1,20 +1,19 @@
 import styled from 'styled-components';
 import { Paginator, TopicItem, Loader, ItemAction } from '../components';
 import { useGeneralContext } from '../context/generalContext';
-import { useTopicContext } from '../context/topicContext';
+import { useForumContext } from '../context/forumContext';
 import { useFormItemContext } from '../context/formItemContext';
 import { useAuthContext } from '../context/authContext';
 
 const ForumPage = () => {
-  const { isLoading, totalItems, pageSize } = useGeneralContext();
-  const { topics } = useTopicContext();
+  const { isLoading, totalItems, pageSize, pathId } = useGeneralContext();
+  const { forum } = useForumContext();
   const { isAuth } = useAuthContext();
   const pageCount = Math.ceil(totalItems / pageSize);
   const { openModalForum, setFormItem } = useFormItemContext();
-
   const newTopicHandler = () => {
     setFormItem({
-      id: 0,
+      id: pathId,
       name: '',
       description: '',
       action: 'new',
@@ -46,13 +45,15 @@ const ForumPage = () => {
                 onEdit={() => {}}
                 onDelete={() => {}}
                 creatorId={''}
-                type={'forum ?'}
+                type={'forum'}
               />
             </div>
           </header>
           <ul>
-            {topics.length > 0 ? (
-              topics.map((topic) => <TopicItem key={topic.id} {...topic} />)
+            {forum.topics?.length > 0 ? (
+              forum.topics.map((topic) => (
+                <TopicItem key={topic.id} {...topic} />
+              ))
             ) : (
               <div className='empty'>Empty forum</div>
             )}

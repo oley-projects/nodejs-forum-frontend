@@ -14,7 +14,6 @@ interface ITopicPostItemProps {
   signature: string; */
   id: number;
   description: string;
-  topic: { name: string };
   creator: { name: string; _id: string };
   createdAt: string;
   setEditPost: React.Dispatch<
@@ -25,7 +24,6 @@ interface ITopicPostItemProps {
 const TopicPostItem = ({
   id,
   description,
-  topic,
   creator,
   createdAt,
   setEditPost,

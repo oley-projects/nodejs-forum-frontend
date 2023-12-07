@@ -1,7 +1,6 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 import categoryReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
-import { useTopicContext } from './topicContext';
 import { SET_CATEGORY, SET_CATEGORIES } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
@@ -19,20 +18,31 @@ export type TCategoryContext = {
     description: string;
     creator: { _id: string };
     name: string;
-    forums: [{ id: number; name: string; topics: [] }];
+    forums: [
+      {
+        id: number;
+        name: string;
+        description: string;
+        creator: { _id: string; name: string };
+        topics: [];
+      }
+    ];
   };
   categories: [
     {
-      //_id: string;
       id: number;
       name: string;
       description: string;
       creator: { _id: string; name: string };
-      //createdAt: string;
-      forums: [{ id: number; name: string; topics: [] }];
-      //views: string;
-      //lastPostUser: string;
-      //lastPostCreatedAt: string;
+      forums: [
+        {
+          id: number;
+          name: string;
+          description: string;
+          creator: { _id: string; name: string };
+          topics: [];
+        }
+      ];
     }
   ];
 };
@@ -56,11 +66,9 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     initialLoad,
     forumType,
     pages,
-    location,
   } = useGeneralContext();
-  const { topics } = useTopicContext();
   const [state, dispatch]: any = useReducer<any>(categoryReducer, initialState);
-  const getCategories = async (_?: any, page?: number, limit?: number) => {
+  const getCategories = async (page?: number, limit?: number) => {
     if (!isLoading) {
       setIsLoading(true);
     }
@@ -85,7 +93,6 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     try {
       const data = await forumAPI.getCategory(categoryId, page, limit);
       const { totalItems, category } = data.data;
-      //setTopicPosts(posts);
       setCategory(category);
       setTotalItems(totalItems);
     } catch (error) {
@@ -96,8 +103,6 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
   };
   const setCategory = (category: {}) =>
     dispatch({ type: SET_CATEGORY, payload: category });
-  /* const setCategoryTopics = (topics: []) =>
-    dispatch({ type: SET_CATEGORY_TOPICS, payload: topics }); */
   const postCategory = async (categoryData: {
     itemData: { id: number; name: string; description: string };
     requestType: string;
@@ -111,11 +116,11 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
       if (categoryData.requestType === 'new category') {
         await forumAPI.postCategory(category);
         if (totalItems % pageSize === 0) {
-          setCurrentPage(pages + 1);
           getCategories(pages + 1);
+          setCurrentPage(pages + 1);
         } else {
-          setCurrentPage(pages);
           getCategories(pages);
+          setCurrentPage(pages);
         }
       } else if (categoryData.requestType === 'edit category') {
         await forumAPI.updateCategory(category);
@@ -128,7 +133,7 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
   const deleteCategory = async (categoryId: number) => {
     try {
       await forumAPI.deleteCategory(categoryId);
-      if (currentPage > 1 && topics.length === 1) {
+      if (currentPage > 1 && state.category.topics.length === 1) {
         setCurrentPage(currentPage - 1);
         getCategories(currentPage - 1);
       } else {
@@ -138,16 +143,12 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
       console.log(error);
     }
   };
-  // console.log(state.categories);
   useEffect(() => {
-    if (
-      (initialLoad && !isLoading && forumType === 'categories') ||
-      (!isLoading && forumType === 'categories' && !state.categories.length)
-    ) {
+    if (initialLoad && !isLoading && forumType === 'categories') {
       getCategories();
     }
     // eslint-disable-next-line
-  }, [location]);
+  }, [forumType]);
 
   return (
     <CategoryContext.Provider
