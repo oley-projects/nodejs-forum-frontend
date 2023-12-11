@@ -1,42 +1,30 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGeneralContext } from '../context/generalContext';
-import { useForumContext } from '../context/forumContext';
-import { useTopicContext } from '../context/topicContext';
+// import { useForumContext } from '../context/forumContext';
+// import { useTopicContext } from '../context/topicContext';
 
-const Paginator = ({ name, id }: { name: string; id: number }) => {
-  const { totalItems, currentPage, pageSize, setCurrentPage, initialLoad } =
+const Paginator = () => {
+  const { currentPage, pages, setCurrentPage /*, initialLoad*/ } =
     useGeneralContext();
-  const { getForum } = useForumContext();
-  const { getTopic } = useTopicContext();
-  const pageCount = Math.ceil(totalItems / pageSize);
-  const pages = Array.from(Array(pageCount).keys());
-
-  const getData = (name: string, id: number, currentPage: number) => {
-    if (name === 'topics') {
-      getForum(id, currentPage);
-    } else if (name === 'topic') {
-      getTopic(id, currentPage);
-    }
-  };
+  // const { getForum } = useForumContext();
+  // const { getTopic } = useTopicContext();
+  const pageArr = Array.from(Array(pages).keys());
 
   const prevHandler = () => {
     if (currentPage > 1) {
-      getData(name, id || 0, currentPage - 1);
       setCurrentPage(currentPage - 1);
     }
   };
   const nextHandler = () => {
-    if (currentPage < pageCount) {
-      getData(name, id || 0, currentPage + 1);
+    if (currentPage < pages) {
       setCurrentPage(currentPage + 1);
     }
   };
   const pageHandler = (page: number) => {
-    getData(name, id || 0, page);
     setCurrentPage(page);
   };
-  useEffect(() => {
+  /* useEffect(() => {
     if (!initialLoad) {
       if (name === 'topics') {
         getForum(id, currentPage);
@@ -46,15 +34,15 @@ const Paginator = ({ name, id }: { name: string; id: number }) => {
       getData(name, id, currentPage);
     }
     // eslint-disable-next-line
-  }, []);
+  }, []); */
   return (
     <WrapPaginator>
       <li>
         <button onClick={prevHandler}>{'<'}</button>
       </li>
-      {pages.map((p) =>
+      {pageArr.map((p) =>
         (p < 5 && currentPage < 4) ||
-        (p > pageCount - 6 && currentPage > pageCount - 3) ? (
+        (p > pages - 6 && currentPage > pages - 3) ? (
           <li key={p}>
             <button
               className={p + 1 === currentPage ? 'current-page' : ''}
@@ -64,16 +52,14 @@ const Paginator = ({ name, id }: { name: string; id: number }) => {
             </button>
           </li>
         ) : (p > 1 && currentPage - p > 2) ||
-          (p < pageCount - 1 &&
+          (p < pages - 1 &&
             p - currentPage > 0 &&
-            p !== pageCount - 2 &&
-            currentPage < pageCount - 3) ? (
+            p !== pages - 2 &&
+            currentPage < pages - 3) ? (
           <></>
-        ) : p === pageCount - 2 &&
-          currentPage < pageCount - 3 &&
-          pageCount > 7 ? (
+        ) : p === pages - 2 && currentPage < pages - 3 && pages > 7 ? (
           <span>...</span>
-        ) : p === 1 && currentPage - p > 3 && pageCount > 7 ? (
+        ) : p === 1 && currentPage - p > 3 && pages > 7 ? (
           <span>...</span>
         ) : (
           <li key={p}>

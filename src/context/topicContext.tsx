@@ -44,7 +44,6 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     currentPage,
     pageSize,
     isLoading,
-    initialLoad,
     forumType,
     pathId,
     pages,
@@ -106,14 +105,11 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     }
   };
   useEffect(() => {
-    if (initialLoad && !isLoading && forumType === 'topic' && pathId) {
-      if (currentPage > 1) {
-        setCurrentPage(1);
-      }
-      getTopic(pathId);
+    if (!isLoading && forumType === 'topic' && pathId) {
+      getTopic(pathId, currentPage);
     }
     // eslint-disable-next-line
-  }, []);
+  }, [forumType, currentPage]);
 
   return (
     <TopicContext.Provider

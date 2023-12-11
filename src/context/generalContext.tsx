@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useReducer } from 'react';
+import React, { ReactNode, useContext, useEffect, useReducer } from 'react';
 import { useLocation } from 'react-router-dom';
 import generalReducer from '../reducers/generalReducer';
 import {
@@ -8,9 +8,8 @@ import {
   SET_TOTAL_ITEMS,
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
-  SET_INITIAL_LOAD,
+  // SET_INITIAL_LOAD,
   SET_IS_POST_EDIT,
-  // SET_REQUESTED_DATA,
 } from '../actions/actions';
 // import { forumAPI } from '../api/api';
 
@@ -34,7 +33,7 @@ export type TGeneralContext = {
   totalItems: number;
   currentPage: number;
   pageSize: number;
-  initialLoad: boolean;
+  // initialLoad: boolean;
   pages: number;
   forumType: string;
   pathId: number;
@@ -45,9 +44,8 @@ const initialState = {
   currentPage: 1,
   pageSize: 10,
   isLoading: false,
-  initialLoad: true,
+  // initialLoad: true,
   isPostEdit: false,
-  // requestedData: 'categories',
 };
 
 const GeneralContext = React.createContext({} as TGeneralContext);
@@ -69,14 +67,15 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
   };
   const setPageSize = (page: number) =>
     dispatch({ type: SET_PAGE_SIZE, payload: page });
-  const setInitialLoad = (initialLoad: boolean) =>
-    dispatch({ type: SET_INITIAL_LOAD, payload: initialLoad });
+  /* const setInitialLoad = (initialLoad: boolean) =>
+    dispatch({ type: SET_INITIAL_LOAD, payload: initialLoad }); */
   const setIsPostEdit = (isPostEdit: boolean) =>
     dispatch({ type: SET_IS_POST_EDIT, payload: isPostEdit });
   const setIsLoading = (isLoading: boolean) =>
     dispatch({ type: SET_IS_LOADING, payload: isLoading });
-  /* const setRequestedData = (requestedData: Function) =>
-    dispatch({ type: SET_REQUESTED_DATA, payload: requestedData }); */
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [forumType]);
   /* useEffect(() => {
     if (state.initialLoad && !state.isLoading) {
       if (forumType === 'categories') {
@@ -105,7 +104,6 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
         setCurrentPage,
         setPageSize,
         setTotalItems,
-        setInitialLoad,
         setIsPostEdit,
         setIsLoading,
       }}

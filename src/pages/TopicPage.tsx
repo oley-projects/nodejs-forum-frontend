@@ -51,7 +51,7 @@ const TopicPage = () => {
                 creatorId={''}
                 type={'topic'}
               />
-              {pages > 1 && <Paginator name='topic' id={pathId} />}
+              {pages > 1 && <Paginator />}
             </div>
           </header>
           <ul className='content'>

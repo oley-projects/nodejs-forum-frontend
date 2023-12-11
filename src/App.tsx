@@ -9,7 +9,6 @@ import {
 } from './components';
 import {
   HomePage,
-  CategoryPage,
   ErrorPage,
   MemberPage,
   Layout,
@@ -38,7 +37,6 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route element={<Layout />}>
             <Route path='memberlist/:id' element={<MemberPage />} />
-            <Route path='viewcategoty/:id' element={<CategoryPage />} />
             <Route path='viewforum/:id' element={<ForumPage />} />
             <Route path='viewtopic/:id' element={<TopicPage />} />
             <Route path='results' element={<PostListPage />} />

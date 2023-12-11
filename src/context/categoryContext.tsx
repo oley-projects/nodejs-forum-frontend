@@ -1,7 +1,7 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 import categoryReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
-import { SET_CATEGORY, SET_CATEGORIES } from '../actions/actions';
+import { SET_CATEGORIES } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
 interface ICategoryProps {
@@ -10,24 +10,8 @@ interface ICategoryProps {
 
 export type TCategoryContext = {
   getCategories: (page?: number, limit?: number) => void;
-  getCategory: (id: number, page?: number, limit?: number) => void;
   postCategory: (args: {}) => void;
   deleteCategory: (postId: number) => void;
-  category: {
-    id: number;
-    description: string;
-    creator: { _id: string };
-    name: string;
-    forums: [
-      {
-        id: number;
-        name: string;
-        description: string;
-        creator: { _id: string; name: string };
-        topics: [];
-      }
-    ];
-  };
   categories: [
     {
       id: number;
@@ -49,7 +33,6 @@ export type TCategoryContext = {
 
 const initialState = {
   categories: [],
-  category: {},
 };
 
 const CategoryContext = React.createContext({} as TCategoryContext);
@@ -57,13 +40,12 @@ const CategoryContext = React.createContext({} as TCategoryContext);
 export const CategoryProvider = ({ children }: ICategoryProps) => {
   const {
     setIsLoading,
-    setTotalItems,
+    // setTotalItems,
     setCurrentPage,
     totalItems,
     pageSize,
     currentPage,
     isLoading,
-    initialLoad,
     forumType,
     pages,
   } = useGeneralContext();
@@ -74,8 +56,9 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     }
     try {
       const data = await forumAPI.getCategories(page, limit);
-      const categories = data.data.categories;
+      const { categories } = data.data;
       setCategories(categories);
+      // setTotalItems(totalItems);
     } catch (error) {
       console.log(error);
     } finally {
@@ -84,25 +67,6 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
   };
   const setCategories = (categories: []) =>
     dispatch({ type: SET_CATEGORIES, payload: categories });
-  const getCategory = async (
-    categoryId: number,
-    page?: number,
-    limit?: number
-  ) => {
-    if (!isLoading) setIsLoading(true);
-    try {
-      const data = await forumAPI.getCategory(categoryId, page, limit);
-      const { totalItems, category } = data.data;
-      setCategory(category);
-      setTotalItems(totalItems);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const setCategory = (category: {}) =>
-    dispatch({ type: SET_CATEGORY, payload: category });
   const postCategory = async (categoryData: {
     itemData: { id: number; name: string; description: string };
     requestType: string;
@@ -144,7 +108,7 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     }
   };
   useEffect(() => {
-    if (initialLoad && !isLoading && forumType === 'categories') {
+    if (!isLoading && forumType === 'categories') {
       getCategories();
     }
     // eslint-disable-next-line
@@ -155,7 +119,6 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
       value={{
         ...state,
         getCategories,
-        getCategory,
         postCategory,
         deleteCategory,
       }}

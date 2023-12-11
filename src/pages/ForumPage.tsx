@@ -6,10 +6,9 @@ import { useFormItemContext } from '../context/formItemContext';
 import { useAuthContext } from '../context/authContext';
 
 const ForumPage = () => {
-  const { isLoading, totalItems, pageSize, pathId } = useGeneralContext();
+  const { isLoading, pages, pathId, totalItems } = useGeneralContext();
   const { forum } = useForumContext();
   const { isAuth } = useAuthContext();
-  const pageCount = Math.ceil(totalItems / pageSize);
   const { openModalForum, setFormItem } = useFormItemContext();
   const newTopicHandler = () => {
     setFormItem({
@@ -31,7 +30,7 @@ const ForumPage = () => {
 
         <div className='nav-links'>
           <span>{totalItems} topics</span>
-          {pageCount > 1 && <Paginator name='topics' id={0} />}
+          {pages > 1 && <Paginator />}
         </div>
       </div>
       {isLoading ? (
@@ -39,7 +38,7 @@ const ForumPage = () => {
       ) : (
         <div className='forum-content'>
           <header>
-            <div>Topics</div>
+            <div>{forum.name}</div>
             <div>
               <ItemAction
                 onEdit={() => {}}

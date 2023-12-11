@@ -51,12 +51,11 @@ export const ForumProvider = ({ children }: IForumProps) => {
     pageSize,
     currentPage,
     isLoading,
-    initialLoad,
     forumType,
     pathId,
     pages,
   } = useGeneralContext();
-  const { getCategories, getCategory, category } = useCategoryContext();
+  const { getCategories } = useCategoryContext();
   const getForum = async (forumId: number, page?: number, limit?: number) => {
     if (!isLoading) setIsLoading(true);
     try {
@@ -71,18 +70,6 @@ export const ForumProvider = ({ children }: IForumProps) => {
     }
   };
 
-  const getData = (
-    forumType: string,
-    id: number,
-    currentPage?: number,
-    limit?: number
-  ) => {
-    if (forumType === 'categories') {
-      getCategories();
-    } else if (forumType === 'category') {
-      getCategory(id, currentPage, limit);
-    }
-  };
   const setForum = (forum: {}) => dispatch({ type: SET_FORUM, payload: forum });
   const postForum = async (forumData: {
     itemData: { id: number; name: string; description: string };
@@ -98,15 +85,15 @@ export const ForumProvider = ({ children }: IForumProps) => {
         await forumAPI.postForum(forum);
         console.log(forum);
         if (totalItems % pageSize === 0) {
-          getData(forumType, category.id, pages + 1);
+          getCategories(pages + 1);
           setCurrentPage(pages + 1);
         } else {
-          getData(forumType, category.id, pages);
+          getCategories(pages);
           setCurrentPage(pages);
         }
       } else if (forumData.requestType === 'edit forum') {
         await forumAPI.updateForum(forum);
-        getCategory(category.id, currentPage);
+        getCategories(currentPage);
       }
     } catch (error) {
       console.log(error);
@@ -116,10 +103,10 @@ export const ForumProvider = ({ children }: IForumProps) => {
     try {
       await forumAPI.deleteForum(forumId);
       if (currentPage > 1 && state.forums.length === 1) {
-        getData(forumType, category.id, currentPage - 1);
+        getCategories(currentPage - 1);
         setCurrentPage(currentPage - 1);
       } else {
-        getData(forumType, category.id, currentPage);
+        getCategories(currentPage);
       }
     } catch (error) {
       console.log(error);
@@ -127,14 +114,11 @@ export const ForumProvider = ({ children }: IForumProps) => {
   };
 
   useEffect(() => {
-    if (initialLoad && !isLoading && forumType === 'forum') {
-      if (currentPage > 1) {
-        setCurrentPage(1);
-      }
-      getForum(pathId);
+    if (!isLoading && forumType === 'forum' && pathId) {
+      getForum(pathId, currentPage);
     }
     // eslint-disable-next-line
-  }, []);
+  }, [forumType, currentPage]);
 
   return (
     <ForumContext.Provider

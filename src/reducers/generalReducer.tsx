@@ -1,6 +1,5 @@
 import {
   SET_CATEGORIES,
-  SET_CATEGORY,
   SET_FORUM,
   SET_TOPIC,
   SET_IS_LOADING,
@@ -11,7 +10,6 @@ import {
   SET_PAGE_SIZE,
   SET_INITIAL_LOAD,
   SET_IS_POST_EDIT,
-  SET_REQUESTED_DATA,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
@@ -23,12 +21,6 @@ const generalReducer = (
     return {
       ...state,
       categories: action.payload,
-    };
-  }
-  if (action.type === SET_CATEGORY) {
-    return {
-      ...state,
-      category: action.payload,
     };
   }
   if (action.type === SET_FORUM) {
@@ -66,9 +58,6 @@ const generalReducer = (
   }
   if (action.type === SET_IS_POST_EDIT) {
     return { ...state, isPostEdit: action.payload };
-  }
-  if (action.type === SET_REQUESTED_DATA) {
-    return { ...state, requestedData: action.payload };
   }
   return { ...state };
 };

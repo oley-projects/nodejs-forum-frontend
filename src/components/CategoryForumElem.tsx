@@ -19,9 +19,8 @@ const CategoryForumElem = ({
   creator,
   topics,
 }: ICatForumElemProps) => {
-  const { /*getForum, */ deleteForum } = useForumContext();
+  const { /*getForum,*/ deleteForum } = useForumContext();
   const { openModalForum, setFormItem } = useFormItemContext();
-
   const editHandler = () => {
     setFormItem({
       id,
@@ -44,12 +43,8 @@ const CategoryForumElem = ({
         </Link>
       </div>
       <div className='total-stats'>
-        <div>{topics}</div>
-        <div>Topics</div>
-      </div>
-      <div className='total-stats'>
         <div>{topics?.length + ' topics'}</div>
-        <div>Posts</div>
+        <div>0 posts</div>
       </div>
       <div>
         <div>

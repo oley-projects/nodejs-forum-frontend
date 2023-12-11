@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import CategoryForumElem from './CategoryForumElem';
 import ItemAction from './ItemAction';
@@ -49,11 +48,7 @@ const Category = ({ id, name, description, creator, forums }: ICatProps) => {
   return (
     <WrapCategory>
       <header>
-        <h5>
-          <Link to={`/viewcategoty/${id}`} className='inline-link'>
-            {name}
-          </Link>
-        </h5>
+        <h5>{name}</h5>
         <ItemAction
           onEdit={editHandler}
           onDelete={() => deleteCategory(id)}
