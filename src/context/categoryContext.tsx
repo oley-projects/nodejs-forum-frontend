@@ -1,4 +1,4 @@
-import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
+import React, { ReactNode, useContext, useReducer } from 'react';
 import categoryReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
 import { SET_CATEGORIES } from '../actions/actions';
@@ -25,6 +25,8 @@ export type TCategoryContext = {
           description: string;
           creator: { _id: string; name: string };
           topics: [];
+          totalPosts: number;
+          totalTopics: number;
         }
       ];
     }
@@ -40,13 +42,11 @@ const CategoryContext = React.createContext({} as TCategoryContext);
 export const CategoryProvider = ({ children }: ICategoryProps) => {
   const {
     setIsLoading,
-    // setTotalItems,
     setCurrentPage,
     totalItems,
     pageSize,
     currentPage,
     isLoading,
-    forumType,
     pages,
   } = useGeneralContext();
   const [state, dispatch]: any = useReducer<any>(categoryReducer, initialState);
@@ -58,7 +58,6 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
       const data = await forumAPI.getCategories(page, limit);
       const { categories } = data.data;
       setCategories(categories);
-      // setTotalItems(totalItems);
     } catch (error) {
       console.log(error);
     } finally {
@@ -107,12 +106,6 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    if (!isLoading && forumType === 'categories') {
-      getCategories();
-    }
-    // eslint-disable-next-line
-  }, [forumType]);
 
   return (
     <CategoryContext.Provider

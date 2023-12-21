@@ -1,9 +1,11 @@
-import React, { ReactNode, useContext, useReducer } from 'react';
+import React, { ReactNode, useContext, useEffect, useReducer } from 'react';
 import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
+import { useCategoryContext } from './categoryContext';
+import { useForumContext } from './forumContext';
+import { useTopicContext } from './topicContext';
 import { SET_POST } from '../actions/actions';
 import { forumAPI } from '../api/api';
-import { useTopicContext } from './topicContext';
 
 export type TPostContext = {
   getPost: (args: number) => void;
@@ -32,7 +34,11 @@ export const PostProvider = ({ children }: IPostProps) => {
     currentPage,
     isLoading,
     pages,
+    pathId,
+    forumType,
   } = useGeneralContext();
+  const { getCategories } = useCategoryContext();
+  const { getForum } = useForumContext();
   const { getTopic, topic } = useTopicContext();
 
   const getPost = async (postId: number, page?: number, limit?: number) => {
@@ -88,6 +94,23 @@ export const PostProvider = ({ children }: IPostProps) => {
       console.log(error);
     }
   };
+  useEffect(() => {
+    if (!isLoading && forumType === 'categories') {
+      getCategories();
+    }
+    if (!isLoading && forumType === 'forum' && pathId) {
+      getForum(pathId, currentPage);
+    }
+    if (!isLoading && forumType === 'topic' && pathId) {
+      getTopic(pathId, currentPage);
+    }
+    return () => {
+      if (currentPage > 1) {
+        setCurrentPage(1);
+      }
+    };
+    // eslint-disable-next-line
+  }, [forumType, currentPage]);
 
   return (
     <PostContext.Provider

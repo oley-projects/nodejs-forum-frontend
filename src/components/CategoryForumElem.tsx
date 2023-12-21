@@ -10,6 +10,8 @@ interface ICatForumElemProps {
   description: string;
   creator: { _id: string };
   topics: [];
+  totalPosts: number;
+  totalTopics: number;
 }
 
 const CategoryForumElem = ({
@@ -17,7 +19,8 @@ const CategoryForumElem = ({
   name,
   description,
   creator,
-  topics,
+  totalPosts,
+  totalTopics,
 }: ICatForumElemProps) => {
   const { /*getForum,*/ deleteForum } = useForumContext();
   const { openModalForum, setFormItem } = useFormItemContext();
@@ -43,8 +46,8 @@ const CategoryForumElem = ({
         </Link>
       </div>
       <div className='total-stats'>
-        <div>{topics?.length + ' topics'}</div>
-        <div>0 posts</div>
+        <div>{totalTopics} topics</div>
+        <div>{totalPosts} posts</div>
       </div>
       <div>
         <div>

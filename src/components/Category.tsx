@@ -17,6 +17,8 @@ interface ICatProps {
       description: string;
       creator: { _id: string; name: string };
       topics: [];
+      totalTopics: number;
+      totalPosts: number;
     }
   ];
 }

@@ -1,8 +1,7 @@
-import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
+import React, { ReactNode, useContext, useReducer } from 'react';
 import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
 import { useCategoryContext } from './categoryContext';
-
 import { SET_FORUM } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
@@ -51,8 +50,6 @@ export const ForumProvider = ({ children }: IForumProps) => {
     pageSize,
     currentPage,
     isLoading,
-    forumType,
-    pathId,
     pages,
   } = useGeneralContext();
   const { getCategories } = useCategoryContext();
@@ -112,13 +109,6 @@ export const ForumProvider = ({ children }: IForumProps) => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (!isLoading && forumType === 'forum' && pathId) {
-      getForum(pathId, currentPage);
-    }
-    // eslint-disable-next-line
-  }, [forumType, currentPage]);
 
   return (
     <ForumContext.Provider

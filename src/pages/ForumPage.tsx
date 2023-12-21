@@ -20,7 +20,6 @@ const ForumPage = () => {
     });
     openModalForum();
   };
-
   return (
     <WrapForum>
       <div className='nav-forum'>

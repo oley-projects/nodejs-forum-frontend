@@ -1,9 +1,9 @@
-import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
+import React, { ReactNode, useContext, useReducer } from 'react';
 import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
+import { useForumContext } from './forumContext';
 import { SET_TOPIC } from '../actions/actions';
 import { forumAPI } from '../api/api';
-import { useForumContext } from './forumContext';
 
 interface ITopicProps {
   children: ReactNode;
@@ -44,8 +44,6 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     currentPage,
     pageSize,
     isLoading,
-    forumType,
-    pathId,
     pages,
   } = useGeneralContext();
   const { getForum, forum } = useForumContext();
@@ -104,12 +102,6 @@ export const TopicProvider = ({ children }: ITopicProps) => {
       console.log(error);
     }
   };
-  useEffect(() => {
-    if (!isLoading && forumType === 'topic' && pathId) {
-      getTopic(pathId, currentPage);
-    }
-    // eslint-disable-next-line
-  }, [forumType, currentPage]);
 
   return (
     <TopicContext.Provider

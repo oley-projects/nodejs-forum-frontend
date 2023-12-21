@@ -1,4 +1,8 @@
-import React, { ReactNode, useContext, useEffect, useReducer } from 'react';
+import React, {
+  ReactNode,
+  useContext,
+  useReducer /*, useEffect*/,
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import generalReducer from '../reducers/generalReducer';
 import {
@@ -73,9 +77,11 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
     dispatch({ type: SET_IS_POST_EDIT, payload: isPostEdit });
   const setIsLoading = (isLoading: boolean) =>
     dispatch({ type: SET_IS_LOADING, payload: isLoading });
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [forumType]);
+  /*useEffect(() => {
+    if (state.currentPage > 1) {
+      setCurrentPage(1);
+    } // eslint-disable-next-line
+  }, [forumType]);*/
   /* useEffect(() => {
     if (state.initialLoad && !state.isLoading) {
       if (forumType === 'categories') {
