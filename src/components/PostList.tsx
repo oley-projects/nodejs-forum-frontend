@@ -1,21 +1,13 @@
-// import { useEffect } from 'react';
 import SinglePost from './SinglePost';
-import { useTopicContext } from '../context/topicContext';
+import { useCategoryContext } from '../context/categoryContext';
 
 const PostList = () => {
-  const { /*getTopic,*/ topic } = useTopicContext();
-  /* useEffect(
-    () => {
-      if (topic) {
-        getTopic(topic.id);
-      }
-    }, // eslint-disable-next-line
-    []
-  ); */
+  const { lastPosts } = useCategoryContext();
+
   return (
     <>
-      {topic.posts?.length > 0 &&
-        topic.posts.map((post, idx) =>
+      {lastPosts?.length > 0 &&
+        lastPosts?.map((post, idx) =>
           idx < 10 ? <SinglePost key={post.id} {...post} /> : null
         )}
     </>

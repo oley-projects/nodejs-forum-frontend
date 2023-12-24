@@ -1,4 +1,3 @@
-import CategoryPage from './CategoryPage';
 import ErrorPage from './ErrorPage';
 import ForumPage from './ForumPage';
 import HomePage from './HomePage';
@@ -10,7 +9,6 @@ import PostListPage from './PostListPage';
 import TopicPage from './TopicPage';
 
 export {
-  CategoryPage,
   ErrorPage,
   ForumPage,
   HomePage,

@@ -1,5 +1,6 @@
 import {
   SET_CATEGORIES,
+  SET_LAST_POSTS,
   SET_FORUM,
   SET_TOPIC,
   SET_IS_LOADING,
@@ -21,6 +22,12 @@ const generalReducer = (
     return {
       ...state,
       categories: action.payload,
+    };
+  }
+  if (action.type === SET_LAST_POSTS) {
+    return {
+      ...state,
+      lastPosts: action.payload,
     };
   }
   if (action.type === SET_FORUM) {

@@ -18,11 +18,11 @@ const SinglePost = ({
   return (
     <WrapSinglePost>
       <header>
-        <Link to={`/viewtopic/${topic.id}`} className='inline-link'>
-          {topic.name}
+        <Link to={`/viewtopic/${topic?.id}`} className='inline-link'>
+          {topic?.name}
         </Link>
       </header>
-      <div>by {creator.name}</div>
+      <div>by {creator?.name}</div>
       <div>{description}</div>
       <div>{createdAt}</div>
     </WrapSinglePost>

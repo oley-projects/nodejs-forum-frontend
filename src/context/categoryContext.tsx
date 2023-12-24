@@ -1,7 +1,7 @@
 import React, { ReactNode, useContext, useReducer } from 'react';
 import categoryReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
-import { SET_CATEGORIES } from '../actions/actions';
+import { SET_CATEGORIES, SET_LAST_POSTS } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
 interface ICategoryProps {
@@ -31,10 +31,20 @@ export type TCategoryContext = {
       ];
     }
   ];
+  lastPosts: [
+    {
+      id: number;
+      topic: { name: string; id: number };
+      description: string;
+      creator: { name: string };
+      createdAt: string;
+    }
+  ];
 };
 
 const initialState = {
   categories: [],
+  lastPosts: [],
 };
 
 const CategoryContext = React.createContext({} as TCategoryContext);
@@ -56,8 +66,9 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     }
     try {
       const data = await forumAPI.getCategories(page, limit);
-      const { categories } = data.data;
+      const { categories, lastPosts } = data.data;
       setCategories(categories);
+      setLastPosts(lastPosts);
     } catch (error) {
       console.log(error);
     } finally {
@@ -66,6 +77,8 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
   };
   const setCategories = (categories: []) =>
     dispatch({ type: SET_CATEGORIES, payload: categories });
+  const setLastPosts = (lastPosts: []) =>
+    dispatch({ type: SET_LAST_POSTS, payload: lastPosts });
   const postCategory = async (categoryData: {
     itemData: { id: number; name: string; description: string };
     requestType: string;

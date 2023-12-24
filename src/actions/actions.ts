@@ -8,6 +8,7 @@ export const MODAL_SIGNUP_CLOSE: string = 'MODAL_SIGNUP_CLOSE';
 export const MODAL_FORUM_OPEN: string = 'MODAL_FORUM_OPEN';
 export const MODAL_FORUM_CLOSE: string = 'MODAL_FORUM_CLOSE';
 export const SET_CATEGORIES: string = 'SET_CATEGORIES';
+export const SET_LAST_POSTS: string = 'SET_LAST_POSTS';
 export const SET_FORUM: string = 'SET_FORUM';
 export const SET_TOPIC: string = 'SET_TOPIC';
 export const SET_POST: string = 'SET_POST';

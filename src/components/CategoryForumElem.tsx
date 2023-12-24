@@ -62,7 +62,7 @@ const CategoryForumElem = ({
         <ItemAction
           onEdit={editHandler}
           onDelete={() => deleteForum(id)}
-          creatorId={creator._id}
+          creatorId={creator?._id}
           type={'forum'}
         />
       </div>
