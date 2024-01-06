@@ -14,7 +14,7 @@ import {
   Layout,
   PrivateRoute,
   Terms,
-  PostListPage,
+  FoundPostsPage,
   TopicPage,
   ForumPage,
 } from './pages';
@@ -39,7 +39,7 @@ function App() {
             <Route path='memberlist/:id' element={<MemberPage />} />
             <Route path='viewforum/:id' element={<ForumPage />} />
             <Route path='viewtopic/:id' element={<TopicPage />} />
-            <Route path='results' element={<PostListPage />} />
+            <Route path='results' element={<FoundPostsPage />} />
             <Route path='terms' element={<Terms />} />
             <Route
               path='private'

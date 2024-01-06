@@ -1,13 +1,22 @@
 import SinglePost from './SinglePost';
-import { useCategoryContext } from '../context/categoryContext';
 
-const PostList = () => {
-  const { lastPosts } = useCategoryContext();
+interface IPostListProps {
+  posts: [
+    {
+      id: number;
+      topic: { name: string; id: number };
+      description: string;
+      creator: { name: string };
+      createdAt: string;
+    }
+  ];
+}
 
+const PostList = ({ posts }: IPostListProps) => {
   return (
     <>
-      {lastPosts?.length > 0 &&
-        lastPosts?.map((post, idx) =>
+      {posts?.length > 0 &&
+        posts?.map((post, idx) =>
           idx < 10 ? <SinglePost key={post.id} {...post} /> : null
         )}
     </>

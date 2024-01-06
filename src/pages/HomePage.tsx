@@ -8,7 +8,7 @@ import { useAuthContext } from '../context/authContext';
 const HomePage = () => {
   const { isLoading } = useGeneralContext();
 
-  const { categories } = useCategoryContext();
+  const { categories, lastPosts } = useCategoryContext();
   const { openModalForum, setFormItem } = useFormItemContext();
   const { isAuth } = useAuthContext();
   const newCategoryHandler = () => {
@@ -42,7 +42,7 @@ const HomePage = () => {
             )}
           </div>
           <Sidebar>
-            <PostList />
+            <PostList posts={lastPosts} />
           </Sidebar>
         </>
       )}

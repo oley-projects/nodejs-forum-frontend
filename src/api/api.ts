@@ -66,6 +66,9 @@ export const forumAPI = {
   deletePost(postId: number) {
     return instance.delete(`post/${postId}`);
   },
+  requestPosts(searchRequest: string, page = 1, limit = 10) {
+    return instance.get(`posts/${searchRequest}?&page=${page}&limit=${limit}`);
+  },
   signUp(user: {}) {
     return instance.put(`auth/signup`, user);
   },

@@ -5,8 +5,8 @@ import MemberPage from './MemberPage';
 import Layout from './PageLayout';
 import PrivateRoute from './PrivateRoute';
 import Terms from './Terms';
-import PostListPage from './PostListPage';
 import TopicPage from './TopicPage';
+import FoundPostsPage from './FoundPostsPage';
 
 export {
   ErrorPage,
@@ -16,6 +16,6 @@ export {
   Layout,
   PrivateRoute,
   Terms,
-  PostListPage,
   TopicPage,
+  FoundPostsPage,
 };

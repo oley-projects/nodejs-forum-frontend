@@ -4,7 +4,7 @@ import { useGeneralContext } from './generalContext';
 import { useCategoryContext } from './categoryContext';
 import { useForumContext } from './forumContext';
 import { useTopicContext } from './topicContext';
-import { SET_POST } from '../actions/actions';
+import { SET_POST, SET_FOUND_POSTS } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
 export type TPostContext = {
@@ -12,6 +12,20 @@ export type TPostContext = {
   postPost: (args: {}) => void;
   deletePost: (postId: number) => void;
   post: { name: string };
+  foundPosts: [
+    {
+      id: number;
+      topic: {
+        name: string;
+        id: number;
+      };
+      description: string;
+      creator: {
+        name: string;
+      };
+      createdAt: string;
+    }
+  ];
 };
 
 interface IPostProps {
@@ -20,6 +34,7 @@ interface IPostProps {
 
 const initialState = {
   post: {},
+  foundPosts: [],
 };
 
 const PostContext = React.createContext({} as TPostContext);
@@ -41,10 +56,10 @@ export const PostProvider = ({ children }: IPostProps) => {
   const { getForum } = useForumContext();
   const { getTopic, topic } = useTopicContext();
 
-  const getPost = async (postId: number, page?: number, limit?: number) => {
+  const getPost = async (postId: number) => {
     if (!isLoading) setIsLoading(true);
     try {
-      const data = await forumAPI.getTopic(postId, page, limit);
+      const data = await forumAPI.getPost(postId);
       const { post } = data.data;
       setPost(post);
     } catch (error) {
@@ -94,6 +109,24 @@ export const PostProvider = ({ children }: IPostProps) => {
       console.log(error);
     }
   };
+  const setFoundPosts = (posts: []) =>
+    dispatch({ type: SET_FOUND_POSTS, payload: posts });
+  const getFoundPosts = async (
+    seachRequest: string,
+    page?: number,
+    limit?: number
+  ) => {
+    if (!isLoading) setIsLoading(true);
+    try {
+      const data = await forumAPI.requestPosts(seachRequest, page, limit);
+      const { posts } = data.data;
+      setFoundPosts(posts);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
     if (!isLoading && forumType === 'categories') {
       getCategories();
@@ -119,6 +152,7 @@ export const PostProvider = ({ children }: IPostProps) => {
         getPost,
         postPost,
         deletePost,
+        getFoundPosts,
       }}
     >
       {children}
