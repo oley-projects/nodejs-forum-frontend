@@ -39,7 +39,7 @@ function App() {
             <Route path='memberlist/:id' element={<MemberPage />} />
             <Route path='viewforum/:id' element={<ForumPage />} />
             <Route path='viewtopic/:id' element={<TopicPage />} />
-            <Route path='results' element={<FoundPostsPage />} />
+            <Route path='search/:query' element={<FoundPostsPage />} />
             <Route path='terms' element={<Terms />} />
             <Route
               path='private'

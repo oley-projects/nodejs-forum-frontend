@@ -11,6 +11,7 @@ export type TPostContext = {
   getPost: (args: number) => void;
   postPost: (args: {}) => void;
   deletePost: (postId: number) => void;
+  getFoundPosts: (searchRequest: string, page: number, limit: number) => void;
   post: { name: string };
   foundPosts: [
     {
@@ -51,6 +52,7 @@ export const PostProvider = ({ children }: IPostProps) => {
     pages,
     pathId,
     forumType,
+    setTotalItems,
   } = useGeneralContext();
   const { getCategories } = useCategoryContext();
   const { getForum } = useForumContext();
@@ -119,8 +121,9 @@ export const PostProvider = ({ children }: IPostProps) => {
     if (!isLoading) setIsLoading(true);
     try {
       const data = await forumAPI.requestPosts(seachRequest, page, limit);
-      const { posts } = data.data;
+      const { posts, totalItems } = data.data;
       setFoundPosts(posts);
+      setTotalItems(totalItems);
     } catch (error) {
       console.log(error);
     } finally {
