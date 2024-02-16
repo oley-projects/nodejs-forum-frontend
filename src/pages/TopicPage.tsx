@@ -26,7 +26,7 @@ const TopicPage = () => {
       id = editPost.id;
     } else {
       requestType = 'new post';
-      id = pathId;
+      id = parseInt(pathId);
     }
     const postData = {
       itemData: { id, name: '', description: editPost.text },

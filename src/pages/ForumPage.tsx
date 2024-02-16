@@ -12,7 +12,7 @@ const ForumPage = () => {
   const { openModalForum, setFormItem } = useFormItemContext();
   const newTopicHandler = () => {
     setFormItem({
-      id: pathId,
+      id: parseInt(pathId),
       name: '',
       description: '',
       action: 'new',

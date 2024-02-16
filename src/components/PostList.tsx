@@ -15,10 +15,15 @@ interface IPostListProps {
 const PostList = ({ posts }: IPostListProps) => {
   return (
     <>
-      {posts?.length > 0 &&
+      {posts?.length > 0 ? (
         posts?.map((post, idx) =>
           idx < 10 ? <SinglePost key={post.id} {...post} /> : null
-        )}
+        )
+      ) : (
+        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+          Posts not found
+        </div>
+      )}
     </>
   );
 };

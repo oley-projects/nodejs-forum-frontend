@@ -11,7 +11,9 @@ const Navbar = () => {
     <WrappedNav className='header'>
       <div className='nav-header'>
         <button>
-          <Link to='/'>home</Link>
+          <Link to='/' style={{ padding: '0.7rem' }}>
+            home
+          </Link>
         </button>
       </div>
       <div className='nav-toggle'>

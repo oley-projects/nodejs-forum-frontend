@@ -19,7 +19,7 @@ export const forumAPI = {
     return instance.get(`${name}?&page=${page}&limit=${limit}`);
   },
   getCategory(categoryId: number, page = 1, limit = 10) {
-    return instance.get(`category/${categoryId}?&page=${page}&limit=${limit}`);
+    return instance.get(`category/${categoryId}?page=${page}&limit=${limit}`);
   },
   postCategory(category: {}) {
     return instance.post('category', category);
@@ -31,7 +31,7 @@ export const forumAPI = {
     return instance.delete(`category/${categoryId}`);
   },
   getForum(forumId: number, page = 1, limit = 10) {
-    return instance.get(`forum/${forumId}?&page=${page}&limit=${limit}`);
+    return instance.get(`forum/${forumId}?page=${page}&limit=${limit}`);
   },
   postForum(forum: {}) {
     return instance.post('forum', forum);
@@ -43,7 +43,7 @@ export const forumAPI = {
     return instance.delete(`forum/${forumId}`);
   },
   getTopic(topicId: number, page = 1, limit = 10) {
-    return instance.get(`topic/${topicId}?&page=${page}&limit=${limit}`);
+    return instance.get(`topic/${topicId}?page=${page}&limit=${limit}`);
   },
   postTopic(topic: {}) {
     return instance.post('topic', topic);
@@ -67,7 +67,7 @@ export const forumAPI = {
     return instance.delete(`post/${postId}`);
   },
   requestPosts(query: string, page = 1, limit = 10) {
-    return instance.get(`results/${query}?&page=${page}&limit=${limit}`);
+    return instance.get(`results/${query}?page=${page}&limit=${limit}`);
   },
   signUp(user: {}) {
     return instance.put(`auth/signup`, user);

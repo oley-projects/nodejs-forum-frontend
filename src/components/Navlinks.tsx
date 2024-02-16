@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { IoMdSearch } from 'react-icons/io';
 import { useFormItemContext } from '../context/formItemContext';
 import { useAuthContext } from '../context/authContext';
-import { usePostContext } from '../context/postContext';
+import SearchInput from './SearchInput';
 
 interface NavlinksPropsType {
   openModalLogin: () => void;
@@ -14,27 +12,12 @@ interface NavlinksPropsType {
 const Navlinks = () => {
   const { openModalLogin, openModalSignup }: NavlinksPropsType =
     useFormItemContext();
-  const { getFoundPosts } = usePostContext();
   const { logoutUser, isAuth } = useAuthContext();
-  const [inputValue, setInputValue] = useState('');
-  const onchangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-  const searchHandler = () => {
-    getFoundPosts(inputValue, 1, 10);
-    setInputValue('');
-  };
+
   return (
     <WrapNav>
       <li>
-        <input type='text' value={inputValue} onChange={onchangeHandler} />
-        <Link
-          to={`search/q=${inputValue}`}
-          onClick={searchHandler}
-          className='search-btn'
-        >
-          <IoMdSearch size={'1.75rem'} />
-        </Link>
+        <SearchInput />
       </li>
       {!isAuth ? (
         <>
@@ -72,11 +55,6 @@ const WrapNav = styled.ul`
     margin-left: 1rem;
     display: flex;
     align-items: center;
-  }
-  .search-btn {
-    margin-left: 0.4rem;
-    padding: 0;
-    line-height: 0;
   }
   @media (max-width: 960px) {
     padding: 0.5rem 1.5rem 1rem;

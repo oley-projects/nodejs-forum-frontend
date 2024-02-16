@@ -80,7 +80,6 @@ export const ForumProvider = ({ children }: IForumProps) => {
     try {
       if (forumData.requestType === 'new forum') {
         await forumAPI.postForum(forum);
-        console.log(forum);
         if (totalItems % pageSize === 0) {
           getCategories(pages + 1);
           setCurrentPage(pages + 1);

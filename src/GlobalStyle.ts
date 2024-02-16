@@ -128,6 +128,26 @@ const GlobalStyle = createGlobalStyle`
   label {
     user-select: none;
   }
+  select {
+    margin: 0.5rem 1rem 0.5rem 0;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-white-bg-transparent);
+    cursor: pointer;
+    &:hover, &:focus {
+      background: var(--color-white-bg-transparent);
+    }
+
+    option {
+      padding: 0.5rem 0;
+      background: var(--color-white);
+      border-top: 0.5rem solid transparent !important;
+      &:hover {
+        background: var(--color-white-bg-transparent) !important;
+        box-shadow: 0 0 10px 10px var(--color-white-bg-transparent) inset;
+      }
+    }
+  }
   
   .header, .footer {
     padding: 0 2rem;

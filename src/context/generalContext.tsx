@@ -40,7 +40,7 @@ export type TGeneralContext = {
   // initialLoad: boolean;
   pages: number;
   forumType: string;
-  pathId: number;
+  pathId: string;
 };
 
 const initialState = {
@@ -59,8 +59,7 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
   const pages = Math.ceil(state.totalItems / state.pageSize);
   const { pathname } = useLocation();
   const forumType = pathname.split('/')[1].slice(4) || 'categories';
-  const pathId = parseInt(pathname.split('/')[2]);
-
+  const pathId = pathname.split('/')[2];
   const openNavbar = () => dispatch({ type: NAVBAR_OPEN });
   const closeNavbar = () => dispatch({ type: NAVBAR_CLOSE });
   const setTotalItems = (totalItems: number) =>

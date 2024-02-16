@@ -130,23 +130,30 @@ export const PostProvider = ({ children }: IPostProps) => {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
+    const pathQuery = pathId ? pathId.slice(2) : '';
     if (!isLoading && forumType === 'categories') {
       getCategories();
     }
     if (!isLoading && forumType === 'forum' && pathId) {
-      getForum(pathId, currentPage);
+      getForum(parseInt(pathId), currentPage);
     }
     if (!isLoading && forumType === 'topic' && pathId) {
-      getTopic(pathId, currentPage);
+      getTopic(parseInt(pathId), currentPage);
     }
-    return () => {
-      if (currentPage > 1) {
-        setCurrentPage(1);
-      }
-    };
+    if (!isLoading && forumType === 'results' && pathQuery) {
+      getFoundPosts(pathQuery, currentPage);
+    }
     // eslint-disable-next-line
   }, [forumType, currentPage]);
+
+  useEffect(() => {
+    if (currentPage > 1) {
+      setCurrentPage(1);
+    }
+    // eslint-disable-next-line
+  }, [forumType]);
 
   return (
     <PostContext.Provider
