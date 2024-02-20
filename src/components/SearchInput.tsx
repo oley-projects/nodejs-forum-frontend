@@ -4,8 +4,14 @@ import { usePostContext } from '../context/postContext';
 import styled from 'styled-components';
 import { IoMdSearch } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
+import { useGeneralContext } from '../context/generalContext';
 
-const SearchInput = () => {
+interface ISearchInputProps {
+  ascDesc?: string;
+}
+
+const SearchInput = ({ ascDesc }: ISearchInputProps) => {
+  const { forumType } = useGeneralContext();
   const { getFoundPosts } = usePostContext();
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState('');
@@ -14,14 +20,14 @@ const SearchInput = () => {
   };
   const OnKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      getFoundPosts(inputValue, 1, 10);
+      getFoundPosts(inputValue, 1, 10, ascDesc);
       setInputValue('');
-      navigate(`viewresults/${inputValue ? `q=${inputValue}` : ''}`);
+      navigate(`/viewresults/${inputValue ? `q=${inputValue}` : ''}`);
       e.currentTarget.blur();
     }
   };
   const searchHandler = () => {
-    getFoundPosts(inputValue, 1, 10);
+    getFoundPosts(inputValue, 1, 10, ascDesc);
     setInputValue('');
   };
   const clearHandler = () => {
@@ -38,10 +44,11 @@ const SearchInput = () => {
       {inputValue && <IoClose onClick={clearHandler} className='clear-input' />}
 
       <Link
-        to={`viewresults/${inputValue ? `q=${inputValue}` : ''}`}
+        to={`/viewresults/${inputValue ? `q=${inputValue}` : ''}`}
         onClick={searchHandler}
         className='search-btn'
       >
+        {forumType === 'results' && <span>Search</span>}
         <IoMdSearch size={'1.5rem'} style={{ verticalAlign: 'middle' }} />
       </Link>
     </SearchContainer>
@@ -53,6 +60,9 @@ const SearchContainer = styled.div`
   input {
     padding-right: 1rem;
     box-shadow: 0 0 0.15rem #eee;
+  }
+  a > span {
+    padding: 0 0.4rem;
   }
   .search-btn {
     margin-left: 0.4rem;

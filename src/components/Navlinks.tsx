@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useFormItemContext } from '../context/formItemContext';
 import { useAuthContext } from '../context/authContext';
 import SearchInput from './SearchInput';
+import { useGeneralContext } from '../context/generalContext';
 
 interface NavlinksPropsType {
   openModalLogin: () => void;
@@ -13,12 +14,15 @@ const Navlinks = () => {
   const { openModalLogin, openModalSignup }: NavlinksPropsType =
     useFormItemContext();
   const { logoutUser, isAuth } = useAuthContext();
+  const { forumType } = useGeneralContext();
 
   return (
     <WrapNav>
-      <li>
-        <SearchInput />
-      </li>
+      {forumType !== 'results' && (
+        <li>
+          <SearchInput />
+        </li>
+      )}
       {!isAuth ? (
         <>
           <li>
