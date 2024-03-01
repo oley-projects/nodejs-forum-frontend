@@ -66,15 +66,25 @@ export const forumAPI = {
   deletePost(postId: number) {
     return instance.delete(`post/${postId}`);
   },
-  requestPosts(query: string, page = 1, limit = 10, ascDesc = 'asc') {
+  requestPosts(query: string, sort = 'createdAt_desc', page = 1, limit = 10) {
     return instance.get(
-      `results/${query}?page=${page}&limit=${limit}&ascDesc=${ascDesc}`
+      `posts/${query}?sort=${sort}&page=${page}&limit=${limit}`
+    );
+  },
+  requestTopics(query: string, sort = 'createdAt_desc', page = 1, limit = 10) {
+    return instance.get(
+      `topics/${query}?sort=${sort}&page=${page}&limit=${limit}`
+    );
+  },
+  requestUsers(query: string, sort = 'createdAt_desc', page = 1, limit = 10) {
+    return instance.get(
+      `users/${query}?sort=${sort}&page=${page}&limit=${limit}`
     );
   },
   signUp(user: {}) {
-    return instance.put(`auth/signup`, user);
+    return instance.put(`user/signup`, user);
   },
   login(user: {}) {
-    return instance.post(`auth/login`, user);
+    return instance.post(`user/login`, user);
   },
 };

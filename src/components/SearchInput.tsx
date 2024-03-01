@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { usePostContext } from '../context/postContext';
+import { useSearchContext } from '../context/searchContext';
 import styled from 'styled-components';
 import { IoMdSearch } from 'react-icons/io';
 import { IoClose } from 'react-icons/io5';
 import { useGeneralContext } from '../context/generalContext';
 
 interface ISearchInputProps {
-  ascDesc?: string;
+  searchType: string;
 }
 
-const SearchInput = ({ ascDesc }: ISearchInputProps) => {
+const SearchInput = ({ searchType }: ISearchInputProps) => {
   const { forumType } = useGeneralContext();
-  const { getFoundPosts } = usePostContext();
+  const { getFoundResults, sortResults } = useSearchContext();
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState('');
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,14 +20,14 @@ const SearchInput = ({ ascDesc }: ISearchInputProps) => {
   };
   const OnKeyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      getFoundPosts(inputValue, 1, 10, ascDesc);
+      getFoundResults(inputValue, searchType, sortResults, 1, 10);
       setInputValue('');
       navigate(`/viewresults/${inputValue ? `q=${inputValue}` : ''}`);
       e.currentTarget.blur();
     }
   };
   const searchHandler = () => {
-    getFoundPosts(inputValue, 1, 10, ascDesc);
+    getFoundResults(inputValue, searchType, sortResults, 1, 10);
     setInputValue('');
   };
   const clearHandler = () => {

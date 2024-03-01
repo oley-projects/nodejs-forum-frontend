@@ -11,7 +11,9 @@ import {
   SET_PAGE_SIZE,
   SET_INITIAL_LOAD,
   SET_IS_POST_EDIT,
-  SET_FOUND_POSTS,
+  SET_FOUND_RESULTS,
+  SET_SORT_RESULTS,
+  SET_TYPE_RESULTS,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
@@ -67,8 +69,14 @@ const generalReducer = (
   if (action.type === SET_IS_POST_EDIT) {
     return { ...state, isPostEdit: action.payload };
   }
-  if (action.type === SET_FOUND_POSTS) {
-    return { ...state, foundPosts: action.payload };
+  if (action.type === SET_FOUND_RESULTS) {
+    return { ...state, foundResults: action.payload };
+  }
+  if (action.type === SET_SORT_RESULTS) {
+    return { ...state, sortResults: action.payload };
+  }
+  if (action.type === SET_TYPE_RESULTS) {
+    return { ...state, typeResults: action.payload };
   }
   return { ...state };
 };

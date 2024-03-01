@@ -24,4 +24,6 @@ export const LOADING_USER_TRUE: string = 'LOGIN_USER';
 export const LOADING_USER_FALSE: string = 'LOGIN_USER';
 export const SET_IS_AUTH: string = 'SET_IS_AUTH';
 export const SET_IS_POST_EDIT: string = 'SET_IS_POST_EDIT';
-export const SET_FOUND_POSTS: string = 'SET_FOUND_POSTS';
+export const SET_FOUND_RESULTS: string = 'SET_FOUND_RESULTS';
+export const SET_SORT_RESULTS: string = 'SET_SORT_RESULTS';
+export const SET_TYPE_RESULTS: string = 'SET_TYPE_RESULTS';

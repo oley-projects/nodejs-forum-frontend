@@ -1,8 +1,4 @@
-import React, {
-  ReactNode,
-  useContext,
-  useReducer /*, useEffect*/,
-} from 'react';
+import React, { ReactNode, useContext, useReducer } from 'react';
 import { useLocation } from 'react-router-dom';
 import generalReducer from '../reducers/generalReducer';
 import {
@@ -12,10 +8,9 @@ import {
   SET_TOTAL_ITEMS,
   SET_CURRENT_PAGE,
   SET_PAGE_SIZE,
-  // SET_INITIAL_LOAD,
+  SET_INITIAL_LOAD,
   SET_IS_POST_EDIT,
 } from '../actions/actions';
-// import { forumAPI } from '../api/api';
 
 interface IGeneralProps {
   children: ReactNode;
@@ -37,7 +32,7 @@ export type TGeneralContext = {
   totalItems: number;
   currentPage: number;
   pageSize: number;
-  // initialLoad: boolean;
+  initialLoad: boolean;
   pages: number;
   forumType: string;
   pathId: string;
@@ -48,7 +43,7 @@ const initialState = {
   currentPage: 1,
   pageSize: 10,
   isLoading: false,
-  // initialLoad: true,
+  initialLoad: true,
   isPostEdit: false,
 };
 
@@ -70,33 +65,13 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
   };
   const setPageSize = (page: number) =>
     dispatch({ type: SET_PAGE_SIZE, payload: page });
-  /* const setInitialLoad = (initialLoad: boolean) =>
-    dispatch({ type: SET_INITIAL_LOAD, payload: initialLoad }); */
+  const setInitialLoad = (initialLoad: boolean) =>
+    dispatch({ type: SET_INITIAL_LOAD, payload: initialLoad });
   const setIsPostEdit = (isPostEdit: boolean) =>
     dispatch({ type: SET_IS_POST_EDIT, payload: isPostEdit });
   const setIsLoading = (isLoading: boolean) =>
     dispatch({ type: SET_IS_LOADING, payload: isLoading });
-  /*useEffect(() => {
-    if (state.currentPage > 1) {
-      setCurrentPage(1);
-    } // eslint-disable-next-line
-  }, [forumType]);*/
-  /* useEffect(() => {
-    if (state.initialLoad && !state.isLoading) {
-      if (forumType === 'categories') {
-        if (state.currentPage > 1) {
-          setCurrentPage(1);
-        }
-        getCategories();
-      } else if (forumType === 'category' && pathId) {
-        if (state.currentPage > 1) {
-          setCurrentPage(1);
-        }
-        getCategory(pathId);
-      }
-    }
-    // eslint-disable-next-line
-  }, [forumType]); */
+
   return (
     <GeneralContext.Provider
       value={{
@@ -106,6 +81,7 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
         pathId,
         openNavbar,
         closeNavbar,
+        setInitialLoad,
         setCurrentPage,
         setPageSize,
         setTotalItems,

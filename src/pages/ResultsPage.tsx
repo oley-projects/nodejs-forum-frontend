@@ -1,24 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGeneralContext } from '../context/generalContext';
-import { usePostContext } from '../context/postContext';
+import { useSearchContext } from '../context/searchContext';
 import { Paginator, PostList } from '../components';
 import { Loader } from '../components';
 import SearchInput from '../components/SearchInput';
 
 const ResultsPage = () => {
-  const { foundPosts, getFoundPosts } = usePostContext();
+  const { foundResults, getFoundResults } = useSearchContext();
   const { isLoading, pages, totalItems } = useGeneralContext();
-  const [searchSorting, setSearchSorting] = useState('date desc');
-  const ascDesc = searchSorting.split(' ')[1];
+  const { sortResults, setSortResults } = useSearchContext();
   const { pathname } = useLocation();
   const searchQuery = pathname.split('/')[2].slice(2);
-  const secectSortingHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSearchSorting(e.target.value);
+  const [searchType, setSearchType] = useState('post');
+  const selectSortingHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortResults(e.target.value);
   };
+  const selectTypeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearchType(e.target.value);
+  };
+  console.log(foundResults, ' | ', totalItems);
   useEffect(() => {
-    if (searchQuery && !foundPosts.length) {
-      getFoundPosts(searchQuery, 1, 10, 'desc');
+    if (!isLoading && searchQuery && !foundResults.length) {
+      getFoundResults(searchQuery, 'post', 'createdAt_desc', 1, 10);
+    }
+    if (!isLoading && sortResults !== 'createdAt_desc') {
+      setSortResults('createdAt_desc');
     }
     // eslint-disable-next-line
   }, []);
@@ -28,27 +35,31 @@ const ResultsPage = () => {
         <h4 style={{ marginBottom: '1.5rem' }}>Results</h4>
         <select
           name='search_sorting'
-          defaultValue='date desc'
-          onChange={secectSortingHandler}
+          defaultValue='createdAt_desc'
+          onChange={selectSortingHandler}
         >
-          <option value='date asc'>Date (ascending)</option>
-          <option value='date desc'>Date (descending)</option>
-          <option value='name asc'>Text (ascending)</option>
-          <option value='name desc'>Text (descending)</option>
+          <option value='createdAt_asc'>Date (ascending)</option>
+          <option value='createdAt_desc'>Date (descending)</option>
+          <option value='description_asc'>Text (ascending)</option>
+          <option value='description_desc'>Text (descending)</option>
         </select>
-        <select name='search_type' defaultValue='post'>
+        <select
+          name='search_type'
+          defaultValue='post'
+          onChange={selectTypeHandler}
+        >
           <option value='post'>Post</option>
           <option value='topic'>Topic</option>
           <option value='user'>User</option>
         </select>
-        <SearchInput ascDesc={ascDesc} />
+        <SearchInput searchType={searchType} />
       </div>
       <div>Total {totalItems} posts found</div>
       {isLoading ? (
         <Loader />
       ) : (
         <>
-          <PostList posts={foundPosts} />
+          <PostList posts={foundResults} />
           {pages > 1 && (
             <div
               style={{

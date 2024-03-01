@@ -20,7 +20,7 @@ const Navlinks = () => {
     <WrapNav>
       {forumType !== 'results' && (
         <li>
-          <SearchInput />
+          <SearchInput searchType='post' />
         </li>
       )}
       {!isAuth ? (

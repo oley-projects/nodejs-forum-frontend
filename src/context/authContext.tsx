@@ -31,7 +31,6 @@ if (currentUser !== '') {
 
 const initialState = {
   user: initUser,
-  isLoading: false,
   isAuth: currentUser !== '' ? true : false,
 };
 

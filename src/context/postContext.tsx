@@ -1,37 +1,18 @@
 import React, { ReactNode, useContext, useEffect, useReducer } from 'react';
 import generalReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
+import { useSearchContext } from './searchContext';
 import { useCategoryContext } from './categoryContext';
 import { useForumContext } from './forumContext';
 import { useTopicContext } from './topicContext';
-import { SET_POST, SET_FOUND_POSTS } from '../actions/actions';
+import { SET_POST } from '../actions/actions';
 import { forumAPI } from '../api/api';
 
 export type TPostContext = {
   getPost: (args: number) => void;
   postPost: (args: {}) => void;
   deletePost: (postId: number) => void;
-  getFoundPosts: (
-    searchRequest: string,
-    page: number,
-    limit: number,
-    ascDesc?: string
-  ) => void;
   post: { name: string };
-  foundPosts: [
-    {
-      id: number;
-      topic: {
-        name: string;
-        id: number;
-      };
-      description: string;
-      creator: {
-        name: string;
-      };
-      createdAt: string;
-    }
-  ];
 };
 
 interface IPostProps {
@@ -54,11 +35,12 @@ export const PostProvider = ({ children }: IPostProps) => {
     totalItems,
     currentPage,
     isLoading,
+    initialLoad,
     pages,
     pathId,
     forumType,
-    setTotalItems,
   } = useGeneralContext();
+  const { getFoundResults, typeResults, sortResults } = useSearchContext();
   const { getCategories } = useCategoryContext();
   const { getForum } = useForumContext();
   const { getTopic, topic } = useTopicContext();
@@ -116,31 +98,6 @@ export const PostProvider = ({ children }: IPostProps) => {
       console.log(error);
     }
   };
-  const setFoundPosts = (posts: []) =>
-    dispatch({ type: SET_FOUND_POSTS, payload: posts });
-  const getFoundPosts = async (
-    seachRequest: string,
-    page?: number,
-    limit?: number,
-    ascDesc?: string
-  ) => {
-    if (!isLoading) setIsLoading(true);
-    try {
-      const data = await forumAPI.requestPosts(
-        seachRequest,
-        page,
-        limit,
-        ascDesc
-      );
-      const { posts, totalItems } = data.data;
-      setFoundPosts(posts);
-      setTotalItems(totalItems);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
     const pathQuery = pathId ? pathId.slice(2) : '';
@@ -153,8 +110,14 @@ export const PostProvider = ({ children }: IPostProps) => {
     if (!isLoading && forumType === 'topic' && pathId) {
       getTopic(parseInt(pathId), currentPage);
     }
-    if (!isLoading && forumType === 'results' && pathQuery) {
-      getFoundPosts(pathQuery, currentPage);
+    if (!isLoading && !initialLoad && forumType === 'results' && pathQuery) {
+      getFoundResults(
+        pathQuery,
+        typeResults,
+        sortResults,
+        currentPage,
+        pageSize
+      );
     }
     // eslint-disable-next-line
   }, [forumType, currentPage]);
@@ -173,7 +136,6 @@ export const PostProvider = ({ children }: IPostProps) => {
         getPost,
         postPost,
         deletePost,
-        getFoundPosts,
       }}
     >
       {children}

@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { GeneralProvider } from './context/generalContext';
+import { SearchProvider } from './context/searchContext';
 import { CategoryProvider } from './context/categoryContext';
 import { ForumProvider } from './context/forumContext';
 import { TopicProvider } from './context/topicContext';
@@ -18,19 +19,21 @@ const root = ReactDOM.createRoot(
 root.render(
   <Router>
     <GeneralProvider>
-      <CategoryProvider>
-        <ForumProvider>
-          <TopicProvider>
-            <PostProvider>
-              <FormItemProvider>
-                <AuthProvider>
-                  <App />
-                </AuthProvider>
-              </FormItemProvider>
-            </PostProvider>
-          </TopicProvider>
-        </ForumProvider>
-      </CategoryProvider>
+      <SearchProvider>
+        <CategoryProvider>
+          <ForumProvider>
+            <TopicProvider>
+              <PostProvider>
+                <FormItemProvider>
+                  <AuthProvider>
+                    <App />
+                  </AuthProvider>
+                </FormItemProvider>
+              </PostProvider>
+            </TopicProvider>
+          </ForumProvider>
+        </CategoryProvider>
+      </SearchProvider>
     </GeneralProvider>
   </Router>
 );
