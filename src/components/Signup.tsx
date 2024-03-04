@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from './Modal';
 import { useFormItemContext } from '../context/formItemContext';
-import { useAuthContext } from '../context/authContext';
+import { useUserContext } from '../context/userContext';
 
 const Signup = () => {
   const { closeModalSignup } = useFormItemContext();
-  const { signupUser } = useAuthContext();
+  const { signupUser } = useUserContext();
   const [isShowPsw, setIsShowPsw] = useState<any>(false);
   const [formData, setFormData] = useState({
     name: '',

@@ -3,7 +3,7 @@ import CategoryForumElem from './CategoryForumElem';
 import ItemAction from './ItemAction';
 import { useCategoryContext } from '../context/categoryContext';
 import { useFormItemContext } from '../context/formItemContext';
-import { useAuthContext } from '../context/authContext';
+import { useUserContext } from '../context/userContext';
 
 interface ICatProps {
   id: number;
@@ -26,7 +26,7 @@ interface ICatProps {
 const Category = ({ id, name, description, creator, forums }: ICatProps) => {
   const { openModalForum, setFormItem } = useFormItemContext();
   const { deleteCategory } = useCategoryContext();
-  const { isAuth } = useAuthContext();
+  const { isAuth } = useUserContext();
   const editHandler = () => {
     setFormItem({
       id,

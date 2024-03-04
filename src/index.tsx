@@ -11,7 +11,7 @@ import { ForumProvider } from './context/forumContext';
 import { TopicProvider } from './context/topicContext';
 import { PostProvider } from './context/postContext';
 import { FormItemProvider } from './context/formItemContext';
-import { AuthProvider } from './context/authContext';
+import { UserProvider } from './context/userContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -25,9 +25,9 @@ root.render(
             <TopicProvider>
               <PostProvider>
                 <FormItemProvider>
-                  <AuthProvider>
+                  <UserProvider>
                     <App />
-                  </AuthProvider>
+                  </UserProvider>
                 </FormItemProvider>
               </PostProvider>
             </TopicProvider>

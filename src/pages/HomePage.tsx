@@ -3,14 +3,14 @@ import { Sidebar, Category, PostList, Loader } from '../components';
 import { useGeneralContext } from '../context/generalContext';
 import { useCategoryContext } from '../context/categoryContext';
 import { useFormItemContext } from '../context/formItemContext';
-import { useAuthContext } from '../context/authContext';
+import { useUserContext } from '../context/userContext';
 
 const HomePage = () => {
   const { isLoading } = useGeneralContext();
 
   const { categories, lastPosts } = useCategoryContext();
   const { openModalForum, setFormItem } = useFormItemContext();
-  const { isAuth } = useAuthContext();
+  const { isAuth } = useUserContext();
   const newCategoryHandler = () => {
     setFormItem({
       id: 0,

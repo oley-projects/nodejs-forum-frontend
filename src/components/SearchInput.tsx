@@ -12,7 +12,7 @@ interface ISearchInputProps {
 
 const SearchInput = ({ searchType }: ISearchInputProps) => {
   const { forumType } = useGeneralContext();
-  const { getFoundResults, sortResults } = useSearchContext();
+  const { getFoundResults, sortResults, setTypeResults } = useSearchContext();
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState('');
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,11 +23,13 @@ const SearchInput = ({ searchType }: ISearchInputProps) => {
       getFoundResults(inputValue, searchType, sortResults, 1, 10);
       setInputValue('');
       navigate(`/viewresults/${inputValue ? `q=${inputValue}` : ''}`);
+      setTypeResults(searchType);
       e.currentTarget.blur();
     }
   };
   const searchHandler = () => {
     getFoundResults(inputValue, searchType, sortResults, 1, 10);
+    setTypeResults(searchType);
     setInputValue('');
   };
   const clearHandler = () => {

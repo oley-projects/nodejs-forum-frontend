@@ -5,7 +5,7 @@ import {
   SET_IS_AUTH,
 } from '../actions/actions';
 
-const authReducer = (state: any, action: any) => {
+const userReducer = (state: any, action: any) => {
   if (action.type === SET_USER) {
     return { ...state, user: action.payload };
   }
@@ -21,4 +21,4 @@ const authReducer = (state: any, action: any) => {
   return { ...state };
 };
 
-export default authReducer;
+export default userReducer;

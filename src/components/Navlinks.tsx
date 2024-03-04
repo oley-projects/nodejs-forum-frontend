@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFormItemContext } from '../context/formItemContext';
-import { useAuthContext } from '../context/authContext';
+import { useUserContext } from '../context/userContext';
 import SearchInput from './SearchInput';
 import { useGeneralContext } from '../context/generalContext';
 
@@ -13,7 +13,7 @@ interface NavlinksPropsType {
 const Navlinks = () => {
   const { openModalLogin, openModalSignup }: NavlinksPropsType =
     useFormItemContext();
-  const { logoutUser, isAuth } = useAuthContext();
+  const { logoutUser, isAuth } = useUserContext();
   const { forumType } = useGeneralContext();
 
   return (

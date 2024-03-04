@@ -15,6 +15,9 @@ import TopicPostItem from './TopicPostItem';
 import FormItem from './FormItem';
 import Loader from './Loader';
 import ItemAction from './ItemAction';
+import UserList from './UserList';
+import UserItem from './UserItem';
+import UserDetail from './UserDetail';
 
 export {
   Breadcrumbs,
@@ -34,4 +37,7 @@ export {
   FormItem,
   Loader,
   ItemAction,
+  UserList,
+  UserItem,
+  UserDetail,
 };

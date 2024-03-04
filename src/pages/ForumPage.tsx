@@ -3,12 +3,12 @@ import { Paginator, TopicItem, Loader, ItemAction } from '../components';
 import { useGeneralContext } from '../context/generalContext';
 import { useForumContext } from '../context/forumContext';
 import { useFormItemContext } from '../context/formItemContext';
-import { useAuthContext } from '../context/authContext';
+import { useUserContext } from '../context/userContext';
 
 const ForumPage = () => {
   const { isLoading, pages, pathId, totalItems } = useGeneralContext();
   const { forum } = useForumContext();
-  const { isAuth } = useAuthContext();
+  const { isAuth } = useUserContext();
   const { openModalForum, setFormItem } = useFormItemContext();
   const newTopicHandler = () => {
     setFormItem({

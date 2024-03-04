@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { AiOutlineDelete } from 'react-icons/ai';
 import { CiEdit } from 'react-icons/ci';
-import { useAuthContext } from '../context/authContext';
+import { useUserContext } from '../context/userContext';
 
 interface IItemActionProps {
   onEdit: () => void;
@@ -18,7 +18,7 @@ const ItemAction = ({
   const {
     isAuth,
     user: { userId },
-  } = useAuthContext();
+  } = useUserContext();
   if (!isAuth || userId !== creatorId) {
     return null;
   }

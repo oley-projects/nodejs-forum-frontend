@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useGeneralContext } from '../context/generalContext';
 import { useSearchContext } from '../context/searchContext';
-import { Paginator, PostList } from '../components';
+import { Paginator, PostList, TopicItem, UserList } from '../components';
 import { Loader } from '../components';
 import SearchInput from '../components/SearchInput';
 
 const ResultsPage = () => {
-  const { foundResults, getFoundResults } = useSearchContext();
+  const { foundResults, getFoundResults, typeResults } = useSearchContext();
   const { isLoading, pages, totalItems } = useGeneralContext();
   const { sortResults, setSortResults } = useSearchContext();
   const { pathname } = useLocation();
@@ -19,7 +19,6 @@ const ResultsPage = () => {
   const selectTypeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSearchType(e.target.value);
   };
-  console.log(foundResults, ' | ', totalItems);
   useEffect(() => {
     if (!isLoading && searchQuery && !foundResults.length) {
       getFoundResults(searchQuery, 'post', 'createdAt_desc', 1, 10);
@@ -54,12 +53,22 @@ const ResultsPage = () => {
         </select>
         <SearchInput searchType={searchType} />
       </div>
-      <div>Total {totalItems} posts found</div>
+      <div>
+        Total {totalItems} {typeResults}(s) found
+      </div>
       {isLoading ? (
         <Loader />
       ) : (
         <>
-          <PostList posts={foundResults} />
+          {typeResults === 'post' && <PostList posts={foundResults} />}
+          {typeResults === 'topic' && foundResults.length > 0 ? (
+            foundResults?.map((r, i) =>
+              i < 10 ? <TopicItem key={r.id} {...r} /> : null
+            )
+          ) : (
+            <></>
+          )}
+          {typeResults === 'user' && <UserList users={foundResults} />}
           {pages > 1 && (
             <div
               style={{

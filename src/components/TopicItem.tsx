@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useFormItemContext } from '../context/formItemContext';
+import { useGeneralContext } from '../context/generalContext';
 import { useTopicContext } from '../context/topicContext';
 import ItemAction from './ItemAction';
 
@@ -27,7 +28,8 @@ const TopicItem = ({
   lastPostCreatedAt,
 }: ITopicItemProps) => {
   const { openModalForum, setFormItem } = useFormItemContext();
-  const { deleteTopic /*, getTopic*/ } = useTopicContext();
+  const { deleteTopic } = useTopicContext();
+  const { forumType } = useGeneralContext();
 
   const editHandler = () => {
     setFormItem({
@@ -72,14 +74,16 @@ const TopicItem = ({
         <div>{lastPostCreatedAt}</div>
       </div>
 
-      <div className='box'>
-        <ItemAction
-          onEdit={editHandler}
-          onDelete={() => deleteTopic(id)}
-          creatorId={creator._id}
-          type={'topic'}
-        />
-      </div>
+      {forumType !== 'results' && (
+        <div className='box'>
+          <ItemAction
+            onEdit={editHandler}
+            onDelete={() => deleteTopic(id)}
+            creatorId={creator._id}
+            type={'topic'}
+          />
+        </div>
+      )}
     </WrapTopicItem>
   );
 };

@@ -1,5 +1,5 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
-import authReducer from '../reducers/authReducer';
+import userReducer from '../reducers/userReducer';
 import { forumAPI } from '../api/api';
 import {
   SET_USER,
@@ -8,10 +8,10 @@ import {
   SET_IS_AUTH,
 } from '../actions/actions';
 
-interface IAuthProps {
+interface IUserProps {
   children: ReactNode;
 }
-interface IAuthContext {
+interface IUserContext {
   signupUser: (formData: {}) => void;
   loginUser: (formData: {}) => void;
   logoutUser: () => void;
@@ -34,10 +34,10 @@ const initialState = {
   isAuth: currentUser !== '' ? true : false,
 };
 
-const AuthContext = React.createContext({} as IAuthContext);
+const UserContext = React.createContext({} as IUserContext);
 
-export const AuthProvider = ({ children }: IAuthProps) => {
-  const [state, dispatch]: any = useReducer<any>(authReducer, initialState);
+export const UserProvider = ({ children }: IUserProps) => {
+  const [state, dispatch]: any = useReducer<any>(userReducer, initialState);
   const setUser = (user: {}) => {
     dispatch({ type: SET_USER, payload: user });
   };
@@ -82,7 +82,7 @@ export const AuthProvider = ({ children }: IAuthProps) => {
     // eslint-disable-next-line
   }, []);
   return (
-    <AuthContext.Provider
+    <UserContext.Provider
       value={{
         ...state,
         setUser,
@@ -94,10 +94,10 @@ export const AuthProvider = ({ children }: IAuthProps) => {
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-export const useAuthContext = () => {
-  return useContext(AuthContext);
+export const useUserContext = () => {
+  return useContext(UserContext);
 };
