@@ -1,4 +1,4 @@
-const Terms = () => {
+const TermsPage = () => {
   return (
     <div>
       <h3 style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -27,4 +27,4 @@ const Terms = () => {
     </div>
   );
 };
-export default Terms;
+export default TermsPage;

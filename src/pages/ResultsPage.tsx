@@ -60,15 +60,22 @@ const ResultsPage = () => {
         <Loader />
       ) : (
         <>
-          {typeResults === 'post' && <PostList posts={foundResults} />}
-          {typeResults === 'topic' && foundResults.length > 0 ? (
+          {foundResults.length > 0 && typeResults === 'post' && (
+            <PostList posts={foundResults} />
+          )}
+          {foundResults.length > 0 &&
+            typeResults === 'topic' &&
             foundResults?.map((r, i) =>
               i < 10 ? <TopicItem key={r.id} {...r} /> : null
-            )
-          ) : (
-            <></>
+            )}
+          {foundResults.length > 0 && typeResults === 'user' && (
+            <UserList users={foundResults} />
           )}
-          {typeResults === 'user' && <UserList users={foundResults} />}
+          {!foundResults.length && (
+            <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+              No {typeResults}s found
+            </div>
+          )}
           {pages > 1 && (
             <div
               style={{

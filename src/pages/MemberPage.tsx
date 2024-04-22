@@ -1,4 +1,11 @@
+import { UserDetail } from '../components';
+
 const MemberPage = () => {
-  return <div>MemberPage</div>;
+  return (
+    <div>
+      <header>MemberPage</header>
+      <UserDetail />
+    </div>
+  );
 };
 export default MemberPage;

@@ -10,4 +10,5 @@ const updateRequestedData = (
 ) => {
   requestFunction(id, currentPage, limit);
 };
+
 export { stringCapitalize, updateRequestedData };

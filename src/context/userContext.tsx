@@ -1,21 +1,30 @@
 import React, { ReactNode, useContext, useReducer, useEffect } from 'react';
 import userReducer from '../reducers/userReducer';
+import { useGeneralContext } from './generalContext';
 import { forumAPI } from '../api/api';
-import {
-  SET_USER,
-  LOADING_USER_TRUE,
-  LOADING_USER_FALSE,
-  SET_IS_AUTH,
-} from '../actions/actions';
+import { SET_USER, SET_IS_AUTH } from '../actions/actions';
 
 interface IUserProps {
   children: ReactNode;
 }
-interface IUserContext {
+export interface IUserContext {
   signupUser: (formData: {}) => void;
   loginUser: (formData: {}) => void;
   logoutUser: () => void;
-  user: { userId: string };
+  updateUser: (user: {}) => void;
+  deleteUser: (user: {}) => void;
+  user: {
+    userId: string;
+    email: string;
+    name: string;
+    rank: string;
+    role: string;
+    createdAt: string;
+    location: string;
+    birthday: string;
+    image: string;
+    [key: string]: string;
+  };
   isAuth: boolean;
 }
 
@@ -38,28 +47,23 @@ const UserContext = React.createContext({} as IUserContext);
 
 export const UserProvider = ({ children }: IUserProps) => {
   const [state, dispatch]: any = useReducer<any>(userReducer, initialState);
+  const { setIsLoading } = useGeneralContext();
   const setUser = (user: {}) => {
     dispatch({ type: SET_USER, payload: user });
   };
-  const loadingUserTrue = () => {
-    dispatch({ type: LOADING_USER_TRUE });
-  };
-  const loadingUserFalse = () => {
-    dispatch({ type: LOADING_USER_FALSE });
-  };
   const signupUser = async (user: {}) => {
     try {
-      loadingUserTrue();
+      dispatch(setIsLoading(true));
       await forumAPI.signUp(user);
     } catch (error) {
       console.log(error);
     } finally {
-      loadingUserFalse();
+      dispatch(setIsLoading(false));
     }
   };
   const loginUser = async (user: {}) => {
     try {
-      loadingUserTrue();
+      dispatch(setIsLoading(true));
       const { data } = await forumAPI.login(user);
       setUser(data);
       dispatch({ type: SET_IS_AUTH, payload: true });
@@ -67,13 +71,37 @@ export const UserProvider = ({ children }: IUserProps) => {
     } catch (error) {
       console.log(error);
     } finally {
-      loadingUserFalse();
+      dispatch(setIsLoading(false));
     }
   };
   const logoutUser = () => {
     setUser({});
     dispatch({ type: SET_IS_AUTH, payload: false });
     localStorage.removeItem('user');
+  };
+  const updateUser = async (user: { userId: string }) => {
+    try {
+      dispatch(setIsLoading(true));
+      await forumAPI.updateUser(user);
+      setUser({ ...user });
+      localStorage.setItem('user', JSON.stringify({ ...user }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(setIsLoading(false));
+    }
+  };
+  const deleteUser = async (userId: string) => {
+    try {
+      dispatch(setIsLoading(true));
+      await forumAPI.deleteUser(userId);
+      setUser({});
+      localStorage.removeItem('user');
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(setIsLoading(false));
+    }
   };
   useEffect(() => {
     if (currentUser !== '' && !state.user) {
@@ -86,11 +114,11 @@ export const UserProvider = ({ children }: IUserProps) => {
       value={{
         ...state,
         setUser,
-        loadingUserTrue,
-        loadingUserFalse,
         signupUser,
         loginUser,
         logoutUser,
+        updateUser,
+        deleteUser,
       }}
     >
       {children}

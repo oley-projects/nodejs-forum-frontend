@@ -4,7 +4,7 @@ import HomePage from './HomePage';
 import MemberPage from './MemberPage';
 import Layout from './PageLayout';
 import PrivateRoute from './PrivateRoute';
-import Terms from './Terms';
+import TermsPage from './TermsPage';
 import TopicPage from './TopicPage';
 import ResultsPage from './ResultsPage';
 
@@ -15,7 +15,7 @@ export {
   MemberPage,
   Layout,
   PrivateRoute,
-  Terms,
+  TermsPage,
   TopicPage,
   ResultsPage,
 };

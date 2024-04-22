@@ -13,7 +13,7 @@ import {
   MemberPage,
   Layout,
   PrivateRoute,
-  Terms,
+  TermsPage,
   ResultsPage,
   TopicPage,
   ForumPage,
@@ -40,7 +40,7 @@ function App() {
             <Route path='viewforum/:id' element={<ForumPage />} />
             <Route path='viewtopic/:id' element={<TopicPage />} />
             <Route path='viewresults/:query?' element={<ResultsPage />} />
-            <Route path='terms' element={<Terms />} />
+            <Route path='terms' element={<TermsPage />} />
             <Route
               path='private'
               element={

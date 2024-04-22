@@ -87,4 +87,10 @@ export const forumAPI = {
   login(user: {}) {
     return instance.post(`user/login`, user);
   },
+  updateUser(user: { userId: string }) {
+    return instance.put(`user/${user.userId}, user`);
+  },
+  deleteUser(userId: string) {
+    return instance.delete(`user/${userId}`);
+  },
 };

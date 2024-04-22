@@ -44,7 +44,7 @@ const Navlinks = () => {
             </Link>
           </li>
           <li>
-            <Link to='#'>my profile</Link>
+            <Link to='/memberlist/1'>my profile</Link>
           </li>
         </>
       )}
