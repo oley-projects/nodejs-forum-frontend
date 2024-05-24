@@ -1,87 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import defaultAvatar from '../assets/images/defaultAvatar';
 import { useUserContext } from '../context/userContext';
-import UserDetailFormItem from './UserDetailFormItem';
+import UserDetailElem from './UserDetailElem';
 
 const UserDetail: React.FC = () => {
-  const { user, isAuth, updateUser } = useUserContext();
-  const [editMode, setEditMode] = useState<string | null>(null);
+  const { user, viewedUser, isAuth, getUser } = useUserContext();
   const [isEditing, setIsEditing] = useState(false);
-
-  const handleUpdate = (field: string, value: string) => {
-    updateUser({ [field]: value });
-    setEditMode(null);
-  };
-
-  const handleCancel = () => {
-    setEditMode(null);
-  };
-
+  const { pathname } = useLocation();
+  const pathId = pathname.split('/')[2];
   const handleIsEditUser = () => {
     setIsEditing(!isEditing);
   };
-
+  useEffect(() => {
+    if (user.id !== pathId) {
+      getUser(parseInt(pathId));
+    }
+    // eslint-disable-next-line
+  }, []);
   return (
     <WrapUser>
       <>
         {isAuth ? (
           <>
-            <div className='display-flex'>
+            {user.id === pathId ? (
+              <UserDetailElem user={user} isEditing={isEditing} />
+            ) : (
+              <UserDetailElem user={viewedUser} isEditing={isEditing} />
+            )}
+            {pathId === user.id && (
               <div>
-                <img src={user.image || defaultAvatar} alt='avatar' />
+                <button onClick={handleIsEditUser}>
+                  <span>{isEditing ? 'View' : 'Edit'} Mode</span>
+                </button>
               </div>
-              <div>
-                {isEditing ? (
-                  <UserDetailFormItem
-                    field='name'
-                    value={user.name}
-                    handleUpdate={handleUpdate}
-                    handleCancel={handleCancel}
-                    editMode={editMode}
-                    setEditMode={setEditMode}
-                  />
-                ) : (
-                  <div>Name: {user.name}</div>
-                )}
-                <div>Email: {user.email}</div>
-                {isEditing ? (
-                  <UserDetailFormItem
-                    field='rank'
-                    value={user.rank}
-                    handleUpdate={handleUpdate}
-                    handleCancel={handleCancel}
-                    editMode={editMode}
-                    setEditMode={setEditMode}
-                  />
-                ) : (
-                  <div>Rank: {user.rank}</div>
-                )}
-                <div>Role: {user.role}</div>
-                <div>Age: {user.birthday}</div>
-                {isEditing ? (
-                  <UserDetailFormItem
-                    field='location'
-                    value={user.location}
-                    handleUpdate={handleUpdate}
-                    handleCancel={handleCancel}
-                    editMode={editMode}
-                    setEditMode={setEditMode}
-                  />
-                ) : (
-                  <div>Location: {user.location}</div>
-                )}
-                <div>
-                  Registered:
-                  {' ' + new Date(user.createdAt).toISOString().split('T')[0]}
-                </div>
-              </div>
-            </div>
-            <div>
-              <button onClick={handleIsEditUser}>
-                <span>{isEditing ? 'View' : 'Edit'} Mode</span>
-              </button>
-            </div>
+            )}
           </>
         ) : (
           <div>Not authorized. Please login or sign up to continue.</div>

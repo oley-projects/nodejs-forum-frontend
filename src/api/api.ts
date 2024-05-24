@@ -81,14 +81,17 @@ export const forumAPI = {
       `users/${query}?sort=${sort}&page=${page}&limit=${limit}`
     );
   },
+  requestUser(userId: number) {
+    return instance.get(`user/${userId}`);
+  },
   signUp(user: {}) {
-    return instance.put(`user/signup`, user);
+    return instance.put('user/signup', user);
   },
   login(user: {}) {
-    return instance.post(`user/login`, user);
+    return instance.post('user/login', user);
   },
-  updateUser(user: { userId: string }) {
-    return instance.put(`user/${user.userId}, user`);
+  updateUser(user: { id: string }) {
+    return instance.put(`user/${user.id}`, user);
   },
   deleteUser(userId: string) {
     return instance.delete(`user/${userId}`);

@@ -66,7 +66,6 @@ export const ForumProvider = ({ children }: IForumProps) => {
       setIsLoading(false);
     }
   };
-
   const setForum = (forum: {}) => dispatch({ type: SET_FORUM, payload: forum });
   const postForum = async (forumData: {
     itemData: { id: number; name: string; description: string };
@@ -98,12 +97,7 @@ export const ForumProvider = ({ children }: IForumProps) => {
   const deleteForum = async (forumId: number) => {
     try {
       await forumAPI.deleteForum(forumId);
-      if (currentPage > 1 && state.forums.length === 1) {
-        getCategories(currentPage - 1);
-        setCurrentPage(currentPage - 1);
-      } else {
-        getCategories(currentPage);
-      }
+      getCategories(currentPage);
     } catch (error) {
       console.log(error);
     }

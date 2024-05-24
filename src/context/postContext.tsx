@@ -44,7 +44,6 @@ export const PostProvider = ({ children }: IPostProps) => {
   const { getCategories } = useCategoryContext();
   const { getForum } = useForumContext();
   const { getTopic, topic } = useTopicContext();
-
   const getPost = async (postId: number) => {
     if (!isLoading) setIsLoading(true);
     try {
@@ -77,8 +76,8 @@ export const PostProvider = ({ children }: IPostProps) => {
           setCurrentPage(pages);
           getTopic(topic.id, pages);
         }
-      } else if (postData.requestType === 'edit topic') {
-        await forumAPI.updateTopic(post);
+      } else if (postData.requestType === 'edit post') {
+        await forumAPI.updatePost(post);
         getTopic(topic.id, currentPage);
       }
     } catch (error) {
@@ -88,7 +87,8 @@ export const PostProvider = ({ children }: IPostProps) => {
   const deletePost = async (postId: number) => {
     try {
       await forumAPI.deletePost(postId);
-      if (currentPage > 1 && state.topics?.length === 1) {
+      console.log(currentPage);
+      if (currentPage > 1 && topic.posts.length === 1) {
         setCurrentPage(state.currentPage - 1);
         getTopic(topic.id, currentPage - 1);
       } else {

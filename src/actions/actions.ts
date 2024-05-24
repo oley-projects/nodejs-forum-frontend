@@ -20,6 +20,7 @@ export const SET_INITIAL_LOAD: string = 'SET_INITIAL_LOAD';
 export const SIGNUP_USER: string = 'SIGNUP_USER';
 export const LOGIN_USER: string = 'LOGIN_USER';
 export const SET_USER: string = 'SET_USER';
+export const SET_VIEWED_USER: string = 'SET_VIEWED_USER';
 export const SET_IS_AUTH: string = 'SET_IS_AUTH';
 export const SET_IS_POST_EDIT: string = 'SET_IS_POST_EDIT';
 export const SET_FOUND_RESULTS: string = 'SET_FOUND_RESULTS';

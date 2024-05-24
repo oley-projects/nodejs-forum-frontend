@@ -1,14 +1,9 @@
 // import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useGeneralContext } from '../context/generalContext';
-// import { useForumContext } from '../context/forumContext';
-// import { useTopicContext } from '../context/topicContext';
 
 const Paginator = () => {
-  const { currentPage, pages, setCurrentPage /*, initialLoad*/ } =
-    useGeneralContext();
-  // const { getForum } = useForumContext();
-  // const { getTopic } = useTopicContext();
+  const { currentPage, pages, setCurrentPage } = useGeneralContext();
   const pageArr = Array.from(Array(pages).keys());
 
   const prevHandler = () => {
@@ -24,17 +19,6 @@ const Paginator = () => {
   const pageHandler = (page: number) => {
     setCurrentPage(page);
   };
-  /* useEffect(() => {
-    if (!initialLoad) {
-      if (name === 'topics') {
-        getForum(id, currentPage);
-      } else if (name === 'topic') {
-        getTopic(id, currentPage);
-      }
-      getData(name, id, currentPage);
-    }
-    // eslint-disable-next-line
-  }, []); */
   return (
     <WrapPaginator>
       <li>

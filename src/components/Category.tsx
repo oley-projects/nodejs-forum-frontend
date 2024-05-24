@@ -75,7 +75,7 @@ const Category = ({ id, name, description, creator, forums }: ICatProps) => {
 };
 
 const WrapCategory = styled.section`
-  margin: 1rem 0 3rem;
+  margin-bottom: 4rem;
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
   overflow: hidden;

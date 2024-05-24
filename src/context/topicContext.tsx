@@ -47,7 +47,6 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     pages,
   } = useGeneralContext();
   const { getForum, forum } = useForumContext();
-
   const getTopic = async (topicId: number, page?: number, limit?: number) => {
     if (!isLoading) setIsLoading(true);
     try {
@@ -92,7 +91,7 @@ export const TopicProvider = ({ children }: ITopicProps) => {
   const deleteTopic = async (topicId: number) => {
     try {
       await forumAPI.deleteTopic(topicId);
-      if (currentPage > 1 && state.topics.length === 1) {
+      if (currentPage > 1 && forum.topics.length === 1) {
         setCurrentPage(currentPage - 1);
         getForum(forum.id, currentPage - 1);
       } else {

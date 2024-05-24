@@ -13,9 +13,8 @@ interface NavlinksPropsType {
 const Navlinks = () => {
   const { openModalLogin, openModalSignup }: NavlinksPropsType =
     useFormItemContext();
-  const { logoutUser, isAuth } = useUserContext();
+  const { logoutUser, isAuth, user } = useUserContext();
   const { forumType } = useGeneralContext();
-
   return (
     <WrapNav>
       {forumType !== 'results' && (
@@ -44,7 +43,7 @@ const Navlinks = () => {
             </Link>
           </li>
           <li>
-            <Link to='/memberlist/1'>my profile</Link>
+            <Link to={`/memberlist/${user.id}`}>my profile</Link>
           </li>
         </>
       )}

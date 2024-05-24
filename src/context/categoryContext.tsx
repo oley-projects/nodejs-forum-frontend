@@ -109,12 +109,7 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
   const deleteCategory = async (categoryId: number) => {
     try {
       await forumAPI.deleteCategory(categoryId);
-      if (currentPage > 1 && state.category.topics.length === 1) {
-        setCurrentPage(currentPage - 1);
-        getCategories(currentPage - 1);
-      } else {
-        getCategories(currentPage);
-      }
+      getCategories(currentPage);
     } catch (error) {
       console.log(error);
     }
