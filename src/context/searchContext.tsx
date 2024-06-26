@@ -7,7 +7,7 @@ import {
   SET_TYPE_RESULTS,
 } from '../actions/actions';
 import { forumAPI } from '../api/api';
-
+import { errorHandler } from '../utils/utils';
 export type TSearchContext = {
   setSortResults: (sortResults: string) => void;
   setTypeResults: (typeResults: string) => void;
@@ -44,6 +44,12 @@ export const SearchProvider = ({ children }: ISearchProps) => {
     isLoading,
     initialLoad,
     setTotalItems,
+    isError,
+    errorType,
+    errorText,
+    setIsError,
+    setErrorType,
+    setErrorText,
   } = useGeneralContext();
 
   const setFoundResults = (foundResults: []) =>
@@ -76,7 +82,15 @@ export const SearchProvider = ({ children }: ISearchProps) => {
         setTotalItems(totalItems);
       }
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       setIsLoading(false);
       if (initialLoad) {

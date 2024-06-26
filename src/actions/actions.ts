@@ -26,3 +26,6 @@ export const SET_IS_POST_EDIT: string = 'SET_IS_POST_EDIT';
 export const SET_FOUND_RESULTS: string = 'SET_FOUND_RESULTS';
 export const SET_SORT_RESULTS: string = 'SET_SORT_RESULTS';
 export const SET_TYPE_RESULTS: string = 'SET_TYPE_RESULTS';
+export const SET_IS_ERROR: string = 'SET_IS_ERROR';
+export const SET_ERROR_TYPE: string = 'SET_ERROR_TYPE';
+export const SET_ERROR_TEXT: string = 'SET_ERROR_TEXT';

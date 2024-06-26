@@ -7,6 +7,7 @@ import { useForumContext } from './forumContext';
 import { useTopicContext } from './topicContext';
 import { SET_POST } from '../actions/actions';
 import { forumAPI } from '../api/api';
+import { errorHandler } from '../utils/utils';
 
 export type TPostContext = {
   getPost: (args: number) => void;
@@ -39,6 +40,12 @@ export const PostProvider = ({ children }: IPostProps) => {
     pages,
     pathId,
     forumType,
+    isError,
+    errorType,
+    errorText,
+    setIsError,
+    setErrorType,
+    setErrorText,
   } = useGeneralContext();
   const { getFoundResults, typeResults, sortResults } = useSearchContext();
   const { getCategories } = useCategoryContext();
@@ -51,7 +58,15 @@ export const PostProvider = ({ children }: IPostProps) => {
       const { post } = data.data;
       setPost(post);
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       setIsLoading(false);
     }
@@ -81,7 +96,15 @@ export const PostProvider = ({ children }: IPostProps) => {
         getTopic(topic.id, currentPage);
       }
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     }
   };
   const deletePost = async (postId: number) => {
@@ -95,7 +118,15 @@ export const PostProvider = ({ children }: IPostProps) => {
         getTopic(topic.id, currentPage);
       }
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     }
   };
 

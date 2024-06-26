@@ -21,6 +21,7 @@ const HomePage = () => {
     });
     openModalForum();
   };
+
   return (
     <WrapHome>
       {isLoading ? (

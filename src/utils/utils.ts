@@ -11,4 +11,24 @@ const updateRequestedData = (
   requestFunction(id, currentPage, limit);
 };
 
-export { stringCapitalize, updateRequestedData };
+const errorHandler = (
+  error: any,
+  isError: boolean,
+  errorType: string,
+  errorText: string,
+  setIsError: (isError: boolean) => void,
+  setErrorType: (errorType: string) => void,
+  setErrorText: (errorText: string) => void
+) => {
+  console.log(error);
+  if (!isError) setIsError(true);
+  if (errorType !== 'error') setErrorType('error');
+  if (!error.response && errorText !== error.message) {
+    setErrorText(error.message);
+  }
+  if (error.response && errorText !== error.response.data.message) {
+    setErrorText(error.response.data.message);
+  }
+};
+
+export { stringCapitalize, updateRequestedData, errorHandler };

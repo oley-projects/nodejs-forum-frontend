@@ -1,14 +1,25 @@
 import axios from 'axios';
 
-let token = '';
-if (localStorage.getItem('user')) {
-  token = JSON.parse(localStorage.getItem('user') || '').token;
-}
-
 const instance = axios.create({
   baseURL: 'http://localhost:8080/',
   timeout: 7000,
-  headers: { Authorization: `Bearer ${token}` },
+  timeoutErrorMessage:
+    'Connection timeout, please check your internet connection',
+});
+
+instance.interceptors.request.use(function (config) {
+  let token = '';
+  if (localStorage.getItem('user')) {
+    token = JSON.parse(localStorage.getItem('user') || '').token;
+  }
+  config.headers.Authorization = token ? `Bearer ${token}` : '';
+  return config;
+});
+
+axios.interceptors.response.use(function (error) {
+  console.log(error);
+
+  return Promise.reject(error);
 });
 
 export const forumAPI = {

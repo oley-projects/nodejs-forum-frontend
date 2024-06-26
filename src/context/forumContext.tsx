@@ -4,6 +4,7 @@ import { useGeneralContext } from './generalContext';
 import { useCategoryContext } from './categoryContext';
 import { SET_FORUM } from '../actions/actions';
 import { forumAPI } from '../api/api';
+import { errorHandler } from '../utils/utils';
 
 interface IForumProps {
   children: ReactNode;
@@ -51,6 +52,12 @@ export const ForumProvider = ({ children }: IForumProps) => {
     currentPage,
     isLoading,
     pages,
+    isError,
+    errorType,
+    errorText,
+    setIsError,
+    setErrorType,
+    setErrorText,
   } = useGeneralContext();
   const { getCategories } = useCategoryContext();
   const getForum = async (forumId: number, page?: number, limit?: number) => {
@@ -61,7 +68,15 @@ export const ForumProvider = ({ children }: IForumProps) => {
       setForum(forum);
       setTotalItems(totalItems);
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       setIsLoading(false);
     }
@@ -91,7 +106,15 @@ export const ForumProvider = ({ children }: IForumProps) => {
         getCategories(currentPage);
       }
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     }
   };
   const deleteForum = async (forumId: number) => {
@@ -99,7 +122,15 @@ export const ForumProvider = ({ children }: IForumProps) => {
       await forumAPI.deleteForum(forumId);
       getCategories(currentPage);
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     }
   };
 

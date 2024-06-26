@@ -1,6 +1,7 @@
 import React, { ReactNode, useContext, useReducer } from 'react';
 import { useLocation } from 'react-router-dom';
 import generalReducer from '../reducers/generalReducer';
+
 import {
   SET_IS_LOADING,
   NAVBAR_OPEN,
@@ -10,6 +11,9 @@ import {
   SET_PAGE_SIZE,
   SET_INITIAL_LOAD,
   SET_IS_POST_EDIT,
+  SET_IS_ERROR,
+  SET_ERROR_TYPE,
+  SET_ERROR_TEXT,
 } from '../actions/actions';
 
 interface IGeneralProps {
@@ -26,6 +30,9 @@ export type TGeneralContext = {
   setIsPostEdit: (isPostEdit: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
   setCurrentType: (currentType: string) => void;
+  setIsError: (isError: boolean) => void;
+  setErrorType: (errorType: string) => void;
+  setErrorText: (errorText: string) => void;
   isNavbarOpen: boolean;
   isLoading: boolean;
   isPostEdit: boolean;
@@ -36,6 +43,9 @@ export type TGeneralContext = {
   pages: number;
   forumType: string;
   pathId: string;
+  isError: boolean;
+  errorType: 'info' | 'success' | 'warning' | 'error' | 'default';
+  errorText: string;
 };
 
 const initialState = {
@@ -45,6 +55,9 @@ const initialState = {
   isLoading: false,
   initialLoad: true,
   isPostEdit: false,
+  isError: false,
+  errorType: 'error',
+  errorText: '',
 };
 
 const GeneralContext = React.createContext({} as TGeneralContext);
@@ -71,6 +84,12 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
     dispatch({ type: SET_IS_POST_EDIT, payload: isPostEdit });
   const setIsLoading = (isLoading: boolean) =>
     dispatch({ type: SET_IS_LOADING, payload: isLoading });
+  const setIsError = (isError: boolean) =>
+    dispatch({ type: SET_IS_ERROR, payload: isError });
+  const setErrorType = (errorType: boolean) =>
+    dispatch({ type: SET_ERROR_TYPE, payload: errorType });
+  const setErrorText = (errorText: boolean) =>
+    dispatch({ type: SET_ERROR_TEXT, payload: errorText });
 
   return (
     <GeneralContext.Provider
@@ -87,6 +106,9 @@ export const GeneralProvider = ({ children }: IGeneralProps) => {
         setTotalItems,
         setIsPostEdit,
         setIsLoading,
+        setIsError,
+        setErrorType,
+        setErrorText,
       }}
     >
       {children}

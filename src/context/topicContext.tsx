@@ -4,11 +4,11 @@ import { useGeneralContext } from './generalContext';
 import { useForumContext } from './forumContext';
 import { SET_TOPIC } from '../actions/actions';
 import { forumAPI } from '../api/api';
+import { errorHandler } from '../utils/utils';
 
 interface ITopicProps {
   children: ReactNode;
 }
-
 export type TTopicContext = {
   getTopic: (id: number, page?: number, limit?: number) => void;
   postTopic: (args: {}) => void;
@@ -45,6 +45,12 @@ export const TopicProvider = ({ children }: ITopicProps) => {
     pageSize,
     isLoading,
     pages,
+    isError,
+    errorType,
+    errorText,
+    setIsError,
+    setErrorType,
+    setErrorText,
   } = useGeneralContext();
   const { getForum, forum } = useForumContext();
   const getTopic = async (topicId: number, page?: number, limit?: number) => {
@@ -55,7 +61,15 @@ export const TopicProvider = ({ children }: ITopicProps) => {
       setTopic(topic);
       setTotalItems(totalItems);
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +99,15 @@ export const TopicProvider = ({ children }: ITopicProps) => {
         getForum(forum.id, currentPage);
       }
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     }
   };
   const deleteTopic = async (topicId: number) => {
@@ -98,7 +120,15 @@ export const TopicProvider = ({ children }: ITopicProps) => {
         getForum(forum.id, currentPage);
       }
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     }
   };
 

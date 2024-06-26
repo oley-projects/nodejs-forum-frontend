@@ -14,6 +14,9 @@ import {
   SET_FOUND_RESULTS,
   SET_SORT_RESULTS,
   SET_TYPE_RESULTS,
+  SET_IS_ERROR,
+  SET_ERROR_TYPE,
+  SET_ERROR_TEXT,
 } from '../actions/actions';
 import { TState } from '../context/formItemContext';
 
@@ -77,6 +80,15 @@ const generalReducer = (
   }
   if (action.type === SET_TYPE_RESULTS) {
     return { ...state, typeResults: action.payload };
+  }
+  if (action.type === SET_IS_ERROR) {
+    return { ...state, isError: action.payload };
+  }
+  if (action.type === SET_ERROR_TYPE) {
+    return { ...state, errorType: action.payload };
+  }
+  if (action.type === SET_ERROR_TEXT) {
+    return { ...state, errorText: action.payload };
   }
   return { ...state };
 };

@@ -3,11 +3,11 @@ import categoryReducer from '../reducers/generalReducer';
 import { useGeneralContext } from './generalContext';
 import { SET_CATEGORIES, SET_LAST_POSTS } from '../actions/actions';
 import { forumAPI } from '../api/api';
+import { errorHandler } from '../utils/utils';
 
 interface ICategoryProps {
   children: ReactNode;
 }
-
 export type TCategoryContext = {
   getCategories: (page?: number, limit?: number) => void;
   postCategory: (args: {}) => void;
@@ -58,6 +58,12 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     currentPage,
     isLoading,
     pages,
+    isError,
+    errorType,
+    errorText,
+    setIsError,
+    setErrorType,
+    setErrorText,
   } = useGeneralContext();
   const [state, dispatch]: any = useReducer<any>(categoryReducer, initialState);
   const getCategories = async (page?: number, limit?: number) => {
@@ -70,7 +76,15 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
       setCategories(categories);
       setLastPosts(lastPosts);
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +117,15 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
         getCategories(currentPage);
       }
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     }
   };
   const deleteCategory = async (categoryId: number) => {
@@ -111,7 +133,15 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
       await forumAPI.deleteCategory(categoryId);
       getCategories(currentPage);
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     }
   };
 

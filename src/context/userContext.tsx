@@ -3,6 +3,7 @@ import userReducer from '../reducers/userReducer';
 import { useGeneralContext } from './generalContext';
 import { forumAPI } from '../api/api';
 import { SET_USER, SET_VIEWED_USER, SET_IS_AUTH } from '../actions/actions';
+import { errorHandler } from '../utils/utils';
 
 interface IUserProps {
   children: ReactNode;
@@ -53,7 +54,15 @@ const UserContext = React.createContext({} as IUserContext);
 
 export const UserProvider = ({ children }: IUserProps) => {
   const [state, dispatch]: any = useReducer(userReducer, initialState);
-  const { setIsLoading } = useGeneralContext();
+  const {
+    setIsLoading,
+    isError,
+    errorType,
+    errorText,
+    setIsError,
+    setErrorType,
+    setErrorText,
+  } = useGeneralContext();
   const setUser = (user: {}) => {
     dispatch({ type: SET_USER, payload: user });
   };
@@ -62,7 +71,15 @@ export const UserProvider = ({ children }: IUserProps) => {
       dispatch(setIsLoading(true));
       await forumAPI.signUp(user);
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -75,7 +92,15 @@ export const UserProvider = ({ children }: IUserProps) => {
       dispatch({ type: SET_IS_AUTH, payload: true });
       localStorage.setItem('user', JSON.stringify(data));
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -84,6 +109,7 @@ export const UserProvider = ({ children }: IUserProps) => {
     setUser({});
     dispatch({ type: SET_IS_AUTH, payload: false });
     localStorage.removeItem('user');
+    // window.location.reload();
   };
   const updateUser = async (user: { id: string }) => {
     try {
@@ -98,7 +124,15 @@ export const UserProvider = ({ children }: IUserProps) => {
       setUser({ ...state.user, ...user });
       localStorage.setItem('user', JSON.stringify({ ...state.user, ...user }));
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -110,7 +144,15 @@ export const UserProvider = ({ children }: IUserProps) => {
       setUser({});
       localStorage.removeItem('user');
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -121,7 +163,15 @@ export const UserProvider = ({ children }: IUserProps) => {
       const { data } = await forumAPI.requestUser(userId);
       setViewedUser(data);
     } catch (error) {
-      console.log(error);
+      errorHandler(
+        error,
+        isError,
+        errorType,
+        errorText,
+        setIsError,
+        setErrorType,
+        setErrorText
+      );
     } finally {
       dispatch(setIsLoading(false));
     }
