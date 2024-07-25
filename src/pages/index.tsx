@@ -8,6 +8,11 @@ import TermsPage from './TermsPage';
 import TopicPage from './TopicPage';
 import ResultsPage from './ResultsPage';
 
+import TimeAgo from 'javascript-time-ago';
+
+import en from 'javascript-time-ago/locale/en';
+TimeAgo.addDefaultLocale(en);
+
 export {
   ErrorPage,
   ForumPage,

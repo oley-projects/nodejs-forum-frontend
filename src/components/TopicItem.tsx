@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useFormItemContext } from '../context/formItemContext';
 import { useGeneralContext } from '../context/generalContext';
 import { useTopicContext } from '../context/topicContext';
+import TimeViewer from './TimeViewer';
 import ItemAction from './ItemAction';
 
 interface ITopicItemProps {
@@ -10,11 +11,10 @@ interface ITopicItemProps {
   name: string;
   description: string;
   creator: { _id: string; name: string };
-  createdAt: string;
+  createdAt: number;
   posts: [];
   views: string;
-  lastPostUser: string;
-  lastPostCreatedAt: string;
+  lastPost?: { creator: { _id: string; name: string }; createdAt: number };
 }
 const TopicItem = ({
   id,
@@ -24,8 +24,7 @@ const TopicItem = ({
   createdAt,
   posts,
   views,
-  lastPostUser,
-  lastPostCreatedAt,
+  lastPost,
 }: ITopicItemProps) => {
   const { openModalForum, setFormItem } = useFormItemContext();
   const { deleteTopic } = useTopicContext();
@@ -41,10 +40,6 @@ const TopicItem = ({
     });
     openModalForum();
   };
-
-  /* const clickTopicHandler = () => {
-    getTopic(id);
-  }; */
   return (
     <WrapTopicItem className='grid-table-item'>
       <div>
@@ -58,7 +53,7 @@ const TopicItem = ({
           </Link>
         </div>
         <div>
-          by {creator.name}, {createdAt}
+          by {creator.name}, <TimeViewer createdAt={createdAt * 1000} />
         </div>
       </div>
       <div className='align-center'>
@@ -70,8 +65,12 @@ const TopicItem = ({
         <div>Views</div>
       </div>
       <div className='align-right'>
-        <div>by {lastPostUser}</div>
-        <div>{lastPostCreatedAt}</div>
+        {lastPost && (
+          <>
+            <div>by {lastPost?.creator.name}</div>
+            <div>{lastPost?.createdAt}</div>
+          </>
+        )}
       </div>
 
       {forumType !== 'results' && (

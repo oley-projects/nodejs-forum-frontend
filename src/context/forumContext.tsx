@@ -26,10 +26,12 @@ export type TForumContext = {
         description: string;
         creator: { _id: string; name: string };
         posts: [];
-        createdAt: string;
+        createdAt: number;
         views: string;
-        lastPostUser: string;
-        lastPostCreatedAt: string;
+        lastPost?: {
+          creator: { _id: string; name: string };
+          createdAt: number;
+        };
       }
     ];
   };

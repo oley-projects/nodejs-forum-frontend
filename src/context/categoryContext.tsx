@@ -27,6 +27,11 @@ export type TCategoryContext = {
           topics: [];
           totalPosts: number;
           totalTopics: number;
+          lastPost?: {
+            creator: { _id: string; name: string };
+            createdAt: number;
+            topic: { id: string; name: string };
+          };
         }
       ];
     }
@@ -37,7 +42,7 @@ export type TCategoryContext = {
       topic: { name: string; id: number };
       description: string;
       creator: { name: string };
-      createdAt: string;
+      createdAt: number;
     }
   ];
 };
@@ -73,6 +78,7 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     try {
       const data = await forumAPI.getCategories(page, limit);
       const { categories, lastPosts } = data.data;
+      console.log(categories);
       setCategories(categories);
       setLastPosts(lastPosts);
     } catch (error) {

@@ -18,6 +18,7 @@ import ItemAction from './ItemAction';
 import UserList from './UserList';
 import UserItem from './UserItem';
 import UserDetail from './UserDetail';
+import TimeViewer from './TimeViewer';
 
 export {
   Breadcrumbs,
@@ -40,4 +41,5 @@ export {
   UserList,
   UserItem,
   UserDetail,
+  TimeViewer,
 };

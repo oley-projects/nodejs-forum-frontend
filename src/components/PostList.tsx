@@ -7,7 +7,7 @@ interface IPostListProps {
       topic: { name: string; id: number };
       description: string;
       creator: { name: string };
-      createdAt: string;
+      createdAt: number;
     }
   ];
 }

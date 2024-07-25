@@ -12,6 +12,11 @@ interface ICatForumElemProps {
   topics: [];
   totalPosts: number;
   totalTopics: number;
+  lastPost?: {
+    creator: { _id: string; name: string };
+    createdAt: number;
+    topic: { id: string; name: string };
+  };
 }
 
 const CategoryForumElem = ({
@@ -21,8 +26,9 @@ const CategoryForumElem = ({
   creator,
   totalPosts,
   totalTopics,
+  lastPost,
 }: ICatForumElemProps) => {
-  const { /*getForum,*/ deleteForum } = useForumContext();
+  const { deleteForum } = useForumContext();
   const { openModalForum, setFormItem } = useFormItemContext();
   const editHandler = () => {
     setFormItem({
@@ -37,11 +43,7 @@ const CategoryForumElem = ({
   return (
     <WrapCatTopicEl>
       <div>
-        <Link
-          className='inline-link'
-          to={`/viewforum/${id}`}
-          // onClick={() => getForum(id)}
-        >
+        <Link className='inline-link' to={`/viewforum/${id}`}>
           {name}
         </Link>
       </div>
@@ -50,13 +52,20 @@ const CategoryForumElem = ({
         <div>{totalPosts} posts</div>
       </div>
       <div>
-        <div>
-          <Link className='inline-link' to={`/viewtopic/1`}>
-            {'lastTopic'}
-          </Link>
-        </div>
-        <div>by {'lastUser'}</div>
-        <div>at {'lastPostDate'}</div>
+        {lastPost && (
+          <>
+            <div>
+              <Link
+                className='inline-link'
+                to={`/viewtopic/${lastPost?.topic.id}`}
+              >
+                {lastPost.topic.name}
+              </Link>
+            </div>
+            <div>by {lastPost?.creator.name}</div>
+            <div>at {lastPost?.createdAt}</div>
+          </>
+        )}
       </div>
       <div className='box'>
         <ItemAction

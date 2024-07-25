@@ -16,11 +16,15 @@ instance.interceptors.request.use(function (config) {
   return config;
 });
 
-axios.interceptors.response.use(function (error) {
-  console.log(error);
-
-  return Promise.reject(error);
-});
+instance.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    // console.log(error);
+    return Promise.reject(error);
+  }
+);
 
 export const forumAPI = {
   getCategories(page = 1, limit = 10) {

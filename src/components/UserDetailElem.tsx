@@ -73,7 +73,7 @@ const UserDetailElem = ({ user, isEditing }: IUserElemProps) => {
         )}
         <div>
           Registered:
-          {' ' + new Date(user?.createdAt).toISOString().split('T')[0]}
+          {' ' + user?.createdAt}
         </div>
       </div>
     </div>

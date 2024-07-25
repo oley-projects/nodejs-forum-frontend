@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import TimeViewer from './TimeViewer';
 
 interface ISinglePostType {
   id: number;
   topic: { name: string; id: number };
   description: string;
   creator: { name: string };
-  createdAt: string;
+  createdAt: number;
 }
 
 const SinglePost = ({
@@ -24,7 +25,11 @@ const SinglePost = ({
       </header>
       <div>by {creator?.name}</div>
       <div>{description}</div>
-      <div>{createdAt}</div>
+      {
+        <div>
+          <TimeViewer createdAt={createdAt} />
+        </div>
+      }
     </WrapSinglePost>
   );
 };

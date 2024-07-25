@@ -19,6 +19,11 @@ interface ICatProps {
       topics: [];
       totalTopics: number;
       totalPosts: number;
+      lastPost?: {
+        creator: { _id: string; name: string };
+        createdAt: number;
+        topic: { id: string; name: string };
+      };
     }
   ];
 }
