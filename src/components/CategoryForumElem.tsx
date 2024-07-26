@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ItemAction from './ItemAction';
 import { useFormItemContext } from '../context/formItemContext';
 import { useForumContext } from '../context/forumContext';
+import TimeViewer from './TimeViewer';
 
 interface ICatForumElemProps {
   id: number;
@@ -63,7 +64,9 @@ const CategoryForumElem = ({
               </Link>
             </div>
             <div>by {lastPost?.creator.name}</div>
-            <div>at {lastPost?.createdAt}</div>
+            <div>
+              at <TimeViewer date={lastPost?.createdAt} />
+            </div>
           </>
         )}
       </div>

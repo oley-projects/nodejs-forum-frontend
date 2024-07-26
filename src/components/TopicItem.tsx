@@ -13,7 +13,7 @@ interface ITopicItemProps {
   creator: { _id: string; name: string };
   createdAt: number;
   posts: [];
-  views: string;
+  views: number;
   lastPost?: { creator: { _id: string; name: string }; createdAt: number };
 }
 const TopicItem = ({
@@ -53,7 +53,7 @@ const TopicItem = ({
           </Link>
         </div>
         <div>
-          by {creator.name}, <TimeViewer createdAt={createdAt * 1000} />
+          by {creator.name}, <TimeViewer date={createdAt} />
         </div>
       </div>
       <div className='align-center'>
@@ -68,7 +68,9 @@ const TopicItem = ({
         {lastPost && (
           <>
             <div>by {lastPost?.creator.name}</div>
-            <div>{lastPost?.createdAt}</div>
+            <div>
+              at <TimeViewer date={lastPost?.createdAt} />
+            </div>
           </>
         )}
       </div>

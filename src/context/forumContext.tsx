@@ -27,7 +27,7 @@ export type TForumContext = {
         creator: { _id: string; name: string };
         posts: [];
         createdAt: number;
-        views: string;
+        views: number;
         lastPost?: {
           creator: { _id: string; name: string };
           createdAt: number;

@@ -27,7 +27,7 @@ const SinglePost = ({
       <div>{description}</div>
       {
         <div>
-          <TimeViewer createdAt={createdAt} />
+          <TimeViewer date={createdAt} />
         </div>
       }
     </WrapSinglePost>

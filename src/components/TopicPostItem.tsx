@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import ItemAction from './ItemAction';
 import { usePostContext } from '../context/postContext';
 import { useGeneralContext } from '../context/generalContext';
+import TimeViewer from './TimeViewer';
 
 interface ITopicPostItemProps {
   /* user: string;
@@ -15,7 +16,7 @@ interface ITopicPostItemProps {
   id: number;
   description: string;
   creator: { name: string; _id: string };
-  createdAt: string;
+  createdAt: number;
   setEditPost: React.Dispatch<
     React.SetStateAction<{ id: number; text: string }>
   >;
@@ -51,7 +52,9 @@ const TopicPostItem = ({
       </div>
       <div className='post-details'>
         <div>{description}</div>
-        <div>{createdAt}</div>
+        <div>
+          <TimeViewer date={createdAt} />
+        </div>
         {/* <div>{signature}</div> */}
         <div className='post-detail-action' style={{ marginTop: '0.5rem' }}>
           <ItemAction

@@ -21,7 +21,7 @@ export type TTopicContext = {
         id: number;
         description: string;
         creator: { name: string; _id: string };
-        createdAt: string;
+        createdAt: number;
         topic: { name: string; id: number };
       }
     ];
