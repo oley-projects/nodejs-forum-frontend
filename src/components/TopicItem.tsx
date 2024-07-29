@@ -65,13 +65,15 @@ const TopicItem = ({
         <div>Views</div>
       </div>
       <div className='align-right'>
-        {lastPost && (
+        {lastPost ? (
           <>
             <div>by {lastPost?.creator.name}</div>
             <div>
               at <TimeViewer date={lastPost?.createdAt} />
             </div>
           </>
+        ) : (
+          <div>No replies</div>
         )}
       </div>
 

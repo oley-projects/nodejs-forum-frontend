@@ -78,7 +78,6 @@ export const CategoryProvider = ({ children }: ICategoryProps) => {
     try {
       const data = await forumAPI.getCategories(page, limit);
       const { categories, lastPosts } = data.data;
-      console.log(categories);
       setCategories(categories);
       setLastPosts(lastPosts);
     } catch (error) {

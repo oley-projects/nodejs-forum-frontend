@@ -72,6 +72,7 @@ export const SearchProvider = ({ children }: ISearchProps) => {
       if (type === 'topic') {
         const data = await forumAPI.requestTopics(keywords, sort, page, limit);
         const { topics, totalItems } = data.data;
+        console.log(topics);
         setFoundResults(topics);
         setTotalItems(totalItems);
       }

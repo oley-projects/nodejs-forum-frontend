@@ -4,6 +4,7 @@ import ItemAction from './ItemAction';
 import { useCategoryContext } from '../context/categoryContext';
 import { useFormItemContext } from '../context/formItemContext';
 import { useUserContext } from '../context/userContext';
+import { TfiPencilAlt } from 'react-icons/tfi';
 
 interface ICatProps {
   id: number;
@@ -72,7 +73,9 @@ const Category = ({ id, name, description, creator, forums }: ICatProps) => {
       </section>
       {isAuth && (
         <div className='add-element'>
-          <button onClick={newForumHandler}>Create new forum</button>
+          <button onClick={newForumHandler}>
+            <TfiPencilAlt /> New forum
+          </button>
         </div>
       )}
     </WrapCategory>
@@ -94,7 +97,6 @@ const WrapCategory = styled.section`
   .add-element {
     padding: 0 0.5rem;
     text-align: right;
-    background: var(--color-white-bg-transparent);
   }
 `;
 

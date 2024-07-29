@@ -42,9 +42,11 @@ const HomePage = () => {
               </div>
             )}
           </div>
-          <Sidebar>
-            <PostList posts={lastPosts} />
-          </Sidebar>
+          {lastPosts.length > 0 && (
+            <Sidebar>
+              <PostList posts={lastPosts} />
+            </Sidebar>
+          )}
         </>
       )}
     </WrapHome>

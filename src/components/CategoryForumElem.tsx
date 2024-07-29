@@ -4,6 +4,7 @@ import ItemAction from './ItemAction';
 import { useFormItemContext } from '../context/formItemContext';
 import { useForumContext } from '../context/forumContext';
 import TimeViewer from './TimeViewer';
+import { FaRegFolder } from 'react-icons/fa';
 
 interface ICatForumElemProps {
   id: number;
@@ -43,17 +44,24 @@ const CategoryForumElem = ({
   };
   return (
     <WrapCatTopicEl>
+      <div className='folder-icon'>
+        <FaRegFolder />
+      </div>
       <div>
         <Link className='inline-link' to={`/viewforum/${id}`}>
           {name}
         </Link>
       </div>
       <div className='total-stats'>
-        <div>{totalTopics} topics</div>
-        <div>{totalPosts} posts</div>
+        {totalTopics > 0 ? (
+          <div>{totalTopics} topics</div>
+        ) : (
+          <div>No topics</div>
+        )}
+        {totalPosts > 0 && <div>{totalPosts} posts</div>}
       </div>
       <div>
-        {lastPost && (
+        {lastPost ? (
           <>
             <div>
               <Link
@@ -68,60 +76,73 @@ const CategoryForumElem = ({
               at <TimeViewer date={lastPost?.createdAt} />
             </div>
           </>
+        ) : (
+          <div>No posts</div>
         )}
-      </div>
-      <div className='box'>
-        <ItemAction
-          onEdit={editHandler}
-          onDelete={() => deleteForum(id)}
-          creatorId={creator?._id}
-          type={'forum'}
-        />
+        <div className='box'>
+          <ItemAction
+            onEdit={editHandler}
+            onDelete={() => deleteForum(id)}
+            creatorId={creator?._id}
+            type={'forum'}
+          />
+        </div>
       </div>
     </WrapCatTopicEl>
   );
 };
 const WrapCatTopicEl = styled.div`
-  padding: 0.6rem 1rem;
-  background: var(--color-white-background);
   transition: background 0.3s ease;
-  &:first-child {
-    padding-top: 1rem;
+
+  &:hover .folder-icon {
+    background-color: var(--color-white-transparent);
   }
-  &:last-child {
-    padding-bottom: 1rem;
-  }
-  &:nth-child(even) {
-    background: var(--color-white-background-dark);
-  }
-  &:hover,
-  &:active {
-    background: var(--color-white);
+  .folder-icon {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    transition: background 0.3s ease;
   }
 
   @media (min-width: 641px) {
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr 2fr;
+    grid-template-columns: 4rem 3.5fr 1.2fr 2.3fr;
     gap: 0.5rem;
     align-items: center;
+    & > div {
+      padding: 1rem;
+    }
     .total-stats {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+    .folder-icon {
+      justify-content: center;
+    }
+  }
+  @media (min-width: 1090px) {
+    grid-template-columns: 4rem 4fr 1fr 2fr;
   }
 
   @media (max-width: 640px) {
+    margin: 2rem 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
 
+    & > div {
+      padding: 0 2rem;
+    }
     & > div:not(:last-of-type) {
       margin-bottom: 1rem;
     }
     .total-stats {
       display: flex;
       gap: 0.5rem;
+    }
+    .folder-icon {
+      height: 2rem;
     }
   }
 `;
