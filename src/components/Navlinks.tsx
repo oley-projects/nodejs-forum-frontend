@@ -59,7 +59,7 @@ const WrapNav = styled.ul`
     display: flex;
     align-items: center;
   }
-  @media (max-width: 960px) {
+  @media (max-width: 959px) {
     padding: 0.5rem 1.5rem 1rem;
     flex-direction: column;
     gap: 1rem;

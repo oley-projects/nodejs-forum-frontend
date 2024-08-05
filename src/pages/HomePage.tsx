@@ -21,14 +21,13 @@ const HomePage = () => {
     });
     openModalForum();
   };
-
   return (
     <WrapHome>
       {isLoading ? (
         <Loader />
       ) : (
         <>
-          <div>
+          <div className='categories'>
             {categories.length > 0 ? (
               categories.map((category) => (
                 <Category key={category.id} {...category} />
@@ -37,14 +36,14 @@ const HomePage = () => {
               <div className='empty'>Empty forum</div>
             )}
             {isAuth && (
-              <div style={{ display: 'flex', justifyContent: 'end' }}>
+              <div className='add-element pos-left-top'>
                 <button onClick={newCategoryHandler}>Add Category</button>
               </div>
             )}
           </div>
           {lastPosts.length > 0 && (
             <Sidebar>
-              <PostList posts={lastPosts} />
+              <PostList posts={lastPosts} isLastPosts={true} />
             </Sidebar>
           )}
         </>
@@ -60,6 +59,10 @@ const WrapHome = styled.div`
   @media (min-width: 960px) {
     grid-template-columns: 3fr 1fr;
     gap: 3rem;
+  }
+  .categories {
+    padding-top: 2rem;
+    position: relative;
   }
 `;
 

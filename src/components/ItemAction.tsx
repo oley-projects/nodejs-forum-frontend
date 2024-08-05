@@ -47,9 +47,12 @@ const WrapItemAction = styled.div`
   button {
     padding: 0.15rem 0.3rem;
     display: flex;
+    flex-wrap: wrap;
     flex-direction: row;
     gap: 0.2rem;
     align-items: center;
+    font-size: 0.9em;
+    line-height: 0.9em;
     border: 0.1rem solid var(--color-secondary);
     border-radius: var(--radius);
   }

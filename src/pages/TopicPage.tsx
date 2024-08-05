@@ -100,7 +100,7 @@ const WrapTopicPage = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 0.5rem;
   }
   .nav-post {

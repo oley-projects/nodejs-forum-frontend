@@ -4,10 +4,13 @@ import { useGeneralContext } from '../context/generalContext';
 import { useForumContext } from '../context/forumContext';
 import { useFormItemContext } from '../context/formItemContext';
 import { useUserContext } from '../context/userContext';
+import { useNavigate } from 'react-router-dom';
 
 const ForumPage = () => {
+  const navigate = useNavigate();
   const { isLoading, pages, pathId, totalItems } = useGeneralContext();
-  const { forum } = useForumContext();
+  const { forum, deleteForum } = useForumContext();
+  const { id, name, description } = forum;
   const { isAuth } = useUserContext();
   const { openModalForum, setFormItem } = useFormItemContext();
   const newTopicHandler = () => {
@@ -17,6 +20,16 @@ const ForumPage = () => {
       description: '',
       action: 'new',
       type: 'topic',
+    });
+    openModalForum();
+  };
+  const editHandler = () => {
+    setFormItem({
+      id,
+      name,
+      description,
+      action: 'edit',
+      type: 'forum',
     });
     openModalForum();
   };
@@ -40,9 +53,12 @@ const ForumPage = () => {
             <div>{forum.name}</div>
             <div>
               <ItemAction
-                onEdit={() => {}}
-                onDelete={() => {}}
-                creatorId={''}
+                onEdit={editHandler}
+                onDelete={() => {
+                  deleteForum(id);
+                  navigate('/');
+                }}
+                creatorId={forum.creator?._id}
                 type={'forum'}
               />
             </div>
@@ -80,8 +96,11 @@ const WrapForum = styled.div`
     header {
       padding: 0.5rem 1rem;
       display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
       flex-direction: row;
       justify-content: space-between;
+      align-items: center;
       background: var(--color-white-bg-transparent);
     }
   }

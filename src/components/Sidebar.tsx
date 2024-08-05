@@ -17,13 +17,20 @@ const Sidebar = ({ children }: ISidebarProps) => {
 };
 
 const WrapSidebar = styled.aside`
-  margin: 0 auto;
+  margin-top: 2rem;
   background: #f3f3f3;
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
   .list-header {
     padding: 0.5rem 1rem;
     background: #eaeaea;
+  }
+  @media (min-width: 640px) {
+    max-width: 15rem;
+  }
+  @media (min-width: 640px) and (max-width: 959px) {
+    margin: 0 auto;
+    min-width: 20rem;
   }
 `;
 

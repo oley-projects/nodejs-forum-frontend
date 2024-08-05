@@ -44,6 +44,7 @@ const WrappedNav = styled.header`
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--box-shadow-bottom);
+  z-index: 10;
   .nav-links {
     display: none;
     @media (min-width: 960px) {

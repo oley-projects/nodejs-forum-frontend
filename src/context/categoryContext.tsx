@@ -28,7 +28,7 @@ export type TCategoryContext = {
           totalPosts: number;
           totalTopics: number;
           lastPost?: {
-            creator: { _id: string; name: string };
+            creator: { _id: string; id: string; name: string };
             createdAt: number;
             topic: { id: string; name: string };
           };
@@ -39,9 +39,9 @@ export type TCategoryContext = {
   lastPosts: [
     {
       id: number;
-      topic: { name: string; id: number };
+      topic: { name: string; id: number; forum: { id: string; name: string } };
       description: string;
-      creator: { name: string };
+      creator: { name: string; id: string };
       createdAt: number;
     }
   ];

@@ -4,7 +4,10 @@ import { BiChevronRight } from 'react-icons/bi';
 
 const Breadcrumbs = () => {
   const { pathname } = useLocation();
-  const path = pathname.split('/')[1];
+  let path = pathname.split('/')[1];
+  if (path === 'memberlist') {
+    path = 'members';
+  }
   return (
     <WrapBreadcrumbs>
       <Link to='/' className='link'>

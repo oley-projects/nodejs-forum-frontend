@@ -21,6 +21,7 @@ const WrapNav = styled.aside`
   transform: translateY(-30%);
   transition: var(--transition);
   box-shadow: var(--box-shadow-bottom);
+  z-index: 2;
   @media (min-width: 960px) {
     display: none;
   }

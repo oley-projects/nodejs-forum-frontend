@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import ItemAction from './ItemAction';
 import { useFormItemContext } from '../context/formItemContext';
 import { useForumContext } from '../context/forumContext';
+import { useUserContext } from '../context/userContext';
 import TimeViewer from './TimeViewer';
 import { FaRegFolder } from 'react-icons/fa';
+import { useState } from 'react';
 
 interface ICatForumElemProps {
   id: number;
@@ -15,7 +17,7 @@ interface ICatForumElemProps {
   totalPosts: number;
   totalTopics: number;
   lastPost?: {
-    creator: { _id: string; name: string };
+    creator: { _id: string; id: string; name: string };
     createdAt: number;
     topic: { id: string; name: string };
   };
@@ -32,6 +34,14 @@ const CategoryForumElem = ({
 }: ICatForumElemProps) => {
   const { deleteForum } = useForumContext();
   const { openModalForum, setFormItem } = useFormItemContext();
+  const { isAuth } = useUserContext();
+  const [isHovered, setIsHovered] = useState(false);
+  const mouseOverHandler = () => {
+    if (isAuth) setIsHovered(true);
+  };
+  const mouseLeaveHandler = () => {
+    if (isAuth) setIsHovered(false);
+  };
   const editHandler = () => {
     setFormItem({
       id,
@@ -43,43 +53,21 @@ const CategoryForumElem = ({
     openModalForum();
   };
   return (
-    <WrapCatTopicEl>
+    <WrapCatTopicEl
+      onMouseOver={mouseOverHandler}
+      onMouseLeave={mouseLeaveHandler}
+    >
       <div className='folder-icon'>
         <FaRegFolder />
       </div>
-      <div>
-        <Link className='inline-link' to={`/viewforum/${id}`}>
-          {name}
-        </Link>
-      </div>
-      <div className='total-stats'>
-        {totalTopics > 0 ? (
-          <div>{totalTopics} topics</div>
-        ) : (
-          <div>No topics</div>
-        )}
-        {totalPosts > 0 && <div>{totalPosts} posts</div>}
-      </div>
-      <div>
-        {lastPost ? (
-          <>
-            <div>
-              <Link
-                className='inline-link'
-                to={`/viewtopic/${lastPost?.topic.id}`}
-              >
-                {lastPost.topic.name}
-              </Link>
-            </div>
-            <div>by {lastPost?.creator.name}</div>
-            <div>
-              at <TimeViewer date={lastPost?.createdAt} />
-            </div>
-          </>
-        ) : (
-          <div>No posts</div>
-        )}
-        <div className='box'>
+      <div className='main-item'>
+        <div>
+          <Link className='inline-link' to={`/viewforum/${id}`}>
+            {name}
+          </Link>
+          <div className='description'>{description}</div>
+        </div>
+        <div className={`action-container ${isHovered ? 'op-1' : 'op-0'}`}>
           <ItemAction
             onEdit={editHandler}
             onDelete={() => deleteForum(id)}
@@ -88,22 +76,50 @@ const CategoryForumElem = ({
           />
         </div>
       </div>
+      <div className='total-stats'>
+        {totalTopics > 0 ? (
+          <div>{totalTopics} Topics</div>
+        ) : (
+          <div>No topics</div>
+        )}
+        {totalPosts > 0 && <div>{totalPosts} Posts</div>}
+      </div>
+      <div className='last-grid-column'>
+        {lastPost ? (
+          <div>
+            <div>
+              <Link
+                className='inline-link'
+                to={`/viewtopic/${lastPost?.topic.id}`}
+              >
+                {lastPost.topic.name}
+              </Link>
+            </div>
+            <div>
+              by&nbsp;
+              <Link
+                className='inline-link'
+                to={`/memberlist/${lastPost?.creator.id}`}
+              >
+                {lastPost?.creator.name}
+              </Link>
+            </div>
+            <div>
+              at <TimeViewer date={lastPost?.createdAt} />
+            </div>
+          </div>
+        ) : (
+          <div>No posts</div>
+        )}
+      </div>
     </WrapCatTopicEl>
   );
 };
 const WrapCatTopicEl = styled.div`
   transition: background 0.3s ease;
-
   &:hover .folder-icon {
     background-color: var(--color-white-transparent);
   }
-  .folder-icon {
-    display: flex;
-    height: 100%;
-    align-items: center;
-    transition: background 0.3s ease;
-  }
-
   @media (min-width: 641px) {
     display: grid;
     grid-template-columns: 4rem 3.5fr 1.2fr 2.3fr;
@@ -120,13 +136,27 @@ const WrapCatTopicEl = styled.div`
     .folder-icon {
       justify-content: center;
     }
+    .main-item {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      gap: 1rem;
+      position: relative;
+    }
+    .action-container {
+      transition: opacity 0.3s ease;
+      max-width: 8rem;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
   }
   @media (min-width: 1090px) {
     grid-template-columns: 4rem 4fr 1fr 2fr;
   }
 
   @media (max-width: 640px) {
-    margin: 2rem 0;
+    padding-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -142,7 +172,12 @@ const WrapCatTopicEl = styled.div`
       gap: 0.5rem;
     }
     .folder-icon {
-      height: 2rem;
+      height: 3rem;
+    }
+    &:hover .folder-icon,
+    &:focus .folder-icon,
+    &:active .folder-icon {
+      background-color: var(--color-white-transparent);
     }
   }
 `;

@@ -4,10 +4,11 @@ import TimeViewer from './TimeViewer';
 
 interface ISinglePostType {
   id: number;
-  topic: { name: string; id: number };
+  topic: { name: string; id: number; forum: { id: string; name: string } };
   description: string;
-  creator: { name: string };
+  creator: { name: string; id: string };
   createdAt: number;
+  isLastPosts?: boolean | undefined;
 }
 
 const SinglePost = ({
@@ -15,6 +16,7 @@ const SinglePost = ({
   creator,
   description,
   createdAt,
+  isLastPosts,
 }: ISinglePostType) => {
   return (
     <WrapSinglePost>
@@ -23,13 +25,21 @@ const SinglePost = ({
           {topic?.name}
         </Link>
       </header>
-      <div>by {creator?.name}</div>
-      <div>{description}</div>
-      {
-        <div>
-          <TimeViewer date={createdAt} />
-        </div>
-      }
+      <div>
+        by&nbsp;
+        <Link to={`/memberlist/${creator?.id}`} className='inline-link'>
+          {creator?.name}
+        </Link>
+      </div>
+      {!isLastPosts && <div>{description}</div>}
+      <div>
+        <TimeViewer date={createdAt} />
+      </div>
+      <div>
+        <Link to={`/viewforum/${topic?.forum.id}`} className='inline-link'>
+          {topic?.forum.name}
+        </Link>
+      </div>
     </WrapSinglePost>
   );
 };

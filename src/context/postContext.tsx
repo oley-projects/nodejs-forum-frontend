@@ -110,7 +110,6 @@ export const PostProvider = ({ children }: IPostProps) => {
   const deletePost = async (postId: number) => {
     try {
       await forumAPI.deletePost(postId);
-      console.log(currentPage);
       if (currentPage > 1 && topic.posts.length === 1) {
         setCurrentPage(state.currentPage - 1);
         getTopic(topic.id, currentPage - 1);

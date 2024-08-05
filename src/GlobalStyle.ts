@@ -15,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
     --color-white-bg-transparent: rgba(220, 220, 220, 0.83);
     --color-orange: #FFAA33;
     --color-grey-blue: #c4c1e0;
+    --color-green: rgba(25,135,84, 0.85);
     --transition: all 0.3s ease;
     --spacing: 0.1rem;
     --radius: 0.2rem;
@@ -189,36 +190,62 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   .grid-table-item {
-    padding: 0 2rem;
     display: grid;
     gap: 0.5rem;
-    background: var(--color-white-background);
+    background: var(--color-white);
     transition: background 0.3s ease;
-    &:first-child {
-      padding-top: 1.5rem;
-    }
     &:not(:last-child) {
-      padding-bottom: 1rem;
       border-bottom: 1px solid var(--color-white-bg-transparent);
     }
-    &:not(:first-child) {
-      padding-top: 1rem;
-    }
-    &:last-child {
-      padding-bottom: 1.5rem;
-    }
-    &:nth-child(even) {
-      background: var(--color-white-background-dark);
-    }
-    &:hover,
-    &:active {
-      background: var(--color-white);
+  }
+  .description {
+    font-size: 0.8em;
+    color: var(--color-secondary);
+  }
+  .total-stats {
+    font-size: 0.9em;
+    color: var(--color-dark-background);
+  }
+  .add-element {
+    padding: 0 0.5rem 0.5rem;
+    display: flex;
+    justify-content: end;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    transition: opacity 0.3s ease;
+    button {
+      padding: 0.2rem 0.4rem;
+      background-color: var(--color-white);
+      color: var(--color-green);
+      border: 0.05rem solid var(--color-green);
+      border-radius: 0.2rem;
+      display: flex;
+      align-items: center;
+      line-height: 1rem;
+      &:hover {
+        background-color: var(--color-green);
+        color: var(--color-white-background);
+      }
     }
   }
-  .box {
-    grid-column-start: 1;
-    grid-column-end: 5;
-    justify-self: end;
+  .pos-left-top {
+    left: 0;
+    top: 0;
+    right: auto;
+    bottom: auto;
+  }
+  .last-grid-column {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.9em;
+
+  }
+  .folder-icon {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    transition: background 0.3s ease;
   }
 
   @media screen and (min-width: 960px) {
@@ -266,8 +293,17 @@ const GlobalStyle = createGlobalStyle`
     .container {
       padding: 3rem 5rem;
     }
-    .grid-table-item {
-      padding: 0 3rem;
+    .last-grid-column {
+      align-items: end;
+    }
+    .op-1 {
+      opacity: 1;
+    }
+    .op-0 {
+      opacity: 0;
+    }
+    .op-trans {
+      transition: opacity 0.3s ease;
     }
   }
 
